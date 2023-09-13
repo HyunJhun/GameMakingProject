@@ -44,9 +44,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.3308523
-  m_TransitionOffset: 0.027938705
-  m_ExitTime: 0.013055562
+  m_TransitionDuration: 1.3
+  m_TransitionOffset: 0
+  m_ExitTime: 8.2001284e-10
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -249,9 +249,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.3383813
+  m_TransitionDuration: 1.3233682
   m_TransitionOffset: 0
-  m_ExitTime: 0.007922075
+  m_ExitTime: 0.007922074
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -293,6 +293,18 @@ AnimatorController:
   m_AnimatorParameters:
   - m_Name: direction
     m_Type: 3
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: isAttack
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Speed
+    m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -369,9 +381,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.3421901
-  m_TransitionOffset: 0.017428566
-  m_ExitTime: 0.0053251237
+  m_TransitionDuration: 1.3222055
+  m_TransitionOffset: 0
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -603,7 +615,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.3363807
+  m_TransitionDuration: 1.3215876
   m_TransitionOffset: 0
   m_ExitTime: 0.00928616
   m_HasExitTime: 0

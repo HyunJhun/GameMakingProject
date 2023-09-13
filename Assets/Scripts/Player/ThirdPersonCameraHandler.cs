@@ -70,5 +70,8 @@ public class ThirdPersonCameraHandler : MonoBehaviour
         else
             currentCam = CameraStyle.Basic;
     }
-
+    public Vector3 combatLook()
+    {
+        return combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
+    }
 }

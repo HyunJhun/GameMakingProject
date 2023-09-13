@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMovementHandler : MonoBehaviour
 {
     public enum PlayerState
     {
@@ -8,13 +8,16 @@ public class PlayerMove : MonoBehaviour
         Forward,
         Left,
         Right,
-        Backward
+        Backward,
+        Sprint,
+        Attack,
+        Defense
     }
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
     [SerializeField] private float rotationSpeed = 360f; // 캐릭터가 회전하는 속도
     //[SerializeField] private float cameraRotationSpeed = 2.0f;
-    [SerializeField] private PlayerState baseState;
+    public PlayerState baseState;
     [SerializeField] private bool isLockOn;
     /*
     [Header("Jump Property")]
@@ -46,8 +49,8 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Vector3 dirToCombatLookAt = cameraHandler.combatLookAt.position - new Vector3(transform.position.x, cameraHandler.combatLookAt.position.y, transform.position.z);
+        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        //Vector3 dirToCombatLookAt = cameraHandler.combatLookAt.position - new Vector3(transform.position.x, cameraHandler.combatLookAt.position.y, transform.position.z);
         if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
         {
             if (isLockOn == false) // Lock On 시
@@ -63,8 +66,8 @@ public class PlayerMove : MonoBehaviour
             {
                 Vector3 forward = Vector3.Slerp(
                     transform.forward,
-                    dirToCombatLookAt,
-                    rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, dirToCombatLookAt)
+                    cameraHandler.combatLook(),//dirToCombatLookAt,
+                    rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, cameraHandler.combatLook())
                     );
                 transform.LookAt(transform.position + forward);
             };
@@ -105,6 +108,17 @@ public class PlayerMove : MonoBehaviour
                 playerAnimator.SetInteger("direction", (int)baseState);
                 Debug.Log("IDLE");
             }
+            
+            if(Input.GetMouseButtonDown(0))
+            {
+                //baseState = PlayerState.Attack;
+                playerAnimator.SetBool("isAttack", true);
+            }
+            else if(Input.GetMouseButtonUp(0))
+            {
+                //baseState = PlayerState.Attack;
+                playerAnimator.SetBool("isAttack",false);
+            }
         }
         else if (isLockOn == false)
         {
@@ -119,6 +133,16 @@ public class PlayerMove : MonoBehaviour
                 baseState = PlayerState.Idle;
                 playerAnimator.SetInteger("direction", (int)baseState);
             }
+            if (Input.GetMouseButtonDown(0))
+            {
+                //baseState = PlayerState.Attack;
+                playerAnimator.SetBool("isAttack", true);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                //baseState = PlayerState.Attack;
+                playerAnimator.SetBool("isAttack", false);
+            }
         }
     }
 
@@ -129,7 +153,7 @@ public class PlayerMove : MonoBehaviour
 
     private void LockOnChanger()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(2))
         {
             if (isLockOn == false)
             {
@@ -144,6 +168,11 @@ public class PlayerMove : MonoBehaviour
                 cameraHandler.CurrentStyleChanger();
             }
         }
+    }
+
+    public bool getIsLockOn()
+    {
+        return isLockOn;
     }
 }
 

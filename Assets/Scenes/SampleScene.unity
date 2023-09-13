@@ -1139,7 +1139,7 @@ MonoBehaviour:
   player: {fileID: 1990535472}
   playerObj: {fileID: 1973695114}
   rotationSpeed: 7
-  combatLookAt: {fileID: 422453656}
+  combatLookAt: {fileID: 48685264}
   basicCam: {fileID: 2069695769}
   combatCam: {fileID: 1867586362}
 --- !u!1 &639062342
@@ -2546,7 +2546,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1990535472}
   m_CommonLens: 1
   m_Lens:
-    FieldOfView: 45
+    FieldOfView: 80
     OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -2595,9 +2595,9 @@ MonoBehaviour:
     m_InputAxisName: Mouse X
     m_InputAxisValue: 0
     m_InvertInput: 1
-    m_MinValue: -7
-    m_MaxValue: 45
-    m_Wrap: 1
+    m_MinValue: -35
+    m_MaxValue: 50
+    m_Wrap: 0
     m_Recentering:
       m_enabled: 0
       m_WaitTime: 1
@@ -2740,7 +2740,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   rotationSpeed: 360
-  cameraRotationSpeed: 2
   baseState: 0
   isLockOn: 0
   gravity: 1
