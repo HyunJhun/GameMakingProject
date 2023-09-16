@@ -16,66 +16,33 @@ public class PlayerMovementHandler : MonoBehaviour
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
     [SerializeField] private float rotationSpeed = 360f; // 캐릭터가 회전하는 속도
-    //[SerializeField] private float cameraRotationSpeed = 2.0f;
+    [SerializeField] private bool isDodge;
     public PlayerState baseState;
     [SerializeField] private bool isLockOn;
-    /*
-    [Header("Jump Property")]
-    [SerializeField] private float gravitationalAcceleration;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float gravity;
-    private GroundCheck groundChecker;
-    */
+
     [Header("Environment Property")]
     [SerializeField] private float gravity;
 
     [Header("References")]
     public ThirdPersonCameraHandler cameraHandler;
+    [SerializeField] Transform cam;
 
     Animator playerAnimator;
     CharacterController player;
-    // Start is called before the first frame update
-    private void Awake()
-    {
-    }
+
     void Start()
     {
         player = GetComponent<CharacterController>();
         playerAnimator = GetComponent<Animator>();
         baseState = PlayerState.Idle;
-        //groundChecker = GameObject.Find("GroundChecker").GetComponent<GroundCheck>();
+        isDodge = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        //Vector3 dirToCombatLookAt = cameraHandler.combatLookAt.position - new Vector3(transform.position.x, cameraHandler.combatLookAt.position.y, transform.position.z);
-        if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
-        {
-            if (isLockOn == false) // Lock On 시
-            {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
-                Vector3 forward = Vector3.Slerp(
-                  transform.forward,
-                  direction,
-                  rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, direction)
-                  );
-                transform.LookAt(transform.position + forward);
-            }
-            else // Lock Off 시
-            {
-                Vector3 forward = Vector3.Slerp(
-                    transform.forward,
-                    cameraHandler.combatLook(),//dirToCombatLookAt,
-                    rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, cameraHandler.combatLook())
-                    );
-                transform.LookAt(transform.position + forward);
-            };
-        }
-        OnGravity(direction);
-        LockOnChanger();
-        PlayerAnimation(direction);
-        player.Move(direction * walkSpeed * Time.deltaTime);
+        float delta = Time.deltaTime;
+        PlayerMovement(delta);
     }
     private void PlayerAnimation(Vector3 direction)
     {
@@ -144,6 +111,56 @@ public class PlayerMovementHandler : MonoBehaviour
                 playerAnimator.SetBool("isAttack", false);
             }
         }
+        playerAnimator.SetBool("isDodge", isDodge);
+        
+    }
+
+    private void PlayerMovement(float delta)
+    {
+        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+        // 카메라 방향에 따라 움직이는거
+        Vector3 camForward = cam.forward;
+        Vector3 camRight = cam.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        Vector3 forwardRelatvie = direction.x * camRight;
+        Vector3 rightRelatvie = direction.z * camForward;
+
+        Vector3 moveDir = forwardRelatvie + rightRelatvie;
+
+        if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
+        {
+            if (isLockOn == false) // Lock On 시
+            {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
+
+                Vector3 forward = Vector3.Slerp(
+                  transform.forward,
+                  moveDir,
+                  rotationSpeed * delta / Vector3.Angle(transform.forward, direction)
+                  );
+                transform.LookAt(transform.position + forward);
+
+
+            }
+            else // Lock Off 시
+            {
+                Vector3 forward = Vector3.Slerp(
+                    transform.forward,
+                    cameraHandler.combatLook(),
+                    rotationSpeed * delta / Vector3.Angle(transform.forward, cameraHandler.combatLook())
+                    );
+                transform.LookAt(transform.position + forward);
+            };
+        }
+        if (Input.GetButtonDown("Dodge"))
+        {
+            dodge();
+        }
+        OnGravity(direction);
+        LockOnChanger();
+        PlayerAnimation(moveDir);
+        player.Move(moveDir * walkSpeed * delta);
     }
 
     private void OnGravity(Vector3 direction)
@@ -158,13 +175,11 @@ public class PlayerMovementHandler : MonoBehaviour
             if (isLockOn == false)
             {
                 isLockOn = true;
-                Debug.Log("MOUSE LOCK");
                 cameraHandler.CurrentStyleChanger();
             }
             else
             {
                 isLockOn = false;
-                Debug.Log("MOUSE DOESNT LOCK");
                 cameraHandler.CurrentStyleChanger();
             }
         }
@@ -173,6 +188,20 @@ public class PlayerMovementHandler : MonoBehaviour
     public bool getIsLockOn()
     {
         return isLockOn;
+    }
+
+    void dodge()
+    {
+        isDodge = true;
+        walkSpeed = 2.5f;
+
+        Invoke("dodgeOut", 0.4f);
+    }
+
+    void dodgeOut()
+    {
+        walkSpeed = 5.0f;
+        isDodge = false;
     }
 }
 
