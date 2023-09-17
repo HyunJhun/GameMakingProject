@@ -6,11 +6,10 @@ public class ThirdPersonCameraHandler : MonoBehaviour
     public Transform orientation;
     public Transform player;
     public Transform playerObj;
-    //public PlayerMove playerMoveHandler;
     public float rotationSpeed;
     public Transform combatLookAt;
-    private CameraStyle currentCam;
 
+    private CameraStyle currentCam;
     public GameObject basicCam;
     public GameObject combatCam;
     public enum CameraStyle
