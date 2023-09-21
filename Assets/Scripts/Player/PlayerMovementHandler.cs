@@ -26,16 +26,17 @@ public class PlayerMovementHandler : MonoBehaviour
     [Header("References")]
     public ThirdPersonCameraHandler cameraHandler;
     [SerializeField] Transform cam;
-
-    Animator playerAnimator;
+    [SerializeField] AttackManager attackManager;
+    [SerializeField] AnimationManager animationManager;
+    [SerializeField] Status stats;
     CharacterController player;
 
     void Start()
     {
         player = GetComponent<CharacterController>();
-        playerAnimator = GetComponent<Animator>();
-        baseState = PlayerState.Idle;
         isDodge = false;
+        baseState = PlayerState.Idle;
+        animationManager = GetComponent<AnimationManager>();
     }
 
     // Update is called once per frame
@@ -44,77 +45,6 @@ public class PlayerMovementHandler : MonoBehaviour
         float delta = Time.deltaTime;
         PlayerMovement(delta);
     }
-    private void PlayerAnimation(Vector3 direction)
-    {
-        if (isLockOn == true)
-        {
-            playerAnimator.SetLayerWeight(1, 1);
-            if (direction.x > 0.5)
-            {
-                baseState = PlayerState.Right;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            else if (direction.x < -0.5)
-            {
-                baseState = PlayerState.Left;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            else if (direction.z > 0.5)
-            {
-                baseState = PlayerState.Forward;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            else if (direction.z < -0.5)
-            {
-                baseState = PlayerState.Backward;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            else
-            {
-                baseState = PlayerState.Idle;
-                playerAnimator.SetInteger("direction", (int)baseState);
-                Debug.Log("IDLE");
-            }
-            
-            if(Input.GetMouseButtonDown(0))
-            {
-                //baseState = PlayerState.Attack;
-                playerAnimator.SetBool("isAttack", true);
-            }
-            else if(Input.GetMouseButtonUp(0))
-            {
-                //baseState = PlayerState.Attack;
-                playerAnimator.SetBool("isAttack",false);
-            }
-        }
-        else if (isLockOn == false)
-        {
-            playerAnimator.SetLayerWeight(1, 0);
-            if (direction.magnitude > 0.5) // 플레이어가 움직일 떄
-            {
-                baseState = PlayerState.Forward;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            else
-            {
-                baseState = PlayerState.Idle;
-                playerAnimator.SetInteger("direction", (int)baseState);
-            }
-            if (Input.GetMouseButtonDown(0))
-            {
-                //baseState = PlayerState.Attack;
-                playerAnimator.SetBool("isAttack", true);
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                //baseState = PlayerState.Attack;
-                playerAnimator.SetBool("isAttack", false);
-            }
-        }
-        playerAnimator.SetBool("isDodge", isDodge);
-        
-    }
-
     private void PlayerMovement(float delta)
     {
         Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
@@ -131,7 +61,7 @@ public class PlayerMovementHandler : MonoBehaviour
 
         if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
         {
-            if (isLockOn == false) // Lock On 시
+            if (isLockOn == false) // Lock Off
             {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
 
                 Vector3 forward = Vector3.Slerp(
@@ -143,7 +73,7 @@ public class PlayerMovementHandler : MonoBehaviour
 
 
             }
-            else // Lock Off 시
+            else // Lock On
             {
                 Vector3 forward = Vector3.Slerp(
                     transform.forward,
@@ -151,7 +81,20 @@ public class PlayerMovementHandler : MonoBehaviour
                     rotationSpeed * delta / Vector3.Angle(transform.forward, cameraHandler.combatLook())
                     );
                 transform.LookAt(transform.position + forward);
+                Debug.Log(transform.position + forward + " 시선 집중!00");
             };
+
+            // 달리기
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            { 
+                stats.InvokeRepeating("staminaDecrease", 1f, 1f);
+                walkSpeed = 8.0f;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            { 
+                stats.InvokeCancle("staminaDecrease");
+                walkSpeed = 5.0f;
+            }
         }
         if (Input.GetButtonDown("Dodge"))
         {
@@ -159,15 +102,29 @@ public class PlayerMovementHandler : MonoBehaviour
         }
         OnGravity(direction);
         LockOnChanger();
-        PlayerAnimation(moveDir);
+        animationManager.PlayerAnimation(moveDir);
         player.Move(moveDir * walkSpeed * delta);
     }
 
+    // 이동에 관한 함수
     private void OnGravity(Vector3 direction)
     {
         direction.y = direction.y - gravity;
     }
+    void dodge()
+    {
+        isDodge = true;
+        walkSpeed = 2.5f;
 
+        Invoke("dodgeOut", 0.4f);
+    }
+
+    void dodgeOut()
+    {
+        walkSpeed = 5.0f;
+        isDodge = false;
+    }
+    // 카메라
     private void LockOnChanger()
     {
         if (Input.GetMouseButtonDown(2))
@@ -185,24 +142,24 @@ public class PlayerMovementHandler : MonoBehaviour
         }
     }
 
+    // Get 함수
     public bool getIsLockOn()
     {
         return isLockOn;
     }
 
-    void dodge()
+    public bool getIsDodge()
     {
-        isDodge = true;
-        walkSpeed = 2.5f;
-
-        Invoke("dodgeOut", 0.4f);
+        return isDodge;
     }
 
-    void dodgeOut()
+    // Set 함수
+    public void setPlayerState(PlayerState state)
     {
-        walkSpeed = 5.0f;
-        isDodge = false;
+        baseState = state;
     }
+
+    
 }
 
 
