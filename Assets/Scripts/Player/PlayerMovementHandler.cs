@@ -5,13 +5,8 @@ public class PlayerMovementHandler : MonoBehaviour
     public enum PlayerState
     {
         Idle,
-        Forward,
-        Left,
-        Right,
-        Backward,
-        Sprint,
-        Attack,
-        Defense
+        Move,
+        Attack
     }
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
@@ -43,7 +38,10 @@ public class PlayerMovementHandler : MonoBehaviour
     void Update()
     {
         float delta = Time.deltaTime;
-        PlayerMovement(delta);
+        if (baseState != PlayerState.Attack) // 공격 도중에는 움직이지 못함
+        {
+            PlayerMovement(delta);
+        }
     }
     private void PlayerMovement(float delta)
     {
@@ -61,6 +59,7 @@ public class PlayerMovementHandler : MonoBehaviour
 
         if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
         {
+            baseState = PlayerState.Move;
             if (isLockOn == false) // Lock Off
             {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
 
@@ -81,7 +80,6 @@ public class PlayerMovementHandler : MonoBehaviour
                     rotationSpeed * delta / Vector3.Angle(transform.forward, cameraHandler.combatLook())
                     );
                 transform.LookAt(transform.position + forward);
-                Debug.Log(transform.position + forward + " 시선 집중!00");
             };
 
             // 달리기
@@ -102,7 +100,7 @@ public class PlayerMovementHandler : MonoBehaviour
         }
         OnGravity(direction);
         LockOnChanger();
-        animationManager.PlayerAnimation(moveDir);
+        animationManager.PlayerAnimation(direction);
         player.Move(moveDir * walkSpeed * delta);
     }
 
@@ -153,12 +151,7 @@ public class PlayerMovementHandler : MonoBehaviour
         return isDodge;
     }
 
-    // Set 함수
-    public void setPlayerState(PlayerState state)
-    {
-        baseState = state;
-    }
-
+    // Set 함
     
 }
 
