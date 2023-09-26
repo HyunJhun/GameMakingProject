@@ -4,23 +4,10 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    public enum PlayerState
-    {
-        Idle,
-        Forward,
-        Left,
-        Right,
-        Backward,
-        Sprint,
-        Attack,
-        Defense
-    }
-
     [Header("Reference")]
     PlayerMovementHandler player;
     AttackManager attackManager;
     Animator playerAnimator;
-    PlayerState baseState;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +19,6 @@ public class AnimationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
     public void PlayerAnimation(Vector3 direction)
     {
@@ -48,10 +34,22 @@ public class AnimationManager : MonoBehaviour
             playerAnimator.SetLayerWeight(1, 0);
             playerAnimator.SetFloat("speedY", direction.magnitude);
         }
-        playerAnimator.SetBool("isDodge",player.getIsDodge());
+        PlayerDodgeAnimation();
 
     }
 
+    public void PlayerDodgeAnimation()
+    {
+        playerAnimator.SetBool("isDodge", player.getIsDodge());
+        if(playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
+            &&playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("human"))
+        {
+            Debug.Log("´åÁö ³¡");
+            player.setIsDodge(false);
+            player.setState(PlayerMovementHandler.PlayerState.Idle);
+            playerAnimator.SetBool("isDodge", player.getIsDodge());
+        }
+    }
     public Animator getPlayerAnimator()
     {
         return playerAnimator;

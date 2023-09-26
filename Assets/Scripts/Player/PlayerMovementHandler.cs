@@ -6,13 +6,14 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         Idle,
         Move,
+        Dodge,
         Attack
     }
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
     [SerializeField] private float rotationSpeed = 360f; // 캐릭터가 회전하는 속도
     [SerializeField] private bool isDodge;
-    public PlayerState baseState;
+    PlayerState baseState;
     [SerializeField] private bool isLockOn;
 
     [Header("Environment Property")]
@@ -26,6 +27,8 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] Status stats;
     CharacterController player;
 
+    public bool movecheck = false;
+    private Vector3 camDir;
     void Start()
     {
         player = GetComponent<CharacterController>();
@@ -38,10 +41,8 @@ public class PlayerMovementHandler : MonoBehaviour
     void Update()
     {
         float delta = Time.deltaTime;
-        if (baseState != PlayerState.Attack) // 공격 도중에는 움직이지 못함
-        {
-            PlayerMovement(delta);
-        }
+        PlayerMovement(delta);
+        
     }
     private void PlayerMovement(float delta)
     {
@@ -56,10 +57,10 @@ public class PlayerMovementHandler : MonoBehaviour
         Vector3 rightRelatvie = direction.z * camForward;
 
         Vector3 moveDir = forwardRelatvie + rightRelatvie;
-
-        if (direction.sqrMagnitude > 0.01f) // 캐릭터 이동시 움직이는 형태 관련
+        camDir = moveDir;
+        if (direction.sqrMagnitude > 0.01f
+           && (baseState != PlayerState.Dodge && baseState != PlayerState.Attack)) // 회전 설정 , 특정 상태에서는 회전 불가하도록 설정
         {
-            baseState = PlayerState.Move;
             if (isLockOn == false) // Lock Off
             {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
 
@@ -101,9 +102,12 @@ public class PlayerMovementHandler : MonoBehaviour
         OnGravity(direction);
         LockOnChanger();
         animationManager.PlayerAnimation(direction);
-        player.Move(moveDir * walkSpeed * delta);
+        if (baseState != PlayerState.Dodge && baseState != PlayerState.Attack) // 다크소울3 에선 공격,구르기 시 캐릭터 움직임이 정해짐
+        {
+            player.Move(moveDir * walkSpeed * delta);
+        }
+        Debug.Log(baseState);
     }
-
     // 이동에 관한 함수
     private void OnGravity(Vector3 direction)
     {
@@ -111,16 +115,8 @@ public class PlayerMovementHandler : MonoBehaviour
     }
     void dodge()
     {
-        isDodge = true;
-        walkSpeed = 2.5f;
-
-        Invoke("dodgeOut", 0.4f);
-    }
-
-    void dodgeOut()
-    {
-        walkSpeed = 5.0f;
-        isDodge = false;
+        setIsDodge(true);
+        setState(PlayerState.Dodge);
     }
     // 카메라
     private void LockOnChanger()
@@ -151,8 +147,31 @@ public class PlayerMovementHandler : MonoBehaviour
         return isDodge;
     }
 
+    public CharacterController getPlayerController()
+    {
+        return player;
+    }
+
+    public Vector3 getCamDirection()
+    {
+        return camDir;
+    }
+
+    public PlayerState GetState()
+    {
+        return baseState;
+    }    
     // Set 함
     
+    public void setState(PlayerState state)
+    {
+        baseState = state;
+    }
+
+    public void setIsDodge(bool values)
+    {
+        isDodge = values;
+    }
 }
 
 
