@@ -12,7 +12,7 @@ public class AttackManager : MonoBehaviour
     [Header("References")]
     AnimationManager playerAnimationManager;
     public GameObject attackArrange;
-    public List<GameObject> weapons; // 0 = shield, 1 = shortSword, 2 = twoHandeld
+    public List<GameObject> weapons; // 0 = sheld, 1 = shortSword, 2 = twoHandeld
     public PlayerMovementHandler player;
 
     [Header("Values")]
@@ -23,12 +23,11 @@ public class AttackManager : MonoBehaviour
     float maxComboDelay = 1f;
     bool isAttack;
     float timer;
-    Weapon currentWeapon;
+    public Weapon currentWeapon;
     private void Start()
     {
         playerAnimationManager = GetComponent<AnimationManager>();
         isAttack = false;
-        currentWeapon = Weapon.OneHanded;
     }
 
     private void Update()
@@ -63,17 +62,17 @@ public class AttackManager : MonoBehaviour
         else if(currentWeapon == Weapon.TwoHanded)
         {
             if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack01"))
+                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("2H@Attack01"))
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
             }
             if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack02"))
+                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("2H@Attack02"))
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
             }
             if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack03"))
+                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("2H@Attack04"))
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
                 noOfClicks = 0;
@@ -94,13 +93,12 @@ public class AttackManager : MonoBehaviour
             playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
             if (player.GetState() != PlayerMovementHandler.PlayerState.Idle)
             {
-                Debug.Log("아님 너임?");
                 player.setState(PlayerMovementHandler.PlayerState.Idle);
             }
         }
         if(timer > nextFireTime)
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetButtonDown("Attack"))
             {
                 OnClick();
             }
@@ -117,17 +115,35 @@ public class AttackManager : MonoBehaviour
             playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
         }
         noOfClicks = Mathf.Clamp(noOfClicks, 0, 3);
-        if(noOfClicks >=2 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f // 콤보 공격을 이어나가기 위한 장치
+        if(currentWeapon == Weapon.OneHanded)
+        { 
+            if(noOfClicks >=2 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f // 콤보 공격을 이어나가기 위한 장치
             && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack01"))
-        {
-            playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-            playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+            }
+            if (noOfClicks >= 3 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f
+               && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
+            }
         }
-        if (noOfClicks >= 3 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f
-           && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack02"))
+        else if(currentWeapon == Weapon.TwoHanded)
         {
-            playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-            playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
+            if (noOfClicks >= 2 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f // 콤보 공격을 이어나가기 위한 장치
+            && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("2H@Attack01"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+            }
+            if (noOfClicks >= 3 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f
+               && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("2H@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
+            }
         }
     }
     public void moveWhenAttack()

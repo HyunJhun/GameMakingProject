@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementHandler : MonoBehaviour
@@ -6,13 +8,18 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         Idle,
         Move,
+        Running,
         Dodge,
         Attack
     }
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
     [SerializeField] private float rotationSpeed = 360f; // 캐릭터가 회전하는 속도
+    //dodge
     [SerializeField] private bool isDodge;
+    [SerializeField] private float dodgeSpeed = 0.05f;
+    [SerializeField] private AnimationCurve dodgeCurve;
+    float dodgeTimer;
     PlayerState baseState;
     [SerializeField] private bool isLockOn;
 
@@ -32,9 +39,12 @@ public class PlayerMovementHandler : MonoBehaviour
     void Start()
     {
         player = GetComponent<CharacterController>();
-        isDodge = false;
         baseState = PlayerState.Idle;
         animationManager = GetComponent<AnimationManager>();
+        //dodge
+        isDodge = false;
+        Keyframe dodge_lastFrame = dodgeCurve[dodgeCurve.length - 1];
+        dodgeTimer = dodge_lastFrame.time;
     }
 
     // Update is called once per frame
@@ -42,7 +52,6 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         float delta = Time.deltaTime;
         PlayerMovement(delta);
-        
     }
     private void PlayerMovement(float delta)
     {
@@ -82,28 +91,29 @@ public class PlayerMovementHandler : MonoBehaviour
                     );
                 transform.LookAt(transform.position + forward);
             };
-
-            // 달리기
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            { 
-                stats.InvokeRepeating("staminaDecrease", 1f, 1f);
-                walkSpeed = 8.0f;
-            }
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
-            { 
-                stats.InvokeCancle("staminaDecrease");
-                walkSpeed = 5.0f;
-            }
+        }
+        // 기본 이동키 이외에 추가로 눌러야 할 입력들
+        if (Input.GetButtonDown("Sprint"))
+        {
+            setState(PlayerState.Running);
+            stats.InvokeRepeating("staminaDown", 1f, 1f);
+            setPlayerSpeed(8f);
+        }
+        if(Input.GetButtonUp("Sprint") || baseState != PlayerState.Running)
+        {
+            stats.InvokeCancle("staminaDown");
+            setPlayerSpeed(5f);
         }
         if (Input.GetButtonDown("Dodge"))
         {
-            dodge();
+            if(baseState != PlayerState.Dodge) 
+                StartCoroutine(Dodge());
         }
         OnGravity(direction);
         LockOnChanger();
         animationManager.PlayerAnimation(direction);
         if (baseState != PlayerState.Dodge && baseState != PlayerState.Attack) // 다크소울3 에선 공격,구르기 시 캐릭터 움직임이 정해짐
-        {
+        { 
             player.Move(moveDir * walkSpeed * delta);
         }
         Debug.Log(baseState);
@@ -113,10 +123,21 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         direction.y = direction.y - gravity;
     }
-    void dodge()
+    IEnumerator Dodge()
     {
         setIsDodge(true);
         setState(PlayerState.Dodge);
+        float timer = 0f;
+        while(timer < dodgeTimer)
+        {
+            Debug.Log("시작햇냐");
+            float speed = dodgeCurve.Evaluate(timer);
+            Vector3 dodgeMoveDir = (transform.forward * dodgeSpeed);
+            player.Move(dodgeMoveDir * Time.deltaTime);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        setIsDodge(false);
     }
     // 카메라
     private void LockOnChanger()
@@ -171,6 +192,11 @@ public class PlayerMovementHandler : MonoBehaviour
     public void setIsDodge(bool values)
     {
         isDodge = values;
+    }
+    
+    public void setPlayerSpeed(float speed)
+    {
+        walkSpeed = speed;
     }
 }
 

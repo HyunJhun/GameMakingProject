@@ -2302,6 +2302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RightSword
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 21ca816de6f3abd4cbee2c0462c8a186, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 21ca816de6f3abd4cbee2c0462c8a186, type: 3}
       propertyPath: m_RootOrder
       value: 4

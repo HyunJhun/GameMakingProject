@@ -217,6 +217,71 @@ Transform:
   m_Father: {fileID: 1990535472}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &169205260
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1215357488}
+    m_Modifications:
+    - target: {fileID: 100000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_Name
+      value: MeleeWarriorGreatsword
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.10933487
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.043622598
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.037064895
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.12140765
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.13714558
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0254559
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.982753
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 63e8c3d8ce75eae4ebaa4935bd776825, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
 --- !u!1 &216995109
 GameObject:
   m_ObjectHideFlags: 3
@@ -286,7 +351,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216995109}
-  m_LocalRotation: {x: 0.047631975, y: 0.0000000021483564, z: -1.02446746e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.047631975, y: -0.0000000021483564, z: 1.02446746e-10, w: 0.99886495}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1037,6 +1102,11 @@ Transform:
   m_Father: {fileID: 1508662959}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 34.057, z: 0}
+--- !u!1 &593701577 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: be8d76ebb9f3e2e41bc1c53c0e273044, type: 3}
+  m_PrefabInstance: {fileID: 169205260}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &605604646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1219,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605604646}
-  m_LocalRotation: {x: 0.04763198, y: 0.0000000021483566, z: -1.02446746e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.04763198, y: -0.0000000021483566, z: 1.02446746e-10, w: 0.99886495}
   m_LocalPosition: {x: 0, y: 2, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1966,6 +2036,11 @@ Transform:
   m_Father: {fileID: 1508662959}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 150.811, z: 0}
+--- !u!4 &1215357488 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5322308048534776832, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
+  m_PrefabInstance: {fileID: 1555078208}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1269229492
 GameObject:
   m_ObjectHideFlags: 3
@@ -2452,6 +2527,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: cff95fec887825a42b03d1324f49ac93, type: 2}
+    - target: {fileID: 91537697237144109, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3270561592584380135, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2738,7 +2817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9044972662372451909, guid: d5a5f2acd4806a54cbe7d6d79de6e617, type: 3}
       propertyPath: m_Name
-      value: PolearmWarrior
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5a5f2acd4806a54cbe7d6d79de6e617, type: 3}
@@ -2958,6 +3037,7 @@ GameObject:
   - component: {fileID: 1990535475}
   - component: {fileID: 1990535474}
   - component: {fileID: 1990535476}
+  - component: {fileID: 1990535477}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -2980,6 +3060,40 @@ MonoBehaviour:
   walkSpeed: 5
   rotationSpeed: 360
   isDodge: 0
+  dodgeSpeed: 4
+  dodgeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   isLockOn: 0
   gravity: 1
   cameraHandler: {fileID: 605604651}
@@ -3042,13 +3156,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'B-f_middle_02.R'\n\tTransform 'B-thigh.L'\n\tTransform
-    'B-forearm.R'\n\tTransform 'B-upper_arm.L'\n\tTransform 'B-shoulder.R'\n\tTransform
-    'B-f_ring_02.R'\n\tTransform 'B-f_ring_01.L'\n\tTransform 'B-upperChest'\n\tTransform
-    'B-hand.L'\n\tTransform 'B-f_middle_02.L'\n\tand more ...\n\tFrom animation clip
-    'human'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -3069,9 +3177,10 @@ MonoBehaviour:
   weapons:
   - {fileID: 1123498599}
   - {fileID: 1492790880}
-  - {fileID: 0}
+  - {fileID: 593701577}
   player: {fileID: 1990535470}
   cooldownTime: 2
+  currentWeapon: 0
 --- !u!114 &1990535475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3084,6 +3193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22afe4f0a571a77468bd78723f5bfb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  check: 0
 --- !u!114 &1990535476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3099,6 +3209,19 @@ MonoBehaviour:
   hp: 50
   stamina: 100
   damage: 10
+--- !u!114 &1990535477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990535469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32096f444c288af469341bf2daddc10f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackManger: {fileID: 1990535474}
 --- !u!1 &2005093349
 GameObject:
   m_ObjectHideFlags: 3

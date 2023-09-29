@@ -23,7 +23,7 @@ public class Status : MonoBehaviour
         
     }
 
-    public void staminaDecrease()
+    public void staminaDown()
     {
         stamina -= 1f;
     }
