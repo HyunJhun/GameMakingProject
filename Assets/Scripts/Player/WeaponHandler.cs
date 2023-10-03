@@ -20,22 +20,25 @@ public class WeaponHandler : MonoBehaviour
 
     private void weaponChange()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1) && attackManger.currentWeapon != AttackManager.Weapon.OneHanded)
+        // 무기 교체는 이동이나 Idle일때만 가능하도록 수정 23.10.02
+        if (attackManger.player.GetState() == PlayerMovementHandler.PlayerState.Idle
+            || attackManger.player.GetState() == PlayerMovementHandler.PlayerState.Move)
         {
-            attackManger.currentWeapon = AttackManager.Weapon.OneHanded;
+            if (Input.GetKeyDown(KeyCode.Alpha1) && attackManger.currentWeapon != AttackManager.Weapon.OneHanded)
+            {
+                attackManger.currentWeapon = AttackManager.Weapon.OneHanded;
 
-            attackManger.weapons[2].SetActive(false);
-            attackManger.weapons[0].SetActive(true);
-            attackManger.weapons[1].SetActive(true);
-            Debug.Log("원핸드");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2) && attackManger.currentWeapon != AttackManager.Weapon.TwoHanded)
-        {
-            attackManger.currentWeapon = AttackManager.Weapon.TwoHanded;
-            attackManger.weapons[0].SetActive(false);
-            attackManger.weapons[1].SetActive(false);
-            attackManger.weapons[2].SetActive(true);
-            Debug.Log("투핸드");
-        }
+                attackManger.weapons[2].SetActive(false);
+                attackManger.weapons[0].SetActive(true);
+                attackManger.weapons[1].SetActive(true);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2) && attackManger.currentWeapon != AttackManager.Weapon.TwoHanded)
+            {
+                attackManger.currentWeapon = AttackManager.Weapon.TwoHanded;
+                attackManger.weapons[0].SetActive(false);
+                attackManger.weapons[1].SetActive(false);
+                attackManger.weapons[2].SetActive(true);
+            }
+        } 
     }
 }

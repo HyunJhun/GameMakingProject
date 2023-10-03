@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementHandler : MonoBehaviour
@@ -20,6 +19,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private float dodgeSpeed = 0.05f;
     [SerializeField] private AnimationCurve dodgeCurve;
     float dodgeTimer;
+    private bool bugFixed = false;
     PlayerState baseState;
     [SerializeField] private bool isLockOn;
 
@@ -93,27 +93,34 @@ public class PlayerMovementHandler : MonoBehaviour
             };
         }
         // 기본 이동키 이외에 추가로 눌러야 할 입력들
-        if (Input.GetButtonDown("Sprint"))
+        if (baseState != PlayerState.Attack && baseState != PlayerState.Dodge)
         {
-            setState(PlayerState.Running);
-            stats.InvokeRepeating("staminaDown", 1f, 1f);
-            setPlayerSpeed(8f);
+            if (Input.GetButtonDown("Sprint"))
+            {
+                setState(PlayerState.Running);
+                stats.InvokeRepeating("staminaDown", 1f, 1f);
+                setPlayerSpeed(8f);
+            }
         }
-        if(Input.GetButtonUp("Sprint") || baseState != PlayerState.Running)
+        if (Input.GetButtonUp("Sprint"))
         {
+            setState(PlayerState.Move);
             stats.InvokeCancle("staminaDown");
             setPlayerSpeed(5f);
         }
         if (Input.GetButtonDown("Dodge"))
         {
-            if(baseState != PlayerState.Dodge) 
+            if (baseState != PlayerState.Dodge)
+            {
                 StartCoroutine(Dodge());
+                Debug.Log("닷지냐");
+            }
         }
         OnGravity(direction);
         LockOnChanger();
         animationManager.PlayerAnimation(direction);
         if (baseState != PlayerState.Dodge && baseState != PlayerState.Attack) // 다크소울3 에선 공격,구르기 시 캐릭터 움직임이 정해짐
-        { 
+        {
             player.Move(moveDir * walkSpeed * delta);
         }
         Debug.Log(baseState);
@@ -128,7 +135,7 @@ public class PlayerMovementHandler : MonoBehaviour
         setIsDodge(true);
         setState(PlayerState.Dodge);
         float timer = 0f;
-        while(timer < dodgeTimer)
+        while (timer < dodgeTimer)
         {
             Debug.Log("시작햇냐");
             float speed = dodgeCurve.Evaluate(timer);
@@ -138,6 +145,7 @@ public class PlayerMovementHandler : MonoBehaviour
             yield return null;
         }
         setIsDodge(false);
+        bugFixed = false;
     }
     // 카메라
     private void LockOnChanger()
@@ -181,9 +189,9 @@ public class PlayerMovementHandler : MonoBehaviour
     public PlayerState GetState()
     {
         return baseState;
-    }    
+    }
     // Set 함
-    
+
     public void setState(PlayerState state)
     {
         baseState = state;
@@ -193,7 +201,7 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         isDodge = values;
     }
-    
+
     public void setPlayerSpeed(float speed)
     {
         walkSpeed = speed;
