@@ -22,7 +22,7 @@ public class Status : MonoBehaviour
     {
         
     }
-
+    // 스태미너 관련
     public void staminaDown()
     {
         stamina -= 1f;
@@ -30,5 +30,17 @@ public class Status : MonoBehaviour
     public void InvokeCancle(string name)
     {
         CancelInvoke(name);
+    }
+    // 체력 관련
+    public void hpDown(float hp)
+    {
+        if(this.hp > 0)
+            this.hp -= hp;
+    }
+
+    // 데미지 관련
+    public float getDmg()
+    {
+        return damage;
     }
 }

@@ -12,6 +12,7 @@ public class AttackManager : MonoBehaviour
     [Header("References")]
     AnimationManager playerAnimationManager;
     public GameObject attackArrange;
+    private Status inRangeObjStats;
     public List<GameObject> weapons; // 0 = sheld, 1 = shortSword, 2 = twoHandeld
     public PlayerMovementHandler player;
 
@@ -151,21 +152,25 @@ public class AttackManager : MonoBehaviour
     {
         player.getPlayerController().Move(new Vector3(0f, 0f, 1));
     }
-    public void attack()
-    {
-        isAttack = true;
-        Invoke("attackOut",1f);
-    }
-
-    private void attackOut()
-    {
-        isAttack = false;
-        playerAnimationManager.getPlayerAnimator().SetBool("isAttack", isAttack);
-    }
 
     public void ToDamage()
     {
-        return;
+        Debug.Log("실행이 되긴 함?");
+
+        if (attackArrange.activeSelf == false)
+        {
+            attackArrange.SetActive(true);
+        }
+        inRangeObjStats = attackArrange.GetComponent<AttackRangeCheck>().getStats();
+
+        if (inRangeObjStats != null)
+        {
+            inRangeObjStats.hpDown(inRangeObjStats.getDmg());
+
+            attackArrange.SetActive(false);
+        }
+
+
     }
 
     public void TakeDamage()
