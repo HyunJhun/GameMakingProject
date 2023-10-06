@@ -110,7 +110,8 @@ public class AttackManager : MonoBehaviour
     { 
         lastClickedTime = Time.time;
         noOfClicks++;
-        player.setState(PlayerMovementHandler.PlayerState.Attack);
+        if(player.GetState() != PlayerMovementHandler.PlayerState.Dodge)
+            player.setState(PlayerMovementHandler.PlayerState.Attack);
         if (noOfClicks == 1)
         {
             playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);

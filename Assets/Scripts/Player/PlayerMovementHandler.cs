@@ -47,7 +47,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private AnimationCurve dodgeCurve;
     float dodgeTimer;
     private bool bugFixed = false;
-    PlayerState baseState;
+    private PlayerState currentState = PlayerState.Idle;
     [SerializeField] private bool isLockOn;
 
     [Header("Environment Property")]
@@ -65,8 +65,8 @@ public class PlayerMovementHandler : MonoBehaviour
     private Vector3 camDir;
     void Start()
     {
+        // Get Component
         player = GetComponent<CharacterController>();
-        baseState = PlayerState.Idle;
         animationManager = GetComponent<AnimationManager>();
         //dodge
         isDodge = false;
@@ -77,25 +77,127 @@ public class PlayerMovementHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float delta = Time.deltaTime;
-        PlayerMovement(delta);
-    }
-    private void PlayerMovement(float delta)
-    {
-        Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        // 상태에 따른 액션 부여
+        /*
+        switch (currentState)
+        {
+            case PlayerState.Idle:
+                return;
+            case PlayerState.Move:
+                Move();
+                return;
+            case PlayerState.Attack:
+                return;
 
-        // 카메라 방향에 따라 움직이는거
+            case PlayerState.Dodge:
+                Dodge();
+                return;
+            case PlayerState.Running:
+                return;
+        }
+        */
+        StateMachine();
+        
+    }
+    private void StateMachine()
+    {
+        switch (currentState)
+        {
+            case PlayerState.Idle:
+                Move();
+                return;
+            case PlayerState.Move:
+                //Move();
+                return;
+            case PlayerState.Attack:
+                return;
+
+            case PlayerState.Dodge:
+                Dodge();
+                return;
+        }
+    }
+
+    private void Move()
+    {
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
         camForward.y = 0;
         camRight.y = 0;
-        Vector3 forwardRelatvie = direction.x * camRight;
-        Vector3 rightRelatvie = direction.z * camForward;
+        Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight.normalized;
+        Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward.normalized;
 
         Vector3 moveDir = forwardRelatvie + rightRelatvie;
         camDir = moveDir;
+        if (isLockOn == false) // Lock Off
+        {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
+
+            Vector3 forward = Vector3.Slerp(
+              transform.forward,
+              moveDir,
+              rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, moveDir)
+              );
+            transform.LookAt(transform.position + forward);
+
+
+        }
+        else // Lock On
+        {
+            Vector3 forward = Vector3.Slerp(
+                transform.forward,
+                cameraHandler.combatLook(),
+                rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, cameraHandler.combatLook())
+                );
+            transform.LookAt(transform.position + forward);
+        }
+
+        LockOnChanger();
+        animationManager.PlayerAnimation(moveDir);
+        player.Move(moveDir * walkSpeed * Time.deltaTime);
+    }
+    private void Dodge()
+    {
+        return;
+    }
+    
+    private void PlayerMovement(float delta)
+    {
+        //Vector3 direction = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+        // 카메라를 통한 캐릭터 움직임
+        Vector3 camForward = cam.forward;
+        Vector3 camRight = cam.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight.normalized;
+        Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward.normalized;
+
+        Vector3 moveDir = forwardRelatvie + rightRelatvie;
+        camDir = moveDir;
+        if (isLockOn == false) // Lock Off
+        {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
+
+            Vector3 forward = Vector3.Slerp(
+              transform.forward,
+              moveDir,
+              rotationSpeed * delta / Vector3.Angle(transform.forward, moveDir)
+              );
+            transform.LookAt(transform.position + forward);
+
+
+        }
+        else // Lock On
+        {
+            Vector3 forward = Vector3.Slerp(
+                transform.forward,
+                cameraHandler.combatLook(),
+                rotationSpeed * delta / Vector3.Angle(transform.forward, cameraHandler.combatLook())
+                );
+            transform.LookAt(transform.position + forward);
+        }
+        /*
         if (direction.sqrMagnitude > 0.01f
-           && (baseState != PlayerState.Dodge && baseState != PlayerState.Attack)) // 회전 설정 , 특정 상태에서는 회전 불가하도록 설정
+           && (currentState != PlayerState.Dodge && currentState != PlayerState.Attack)) // 회전 설정 , 특정 상태에서는 회전 불가하도록 설정
         {
             if (isLockOn == false) // Lock Off
             {//캐릭터가 보고 있는 정면의 방향을 계산해서 보여주는 작업
@@ -119,8 +221,23 @@ public class PlayerMovementHandler : MonoBehaviour
                 transform.LookAt(transform.position + forward);
             };
         }
+        */
         // 기본 이동키 이외에 추가로 눌러야 할 입력들
-        if (baseState != PlayerState.Attack && baseState != PlayerState.Dodge)
+        
+        //OnGravity(direction);
+        LockOnChanger();
+        animationManager.PlayerAnimation(moveDir);
+        /*
+        if (currentState != PlayerState.Dodge && currentState != PlayerState.Attack) // 다크소울3 에선 공격,구르기 시 캐릭터 움직임이 정해짐
+        {
+            player.Move(moveDir * walkSpeed * delta);
+        }
+        */
+        Debug.Log(currentState);
+    }
+    private void GetKeyInput()
+    {
+        if (currentState != PlayerState.Attack && currentState != PlayerState.Dodge)
         {
             if (Input.GetButtonDown("Sprint"))
             {
@@ -137,27 +254,25 @@ public class PlayerMovementHandler : MonoBehaviour
         }
         if (Input.GetButtonDown("Dodge"))
         {
-            if (baseState != PlayerState.Dodge)
+            if (currentState != PlayerState.Dodge)
             {
-                StartCoroutine(Dodge());
+                StartCoroutine(SDodge());
                 Debug.Log("닷지냐");
             }
         }
-        OnGravity(direction);
-        LockOnChanger();
-        animationManager.PlayerAnimation(direction);
-        if (baseState != PlayerState.Dodge && baseState != PlayerState.Attack) // 다크소울3 에선 공격,구르기 시 캐릭터 움직임이 정해짐
-        {
-            player.Move(moveDir * walkSpeed * delta);
-        }
-        Debug.Log(baseState);
+    }
+    private void Move_Running()
+    {
+        stats.InvokeRepeating("staminaDown", 1f, 1f);
+        setPlayerSpeed(8f);
+        return;
     }
     // 이동에 관한 함수
     private void OnGravity(Vector3 direction)
     {
         direction.y = direction.y - gravity;
     }
-    IEnumerator Dodge()
+    IEnumerator SDodge()
     {
         setIsDodge(true);
         setState(PlayerState.Dodge);
@@ -215,13 +330,13 @@ public class PlayerMovementHandler : MonoBehaviour
 
     public PlayerState GetState()
     {
-        return baseState;
+        return currentState;
     }
     // Set 함
 
     public void setState(PlayerState state)
     {
-        baseState = state;
+        currentState = state;
     }
 
     public void setIsDodge(bool values)
