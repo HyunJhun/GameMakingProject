@@ -26,7 +26,7 @@ public class ThirdPersonCameraHandler : MonoBehaviour
         Cursor.visible = false;
         currentCam = CameraStyle.Basic;
     }
-    
+
     private void Update()
     {
         /*

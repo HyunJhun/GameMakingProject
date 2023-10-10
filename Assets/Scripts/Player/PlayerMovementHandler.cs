@@ -93,19 +93,20 @@ public class PlayerMovementHandler : MonoBehaviour
                 attackManager.attack();
                 return;
             case PlayerState.IdleToDodge:
-                if (stats.getStamina() > 10)
+                if (stats.getStamina() >= 10)
                 {
                     if (!getIsDodge())
-                        Dodge(false);
+                        Dodge(true);
                 }
                 else
                 {
                     Debug.Log("스태미너 부족");
+                    setState(PlayerState.Idle);
                     return;
                 }
                 return;
             case PlayerState.Dodge:
-                if (stats.getStamina() > 10)
+                if (stats.getStamina() >= 10)
                 {
                     if (!getIsDodge())
                         Dodge(false);
@@ -113,6 +114,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("스태미너 부족");
+                    setState(PlayerState.Idle);
                     return;
                 }
                 return;
@@ -147,14 +149,18 @@ public class PlayerMovementHandler : MonoBehaviour
                 }
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    stats.InvokeRepeating("staminaDown_Sprint", 1f, 1f);
-                    setPlayerSpeed(8f);
+                    if (stats.getStamina() > 0)
+                    {
+                        stats.InvokeRepeating("staminaDown_Sprint", 1f, 1f);
+                        setPlayerSpeed(8f);
+                    }
                 }
-                if (Input.GetButtonUp("Sprint"))
+                if (Input.GetButtonUp("Sprint") || stats.getStamina() <= 0)
                 {
                     stats.InvokeCancle("staminaDown_Sprint");
                     setPlayerSpeed(5f);
                 }
+
                 if (Input.GetButtonDown("Attack"))
                 {
                     setState(PlayerState.Attack);
@@ -212,7 +218,6 @@ public class PlayerMovementHandler : MonoBehaviour
             setState(PlayerState.Idle);
             return;
         }
-
         player.Move(moveDir * walkSpeed * Time.deltaTime);
 
     }
@@ -220,9 +225,9 @@ public class PlayerMovementHandler : MonoBehaviour
     {
 
         if (isIdle)
-            StartCoroutine(SDodge()); // 코루틴 dodge
-        else
-            StartCoroutine(IDodge());
+            StartCoroutine(IDodge()); // 코루틴 dodge
+        else // Idle에서 Dodge를 실행할 때는 따로 입력을 받지 않으므로 그 때 플레이어가 보는 방향에 그대로 굴러가면 됨
+            StartCoroutine(SDodge());
         return;
     }
 
@@ -238,7 +243,7 @@ public class PlayerMovementHandler : MonoBehaviour
 
         Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized;
         transform.LookAt(transform.position + moveDir);
-
+        Debug.Log("ㅇㄻㄴ");
         setIsDodge(true);
         float timer = 0f;
         stats.staminaDown_Dodge(dodgeStamina);
