@@ -26,7 +26,7 @@ public class AnimationManager : MonoBehaviour
         else
             playerAnimator.SetLayerWeight(0, 0);
     }
-    public void PlayerAnimation(Vector3 direction)
+    public void PlayerMoveAnimation(Vector3 direction)
     {
         if (attackManager.currentWeapon == AttackManager.Weapon.OneHanded)
         {
@@ -97,8 +97,6 @@ public class AnimationManager : MonoBehaviour
                 playerAnimator.SetFloat("speedY", direction.magnitude);
             }
         }
-        PlayerDodgeAnimation();
-        //PlayerWeaponAnimation();
     }
 
     public void PlayerDodgeAnimation()
@@ -107,7 +105,6 @@ public class AnimationManager : MonoBehaviour
         if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
             &&playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("human"))
         {
-            player.setState(PlayerMovementHandler.PlayerState.Idle);
             playerAnimator.SetBool("isDodge",player.getIsDodge());
         }
 

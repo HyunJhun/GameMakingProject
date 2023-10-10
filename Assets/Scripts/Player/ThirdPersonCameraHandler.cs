@@ -29,9 +29,10 @@ public class ThirdPersonCameraHandler : MonoBehaviour
     
     private void Update()
     {
+        /*
         // 회전 방향 설정
-        Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
-        orientation.forward = viewDir.normalized;
+        Vector3 viewDir = new Vector3(transform.position.x, player.position.y, transform.position.z) - player.position ;
+        //orientation.forward = viewDir.normalized;
 
         // 유저 회전 설정
         if (currentCam == CameraStyle.Basic)
@@ -62,7 +63,24 @@ public class ThirdPersonCameraHandler : MonoBehaviour
 
             playerObj.forward = dirToCombatLookAt.normalized;
         }
-    }
+        */
+        if (currentCam == CameraStyle.Basic)
+        {
+            if (basicCam.activeSelf == false && combatCam.activeSelf == true)
+            {
+                basicCam.SetActive(true);
+                combatCam.SetActive(false);
+            }
+        }
+        else if (currentCam == CameraStyle.LockOn)
+        {
+            if (combatCam.activeSelf == false && basicCam.activeSelf == true)
+            {
+                combatCam.SetActive(true);
+                basicCam.SetActive(false);
+            }
+        }
+        }
 
     public void CurrentStyleChanger()
     {
