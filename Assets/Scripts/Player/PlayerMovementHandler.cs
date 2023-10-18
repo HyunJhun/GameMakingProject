@@ -225,7 +225,7 @@ public class PlayerMovementHandler : MonoBehaviour
     {
 
         if (isIdle)
-            StartCoroutine(IDodge()); // 코루틴 dodge
+            StartCoroutine(IDodge());
         else // Idle에서 Dodge를 실행할 때는 따로 입력을 받지 않으므로 그 때 플레이어가 보는 방향에 그대로 굴러가면 됨
             StartCoroutine(SDodge());
         return;
@@ -243,7 +243,6 @@ public class PlayerMovementHandler : MonoBehaviour
 
         Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized;
         transform.LookAt(transform.position + moveDir);
-        Debug.Log("ㅇㄻㄴ");
         setIsDodge(true);
         float timer = 0f;
         stats.staminaDown_Dodge(dodgeStamina);
