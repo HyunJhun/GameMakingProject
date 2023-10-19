@@ -31,7 +31,6 @@ public class BossDetect : BossState
         }
         else
         {
-            Debug.Log("asdf");
             if (boss.detectPlayer.isDetectPlayer)
             {
                 bossStateMachine.ChangeState(boss.chaseState);

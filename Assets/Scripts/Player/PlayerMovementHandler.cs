@@ -227,12 +227,12 @@ public class PlayerMovementHandler : MonoBehaviour
         if (isIdle)
             StartCoroutine(IDodge());
         else // Idle에서 Dodge를 실행할 때는 따로 입력을 받지 않으므로 그 때 플레이어가 보는 방향에 그대로 굴러가면 됨
-            StartCoroutine(SDodge());
+            StartCoroutine(MDodge());
         return;
     }
 
     // 이동에 관한 함수
-    IEnumerator SDodge()
+    IEnumerator MDodge()
     {
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
@@ -252,7 +252,7 @@ public class PlayerMovementHandler : MonoBehaviour
             timer += Time.deltaTime;
             yield return null;
         }
-        setState(PlayerState.Move);
+        setState(PlayerState.Idle);
         setIsDodge(false);
     }
     IEnumerator IDodge()

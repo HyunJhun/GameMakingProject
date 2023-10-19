@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Boss : MonoBehaviour
 {  
@@ -17,7 +18,7 @@ public class Boss : MonoBehaviour
     public float rotationSpeed = 360f;
     public bool isBack { get; set; }
     
-
+    public NavMeshAgent agent { get; set; }
 
     [Header("References")]
     [SerializeField] private Status stats ;
@@ -26,6 +27,9 @@ public class Boss : MonoBehaviour
     public GameObject backPoint;
     private void Start()
     {
+        // GetComp
+        agent = GetComponent<NavMeshAgent>();
+
         bossStateMachine = new BossStateMachine();
 
         // State »ý¼º

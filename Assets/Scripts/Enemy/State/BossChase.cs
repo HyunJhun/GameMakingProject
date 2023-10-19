@@ -33,6 +33,7 @@ public class BossChase : BossState
     }
     public override void StateActionUpdate()
     {
+        
         // 보스와 플레이어 사이의 방향성 확보 => 추격 시 움직이는 방향
         Vector3 direction = boss.gameObject.transform.position - boss.player.transform.position;
         // 현재 탐지 범위의 반지름은 7.5 ... distance가 7.5가 최대치여야함
@@ -43,8 +44,9 @@ public class BossChase : BossState
 
         if (distance <= chaseRange) // 추격 범위 설정
         {
-            boss.transform.LookAt(boss.transform.position - forward);
-            boss.GetComponent<Rigidbody>().transform.Translate(direction * boss.moveSpeed * Time.deltaTime);
+            //boss.transform.LookAt(boss.transform.position - forward);
+            //boss.GetComponent<Rigidbody>().transform.Translate(direction * boss.moveSpeed * Time.deltaTime);
+            boss.agent.destination = boss.player.transform.position;
             timer = 0f;
             if (distance < radius - 3f) // 공격 사정 거리
             {
@@ -65,6 +67,8 @@ public class BossChase : BossState
                 timer = 0f;
                 bossStateMachine.ChangeState(boss.backState);
             }
-        }        
+        }
+
+        
     }
 }
