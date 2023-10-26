@@ -23,9 +23,6 @@ public class BossBack : BossState
         Vector3 bossPos = boss.gameObject.transform.position;
         Vector3 backDirection = bossPos - boss.backPoint.transform.position;
 
-
-        //Vector3 forward = Vector3.Slerp(backDirection, boss.transform.forward,                 boss.rotationSpeed * Time.deltaTime / Vector3.Angle(backDirection, boss.transform.forward));
-
         if (boss.isBack) // trigger·Î Ã¼Å©
         {
             Debug.Log("µµÂø");
@@ -35,11 +32,8 @@ public class BossBack : BossState
         }
         else
         {
-            //boss.transform.LookAt(boss.transform.position - forward);
             boss.agent.destination = boss.backPoint.transform.position;
-            Debug.Log(boss.backPoint.transform.position);
-
-            //boss.GetComponent<Rigidbody>().transform.Translate(backDirection * boss.moveSpeed * Time.deltaTime);
+            Debug.Log(boss.backPoint.transform.position);          
         }
     }
 }

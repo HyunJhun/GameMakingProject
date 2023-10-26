@@ -6,12 +6,15 @@ public class BossAttack : BossState
 {
     public BossAttack(Boss boss,Status stats,BossStateMachine bossStateMachine) : base(boss,stats,bossStateMachine)
     {
-
     }
+
+    private float bossMoveSpeedToAttack = 2f;
+    private Vector3 attackDirection;
+    private float timer = 0f;
 
     public override void Enter()
     {
-        Debug.Log("DetectEnter");
+
     }
     public override void Exit()
     {
@@ -19,6 +22,15 @@ public class BossAttack : BossState
     }
     public override void StateActionUpdate()
     {
-        Debug.Log("끄아아");
+        attackDirection = boss.transform.position - boss.player.transform.position;
+
+        // 공격을 하는 동시에 상대방을 향해 전진하며 가까이 다가가 상대가 움직였을 때를 방지한다. 
     }
+
+    public override void StateActionFixedUpdate()
+    {
+        boss.GetComponent<Rigidbody>().AddForce(attackDirection * bossMoveSpeedToAttack * Time.fixedDeltaTime);
+    }
+
+
 }

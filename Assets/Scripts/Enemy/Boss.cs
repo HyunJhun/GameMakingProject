@@ -51,6 +51,11 @@ public class Boss : MonoBehaviour
         bossStateMachine.currentState.StateActionUpdate();
     }
 
+    private void FixedUpdate()
+    {
+        bossStateMachine.currentState.StateActionFixedUpdate();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("BackPoint"))
