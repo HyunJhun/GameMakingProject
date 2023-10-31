@@ -1,40 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
-/*
- FSM은 항상 한 프레임에 하나의 상태를 선정
-즉, 하나의 상태로 변경한 후에는 return 등을 이용해
-반환해준 후 다시 상태를 체크하여 정해야함
-
-코드 싹 다 갈아끼우자
-지금은 너무 중구난방
-
-입력 처리에 대해서 정리를 하자.
-한 곳에서만 이루어져야해(함수마다 어떤걸 키 입력을 통해 받아오고 이런거 다 집어치우고 update문에서 다 처리시켜버려)
-
-역할을 다 분리해야해(역할을 스크립트로 다 나눠)
-그래야 필요한걸 바로바로 불러와서 사용하면 되는거야
-
-fsm- 1. 입력처리는 하나의 함수 - 어떤 상태에서 처리해야 될 입력이 무엇인지와 그에 필요한 함수 호출
-2. 상태가 변경되었을 때 만약 상태가 변경되지 않고 처리해야할게 있으면 그냥 하고
-아니면 꼭 return해서 반환을 시켜주어야 한다.
-
-public은 절대 금. set,get 을 쓰거나 
-[serializedField]사용을 권장
-
-컴포넌트는 awake()와 start() 사이 시점에 붙음
-awake()에서는 컴포넌트를 붙이지 말아야 함. 보장x
-
-자료형을 var은 auto처럼 자동으로 받아오지만 고정이 되는 
-반면, dynamic으로 쓰게되면 후에 변수의 자료형을 변경하게 되면 동적으로 변경이 이루어진다.
- */
 public class PlayerMovementHandler : MonoBehaviour
 {
     public enum PlayerState
     {
         Idle,
         Move,
-        Running,
+        Sprint,
         Dodge,
         IdleToDodge,
         Attack
@@ -48,6 +21,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private float dodgeStamina = 10f;
     private PlayerState currentState = PlayerState.Idle;
     [SerializeField] private bool isLockOn;
+    private bool isSprint { get; set; } = false;
 
     [Header("Environment Property")]
     [SerializeField] private float gravity;
@@ -74,14 +48,13 @@ public class PlayerMovementHandler : MonoBehaviour
     void Update()
     {
         StateUpdate();
-        StateAction();
         AnimationUpdate();
+        LockOnUpdate();
         Debug.Log("Cur = " + currentState);
 
     }
     private void StateAction()
     {
-        LockOnChanger();
         switch (currentState)
         {
             case PlayerState.Idle:
@@ -96,7 +69,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 if (stats.getStamina() >= 10)
                 {
                     if (!getIsDodge())
-                        Dodge(true);
+                        Dodge();
                 }
                 else
                 {
@@ -109,7 +82,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 if (stats.getStamina() >= 10)
                 {
                     if (!getIsDodge())
-                        Dodge(false);
+                        Dodge();
                 }
                 else
                 {
@@ -149,47 +122,97 @@ public class PlayerMovementHandler : MonoBehaviour
                 }
                 if (Input.GetButtonDown("Sprint"))
                 {
-                    if (stats.getStamina() > 0)
-                    {
-                        stats.InvokeRepeating("staminaDown_Sprint", 1f, 1f);
-                        setPlayerSpeed(8f);
-                    }
+                    setState(PlayerState.Sprint);
+                    return;
                 }
-                if (Input.GetButtonUp("Sprint") || stats.getStamina() <= 0)
-                {
-                    stats.InvokeCancle("staminaDown_Sprint");
-                    setPlayerSpeed(5f);
-                }
-
                 if (Input.GetButtonDown("Attack"))
                 {
                     setState(PlayerState.Attack);
                     return;
                 }
+                Move();
+                return;
+            case PlayerState.Sprint:
+                if (Input.GetButtonDown("Attack"))
+                {
+                    setState(PlayerState.Attack);
+                    return;
+                }
+                if (Input.GetButtonDown("Dodge"))
+                {
+                    isSprint = false;
+                    stats.InvokeCancel("staminaDown_Sprint");
+                    setPlayerSpeed(5f);
+                    setState(PlayerState.Dodge);
+                    return;
+                }
+                if (Input.GetButtonUp("Sprint") || stats.getStamina() <= 0)
+                {
+                    if (isSprint)
+                    {
+                        isSprint = false;
+                        stats.InvokeCancel("staminaDown_Sprint");
+                        setPlayerSpeed(5f);
+                    }
+                    setState(PlayerState.Move);
+                    return;
+                }
+                Sprint();
                 return;
             case PlayerState.Attack:
+                
                 if (Input.GetButtonDown("Dodge"))
                 {
                     setState(PlayerState.Dodge);
                     return;
                 }
-                if(attackManager.getIsAttack() == false)
+                if(Input.GetButtonDown("Attack"))  // 시발라라라라라라 어떻게 해야 할까...
+                {
+                    attackManager.OnAttack();
+                }
+                if (attackManager.getIsAttack() == false)
                 {
                     setState(PlayerState.Idle);
                     return;
                 }
                 return;
             case PlayerState.IdleToDodge:
+                if (stats.getStamina() >= 10)
+                {
+                    if (!getIsDodge())
+                        Dodge();
+                }
+                else
+                {
+                    Debug.Log("스태미너 부족");
+                    setState(PlayerState.Idle);
+                    return;
+                }
                 return;
             case PlayerState.Dodge:
+                if (stats.getStamina() >= 10)
+                {
+                    if (!getIsDodge())
+                        Dodge();
+                }
+                else
+                {
+                    Debug.Log("스태미너 부족");
+                    setState(PlayerState.Idle);
+                    return;
+                }
                 return;
         }
     }
     private void AnimationUpdate()
     {
+        if (currentState == PlayerState.Idle)
+            animationManager.PlayerMoveAnimation();
+        else
+            animationManager.PlayerMoveAnimation(GetMoveToDirection());
         animationManager.PlayerDodgeAnimation();
     }
-    private void Move()
+    private Vector3 GetMoveToDirection()
     {
         Vector3 camForward = cam.forward;
         Vector3 camRight = cam.right;
@@ -197,21 +220,26 @@ public class PlayerMovementHandler : MonoBehaviour
         camRight.y = 0;
         Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight;
         Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward;
-        
+
         Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized; // normalized을 통해 대각선으로 움직여도 값을 1로 맞추어 이동속도가 달라지는 일이 없게 함
+
+        return moveDir;
+    }
+    private void Move()
+    {
+        Vector3 moveDir = GetMoveToDirection();
         if (isLockOn == false) // Lock Off
         {   // 캐릭터의 회전을 부드럽게 해주는 작업. Slerp를 사용해 구면 회전을 이용하였음
-            Vector3 forward = Vector3.Slerp(transform.forward,moveDir,
+            Vector3 forward = Vector3.Slerp(transform.forward, moveDir,
                 rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, moveDir));
             transform.LookAt(transform.position + forward);
         }
         else // Lock On
         {
-            Vector3 forward = Vector3.Slerp(transform.forward,cameraHandler.combatLook(),
+            Vector3 forward = Vector3.Slerp(transform.forward, cameraHandler.combatLook(),
                 rotationSpeed * Time.deltaTime / Vector3.Angle(transform.forward, cameraHandler.combatLook()));
             transform.LookAt(transform.position + forward);
         }
-        animationManager.PlayerMoveAnimation(moveDir);
 
         if (moveDir.magnitude == 0) // 움직이지 않을 때
         {
@@ -221,56 +249,57 @@ public class PlayerMovementHandler : MonoBehaviour
         player.Move(moveDir * walkSpeed * Time.deltaTime);
 
     }
-    private void Dodge(bool isIdle)
+    private void Dodge()
     {
-
-        if (isIdle)
-            StartCoroutine(IDodge());
-        else // Idle에서 Dodge를 실행할 때는 따로 입력을 받지 않으므로 그 때 플레이어가 보는 방향에 그대로 굴러가면 됨
-            StartCoroutine(MDodge());
+        StartCoroutine(EDodge());
         return;
     }
-
     // 이동에 관한 함수
-    IEnumerator MDodge()
+    IEnumerator EDodge()
     {
-        Vector3 camForward = cam.forward;
-        Vector3 camRight = cam.right;
-        camForward.y = 0;
-        camRight.y = 0;
-        Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight;
-        Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward;
+        setIsDodge(true);
+        float timer = 0f;
+        stats.staminaDown_Dodge(dodgeStamina);
+        if (currentState == PlayerState.IdleToDodge)
+        {
+            while (timer < 1f)
+            {
+                player.Move(transform.forward * dodgeSpeed * Time.deltaTime);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            setState(PlayerState.Idle);
+        }
+        else
+        {
+            Vector3 moveDir = GetMoveToDirection();
+            transform.LookAt(transform.position + moveDir);
+            while (timer < 1f)
+            {
+                player.Move(moveDir * dodgeSpeed * Time.deltaTime);
+                timer += Time.deltaTime;
+                yield return null;
+            }
+            setState(PlayerState.Move);
+        }
+        setIsDodge(false);
+    }
+    private void Sprint()
+    {
+        if (stats.getStamina() > 0)
+        {
+            if (!isSprint)
+            {
+                isSprint = true;
+                stats.InvokeRepeating("staminaDown_Sprint", 1f, 1f);
+                setPlayerSpeed(8f);
+            }
+        }
+        Move();
+    }
 
-        Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized;
-        transform.LookAt(transform.position + moveDir);
-        setIsDodge(true);
-        float timer = 0f;
-        stats.staminaDown_Dodge(dodgeStamina);
-        while (timer < 1f)
-        {
-            player.Move(moveDir * dodgeSpeed * Time.deltaTime);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        setState(PlayerState.Idle);
-        setIsDodge(false);
-    }
-    IEnumerator IDodge()
-    {
-        setIsDodge(true);
-        float timer = 0f;
-        stats.staminaDown_Dodge(dodgeStamina);
-        while (timer < 1f)
-        {
-            player.Move(transform.forward * dodgeSpeed * Time.deltaTime);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        setState(PlayerState.Move);
-        setIsDodge(false);
-    }
     // 카메라
-    private void LockOnChanger()
+    private void LockOnUpdate()
     {
         if (Input.GetMouseButtonDown(2))
         {

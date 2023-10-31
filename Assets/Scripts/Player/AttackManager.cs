@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,12 +16,12 @@ public class AttackManager : MonoBehaviour
     public PlayerMovementHandler player;
 
     [Header("Values")]
-    private float cooldownTime = 1f;
     private int countClick = 0;
     private float lastClickedTime = 0f;
     private float maxComboDelay = 1f;
-    private bool isAttack = false;
-    float timer = 0f;
+    public bool isAttack { get; set; } = false;
+    public bool isEnterToAttack { get; set; } = false;
+    public bool isAttackStart { get; set; } = false;
     public Weapon currentWeapon;
     private void Start()
     {
@@ -31,119 +30,90 @@ public class AttackManager : MonoBehaviour
 
     private void Update()
     {
-        timer += Time.deltaTime;
-        
+
         if (currentWeapon == Weapon.OneHanded)
         {   // normalizedTime 은 0~1까지의 값을 가지고 있고, 1에 가까울 수록 애니메이션 클립이 재생이 완료되고있음.
             // isName("클립명") 은 이 애니메이션에 우선 진입했는지를 반환해주는 함수
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack01"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-            }
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack02"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-            }
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack03"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
-                initTimer();
-                setIsAttack(false);
-                countClick = 0;
-            }
+            playerAnimationManager.TurnOffPlayingAnimation("OneHanded");
+
         }
-        else if(currentWeapon == Weapon.TwoHanded)
+        else if (currentWeapon == Weapon.TwoHanded)
         {
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(2).IsName("2H@Attack01"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-            }
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(2).IsName("2H@Attack02"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-            }
-            if (playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-                && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(2).IsName("2H@Attack04"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
-                initTimer();
-                setIsAttack(false);
-                countClick = 0;
-            }
+            playerAnimationManager.TurnOffPlayingAnimation("TwoHanded");
         }
 
-        if(Time.time - lastClickedTime > maxComboDelay) // 만약 maxComboDelay 시간동안 클릭이 없으면 콤보를 초기화
+        if (Time.time - lastClickedTime > maxComboDelay) // 만약 maxComboDelay 시간동안 클릭이 없으면 콤보를 초기화
         {
-            countClick = 0;
-            playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-            playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-            playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
-            setIsAttack(false);
+            conditionIntialize();
+            playerAnimationManager.IntializeToHitCondition();
         }
     }
-    private void initTimer()
+
+    public void conditionIntialize()
     {
-        timer = 0f; 
+        isAttack = false;
+        isAttackStart = false;
+        countClick = 0;
     }
-    void OnAttack()
-    { 
+    private void ChangeAttackAnimation(Weapon currentWeaponState)
+    {
+        if (currentWeaponState == Weapon.OneHanded)
+        {
+            if (countClick >= 2 && playerAnimationManager.AnimationPlayingCheck(0, 0.4f, "RightHand@Attack01"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+            }
+            if (countClick >= 3 && playerAnimationManager.AnimationPlayingCheck(0, 0.4f, "RightHand@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
+            }
+        }
+        else if (currentWeaponState == Weapon.TwoHanded)
+        {
+            if (countClick >= 2 && playerAnimationManager.AnimationPlayingCheck(2, 0.4f, "2H@Attack01"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+            }
+            if (countClick >= 3 && playerAnimationManager.AnimationPlayingCheck(2, 0.4f, "2H@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
+            }
+        }
+    }
+    public void OnAttack()
+    {
+
         lastClickedTime = Time.time;
         countClick++;
-        setIsAttack(true);
+        isAttack = true;
+
+        Debug.Log("공격");
 
         if (countClick == 1)
         {
             playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
         }
 
+
         if (currentWeapon == Weapon.OneHanded)
         {
-            if (countClick >= 2 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f 
-            && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack01"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
-            }
-            if (countClick >= 3 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f
-               && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("RightHand@Attack02"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
-            }
+            ChangeAttackAnimation(currentWeapon); // 이건 조금 더 효율적으로 줄일 수 있을듯
+
         }
-        else if(currentWeapon == Weapon.TwoHanded)
+        else if (currentWeapon == Weapon.TwoHanded)
         {
-            if (countClick >= 2 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f 
-            && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(2).IsName("2H@Attack01"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
-            }
-            if (countClick >= 3 && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4f
-               && playerAnimationManager.getPlayerAnimator().GetCurrentAnimatorStateInfo(2).IsName("2H@Attack02"))
-            {
-                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
-                playerAnimationManager.getPlayerAnimator().SetBool("hit3", true);
-            }
+            ChangeAttackAnimation(currentWeapon);
         }
     }
-
     public void attack()
     {
+        if (Input.GetButtonDown("Attack"))
+            OnAttack();
         
-        if (timer > cooldownTime)
-        {
-            if (Input.GetButtonDown("Attack"))
-            {
-                OnAttack();
-            }
-        }
-        return;
     }
 
 
@@ -158,11 +128,8 @@ public class AttackManager : MonoBehaviour
         if (inRangeObjStats != null)
         {
             inRangeObjStats.hpDown(inRangeObjStats.getDmg());
-
             attackArrange.SetActive(false);
         }
-
-
     }
 
     public void TakeDamage()
@@ -174,13 +141,12 @@ public class AttackManager : MonoBehaviour
 
     public bool getIsAttack()
     {
-        return isAttack; 
+        return isAttack;
     }
 
-    // set
-
-    public void setIsAttack(bool isAttack)
+    public int getNumOfCountclicks()
     {
-        this.isAttack = isAttack;
+        return countClick;
     }
+    // set
 }

@@ -21,7 +21,7 @@ public class BossChase : BossState
     {
         Debug.Log("ChaseEnter");
         // 만약 버그등으로 인해 상태가 잘못 들어왔을시를 방지
-        if(!boss.detectPlayer.isDetectPlayer) 
+        if(!boss.detectPlayer.isDetectPlayer && bossStateMachine.previousState != boss.stiffnessState) 
         {
             bossStateMachine.ChangeState(boss.idleState);
             return;
@@ -32,6 +32,7 @@ public class BossChase : BossState
     public override void Exit()
     {
         Debug.Log("ChaseExit");
+        boss.agent.destination = boss.transform.position; // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
         boss.agent.stoppingDistance = 0f;
     }
     public override void StateActionUpdate()
@@ -42,8 +43,6 @@ public class BossChase : BossState
         // 현재 탐지 범위의 반지름은 7.5 ... distance가 7.5가 최대치여야함
         float distance = Mathf.Abs(Vector3.Distance(boss.gameObject.transform.position, boss.player.transform.position));
         // 보스 회전
-        Debug.Log(chaseRange);
-        Debug.Log(distance);
 
         if (distance <= chaseRange) // 추격 범위 설정
         {

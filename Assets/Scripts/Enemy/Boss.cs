@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Boss : MonoBehaviour
 {  
@@ -12,6 +13,7 @@ public class Boss : MonoBehaviour
     public BossChase chaseState { get; set; }
     public BossAttack attackState { get; set; }
     public BossBack backState { get; set; }
+    public BossStiffness stiffnessState { get; set; }
 
     [Header("Basic Value")]
     public float moveSpeed = 3f;
@@ -25,6 +27,7 @@ public class Boss : MonoBehaviour
     public DetectPlayer detectPlayer;
     public GameObject player;
     public GameObject backPoint;
+    public TMP_Text stateText;
     private void Start()
     {
         // GetComp
@@ -37,7 +40,9 @@ public class Boss : MonoBehaviour
         detectState = new BossDetect(this, stats, bossStateMachine);
         chaseState = new BossChase(this, stats, bossStateMachine);
         attackState = new BossAttack(this, stats, bossStateMachine);
+        stiffnessState = new BossStiffness(this, stats, bossStateMachine);
         backState = new BossBack(this, stats, bossStateMachine);
+
 
         // 기본 값 처리
         isBack = false;
@@ -49,6 +54,7 @@ public class Boss : MonoBehaviour
     {
         Debug.Log("이즈백 : " + isBack);
         bossStateMachine.currentState.StateActionUpdate();
+        stateText.text = "State : " + bossStateMachine.currentState.ToString();
     }
 
     private void FixedUpdate()

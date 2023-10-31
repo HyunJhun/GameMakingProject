@@ -29,7 +29,6 @@ public class Status : MonoBehaviour
             this.stamina -= 1f;
         if (this.stamina <= 0)
         {
-            Debug.Log("¶ß³Ä");
             this.stamina = 0;
         }
     }
@@ -42,7 +41,7 @@ public class Status : MonoBehaviour
             this.stamina = 0;
         }
     }
-    public void InvokeCancle(string name)
+    public void InvokeCancel(string name)
     {
         CancelInvoke(name);
     }

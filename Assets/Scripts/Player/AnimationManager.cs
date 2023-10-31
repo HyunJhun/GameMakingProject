@@ -98,12 +98,80 @@ public class AnimationManager : MonoBehaviour
             }
         }
     }
+    public void PlayerMoveAnimation()
+    {
+        if (attackManager.currentWeapon == AttackManager.Weapon.OneHanded)
+        {
+            if (player.getIsLockOn() == true)
+            {
+                // 기존 원핸드 움직임에 관한 Animation Layer들을 꺼주고 투핸드에 관한 Animation Layer들을 껴주는 작업
 
+                // 투핸드 종료
+                playerAnimator.SetLayerWeight(2, 0);
+                playerAnimator.SetLayerWeight(3, 0);
+
+                // 원핸드 시작
+                playerAnimator.SetLayerWeight(0, 1);
+                playerAnimator.SetLayerWeight(1, 1);
+
+                // 방향값
+                playerAnimator.SetFloat("speedX",0f);
+                playerAnimator.SetFloat("speedY",0f);
+            }
+            else if (player.getIsLockOn() == false)
+            {
+                // 기존 원핸드 움직임에 관한 Animation Layer들을 꺼주고 투핸드에 관한 Animation Layer들을 껴주는 작업
+
+                // 투핸드 종료
+                playerAnimator.SetLayerWeight(2, 0);
+                playerAnimator.SetLayerWeight(3, 0);
+
+                // 원핸드 시작
+                playerAnimator.SetLayerWeight(0, 1);
+                playerAnimator.SetLayerWeight(1, 0);
+
+                // 방향값
+                playerAnimator.SetFloat("speedY",0f);
+            }
+        }
+        else if (attackManager.currentWeapon == AttackManager.Weapon.TwoHanded)
+        {
+            if (player.getIsLockOn() == true)
+            {
+                // 기존 원핸드 움직임에 관한 Animation Layer들을 꺼주고 투핸드에 관한 Animation Layer들을 껴주는 작업
+
+                // 원핸드 종료
+                playerAnimator.SetLayerWeight(0, 0);
+                playerAnimator.SetLayerWeight(1, 0);
+
+                // 투핸드 시작
+                playerAnimator.SetLayerWeight(2, 1);
+                playerAnimator.SetLayerWeight(3, 1);
+
+                // 방향값
+                playerAnimator.SetFloat("speedX", 0f);
+                playerAnimator.SetFloat("speedY", 0f);
+            }
+            else if (player.getIsLockOn() == false)
+            {
+                // 기존 원핸드 움직임에 관한 Animation Layer들을 꺼주고 투핸드에 관한 Animation Layer들을 껴주는 작업
+
+                // 원핸드 종료
+                playerAnimator.SetLayerWeight(0, 0);
+                playerAnimator.SetLayerWeight(1, 0);
+                // 투핸드 시작
+                playerAnimator.SetLayerWeight(2, 1);
+                playerAnimator.SetLayerWeight(3, 0);
+
+                // 방향값
+                playerAnimator.SetFloat("speedY", 0f);
+            }
+        }
+    } // Idle 상태
     public void PlayerDodgeAnimation()
     {
         playerAnimator.SetBool("isDodge", player.getIsDodge());
-        if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f
-            &&playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("human"))
+        if (AnimationPlayingCheck(0,0.7f,"human"))
         {
             playerAnimator.SetBool("isDodge",player.getIsDodge());
         }
@@ -112,5 +180,53 @@ public class AnimationManager : MonoBehaviour
     public Animator getPlayerAnimator()
     {
         return playerAnimator;
+    }
+
+    public bool AnimationPlayingCheck(int currentAnimationLayerNumber,float normalizedTime,string currentAnimationName)
+    {
+        return playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).normalizedTime > normalizedTime && playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
+    }
+
+    public void TurnOffPlayingAnimation(string currentWeaponState)
+    {
+        if (currentWeaponState == "OneHanded")
+        {
+            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack01"))
+            {
+                playerAnimator.SetBool("hit1", false);
+            }
+            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack02"))
+            {
+                playerAnimator.SetBool("hit2", false);
+            }
+            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack03"))
+            {
+                playerAnimator.SetBool("hit3", false);
+                attackManager.conditionIntialize();
+            }
+        }
+        else if(currentWeaponState == "TwoHanded")
+        {
+            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack01"))
+            {
+                playerAnimator.SetBool("hit1", false);
+            }
+            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack02"))
+            {
+                playerAnimator.SetBool("hit2", false);
+            }
+            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack03"))
+            {
+                playerAnimator.SetBool("hit3", false);
+                attackManager.conditionIntialize();
+            }
+        }
+    }
+
+    public void IntializeToHitCondition()
+    {
+        playerAnimator.SetBool("hit1", false);
+        playerAnimator.SetBool("hit2", false);
+        playerAnimator.SetBool("hit3", false);
     }
 }
