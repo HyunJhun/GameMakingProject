@@ -32,8 +32,7 @@ public class BossBack : BossState
         }
         else
         {
-            boss.agent.destination = boss.backPoint.transform.position;
-            Debug.Log(boss.backPoint.transform.position);          
+            boss.agent.destination = boss.backPoint.transform.position;  
         }
     }
 }

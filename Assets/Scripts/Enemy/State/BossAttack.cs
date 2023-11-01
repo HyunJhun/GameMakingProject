@@ -9,8 +9,11 @@ public class BossAttack : BossState
     }
 
     private bool isAttack { get; set; } = false;
-    private float timeToArrive = 2f;
+    private float timeToArrive = 5f;
     private int distanceOfDestination = 7;
+    private float timer = 0f;
+    // boss trasnform 에 관련한 변수
+    private float turnSpeed = 360f;
     private float bossMoveSpeedToAttack = 10f;
 
     private List<IEnumerator> BossAttackPaterns;
@@ -19,11 +22,13 @@ public class BossAttack : BossState
         Debug.Log("AttackEnter");  
         for(int i = 0;i<1;i++)
         {
-            BossAttackPaterns[i] = BossAttackPattern_One();
+            //BossAttackPaterns[i] = BossAttackPattern_One();
         }
+        timer = 0f;
     }
     public override void Exit()
     {
+        Debug.Log("공격을 한 후 보스의 공격 상태 : " + isAttack);
         Debug.Log("AttackExit");
     }
     public override void StateActionUpdate()
@@ -33,7 +38,18 @@ public class BossAttack : BossState
         {
             boss.StartCoroutine(BossAttackPattern_One());
         }
-        // 공격을 하는 동시에 상대방을 향해 전진하며 가까이 다가가 상대가 움직였을 때를 방지한다. 
+        if(timer < 5f)
+        {
+            timer += Time.deltaTime;
+        }
+        else
+        {
+            Debug.Log("버그 수정 - 공격");
+            bossStateMachine.ChangeState(bossStateMachine.previousState);
+        }
+        Debug.Log("현재 보스의 공격 상태 : " + isAttack);
+        // attack 이 연속적으로 일어나면 일시적으로 attack 상태에서 상태변환이 안일어남
+        // 그러면 일단 만약 몇초동안 움직임이 없다면 다시 추격 상태로 강제로 돌려야 하는 방법이 있을수도 있음.
     }
 
     public override void StateActionFixedUpdate()
@@ -43,13 +59,13 @@ public class BossAttack : BossState
     {
         float timer = 0f;
         Vector3 attackDirection = (boss.player.transform.position - boss.transform.position).normalized; // 어차피 isAttack 시 한 번만 실행될 내용이라 그냥 update문에서 방향을 처리;
-        Vector3 destinationOfAttack = boss.transform.position + (boss.transform.forward * distanceOfDestination); // 보스가 보고있는 방향에서 길이를 distanceOfDestination 만큼 이동하며 "박치기" 진행.
+        Vector3 destinationOfAttack = boss.transform.position + (attackDirection * distanceOfDestination); // 보스가 플레이어가 있는 방향으로 길이를 distanceOfDestination 만큼 "대쉬 공격" 진행.
         isAttack = true;
-        while (Vector3.Distance(boss.transform.position, attackDirection + destinationOfAttack) > 0.1f)
+        boss.transform.LookAt(Vector3.Slerp(boss.transform.position,destinationOfAttack,turnSpeed));
+        while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.1f)
         {
             timer += Time.deltaTime;
-            boss.transform.position = Vector3.Lerp(boss.transform.position, attackDirection + destinationOfAttack,timer/timeToArrive); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
-            Debug.Log("이동중 : " + (attackDirection + destinationOfAttack));
+            boss.transform.position = Vector3.Lerp(boss.transform.position,destinationOfAttack,timer/timeToArrive); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
             yield return null;
         }     
         isAttack = false;
@@ -57,5 +73,5 @@ public class BossAttack : BossState
         bossStateMachine.ChangeState(boss.stiffnessState);
         
     }
-
+   
 }

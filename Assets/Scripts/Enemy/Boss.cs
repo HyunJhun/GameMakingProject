@@ -61,7 +61,15 @@ public class Boss : MonoBehaviour
     {
         bossStateMachine.currentState.StateActionFixedUpdate();
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        // 보스가 패턴 1 공격 중 장애물에 부딪혀도 정해진 공격 사거리 만큼 이동하는 것을 막기위해
+        // 
+        if(collision.gameObject.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
+        {
+            bossStateMachine.ChangeState(stiffnessState);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("BackPoint"))
