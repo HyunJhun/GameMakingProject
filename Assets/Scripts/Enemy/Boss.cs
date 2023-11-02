@@ -67,6 +67,7 @@ public class Boss : MonoBehaviour
         // 
         if(collision.gameObject.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
         {
+            Debug.Log("¹ßµ¿!");
             bossStateMachine.ChangeState(stiffnessState);
         }
     }

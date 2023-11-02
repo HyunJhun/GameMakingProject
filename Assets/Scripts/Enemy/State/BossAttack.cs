@@ -20,14 +20,11 @@ public class BossAttack : BossState
     public override void Enter()
     {
         Debug.Log("AttackEnter");  
-        for(int i = 0;i<1;i++)
-        {
-            //BossAttackPaterns[i] = BossAttackPattern_One();
-        }
         timer = 0f;
     }
     public override void Exit()
     {
+        boss.agent.SetDestination(boss.transform.position);
         Debug.Log("공격을 한 후 보스의 공격 상태 : " + isAttack);
         Debug.Log("AttackExit");
     }

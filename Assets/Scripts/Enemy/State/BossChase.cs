@@ -37,11 +37,6 @@ public class BossChase : BossState
     }
     public override void StateActionUpdate()
     {
-        // 만약 attack을 한 후 플레이어가 하늘 위로 떠올랐을 때 chase로 넘어가게 되면 chase의 방향 자체가 
-
-
-        // 보스와 플레이어 사이의 방향성 확보 => 추격 시 움직이는 방향
-        Vector3 direction = boss.gameObject.transform.position - boss.player.transform.position;
         // 현재 탐지 범위의 반지름은 7.5 ... distance가 7.5가 최대치여야함
         float distance = Mathf.Abs(Vector3.Distance(boss.gameObject.transform.position, boss.player.transform.position));
         // 보스 회전

@@ -184,7 +184,8 @@ public class AnimationManager : MonoBehaviour
 
     public bool AnimationPlayingCheck(int currentAnimationLayerNumber,float normalizedTime,string currentAnimationName)
     {
-        return playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).normalizedTime > normalizedTime && playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
+        return playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).normalizedTime > normalizedTime 
+            && playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
     }
 
     public void TurnOffPlayingAnimation(string currentWeaponState)

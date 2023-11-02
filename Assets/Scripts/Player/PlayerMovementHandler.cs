@@ -165,16 +165,13 @@ public class PlayerMovementHandler : MonoBehaviour
                 {
                     setState(PlayerState.Dodge);
                     return;
-                }
-                if(Input.GetButtonDown("Attack"))  // 시발라라라라라라 어떻게 해야 할까...
-                {
-                    attackManager.OnAttack();
-                }
+                }             
                 if (attackManager.getIsAttack() == false)
                 {
                     setState(PlayerState.Idle);
                     return;
                 }
+                attackManager.attack(); // 수정 필요
                 return;
             case PlayerState.IdleToDodge:
                 if (stats.getStamina() >= 10)
@@ -198,7 +195,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 else
                 {
                     Debug.Log("스태미너 부족");
-                    setState(PlayerState.Idle);
+                    setState(PlayerState.Move);
                     return;
                 }
                 return;
