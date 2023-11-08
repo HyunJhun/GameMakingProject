@@ -9,6 +9,7 @@ public class PlayerMovementHandler : MonoBehaviour
         Move,
         Sprint,
         Dodge,
+        Floating,
         IdleToDodge,
         Attack
     }
@@ -20,11 +21,13 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] private float dodgeSpeed = 0.05f;
     [SerializeField] private float dodgeStamina = 10f;
     private PlayerState currentState = PlayerState.Idle;
+    private PlayerState previousState;
     [SerializeField] private bool isLockOn;
     private bool isSprint { get; set; } = false;
 
-    [Header("Environment Property")]
+    [Header("Property")]
     [SerializeField] private float gravity;
+    [SerializeField] private float knockbackPower;
 
     [Header("References")]
     public ThirdPersonCameraHandler cameraHandler;
@@ -32,6 +35,7 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] AttackManager attackManager;
     [SerializeField] AnimationManager animationManager;
     [SerializeField] Status stats;
+    [SerializeField] Boss boss;
     CharacterController player;
 
     public bool movecheck = false;
@@ -42,56 +46,19 @@ public class PlayerMovementHandler : MonoBehaviour
         animationManager = GetComponent<AnimationManager>();
         //dodge
         isDodge = false;
+        //init
+        previousState = currentState;
     }
 
     // Update is called once per frame
     void Update()
     {
         StateUpdate();
+        OnGravity();
         AnimationUpdate();
         LockOnUpdate();
         Debug.Log("Cur = " + currentState);
 
-    }
-    private void StateAction()
-    {
-        switch (currentState)
-        {
-            case PlayerState.Idle:
-                return;
-            case PlayerState.Move:
-                Move();
-                return;
-            case PlayerState.Attack:
-                attackManager.attack();
-                return;
-            case PlayerState.IdleToDodge:
-                if (stats.getStamina() >= 10)
-                {
-                    if (!getIsDodge())
-                        Dodge();
-                }
-                else
-                {
-                    Debug.Log("스태미너 부족");
-                    setState(PlayerState.Idle);
-                    return;
-                }
-                return;
-            case PlayerState.Dodge:
-                if (stats.getStamina() >= 10)
-                {
-                    if (!getIsDodge())
-                        Dodge();
-                }
-                else
-                {
-                    Debug.Log("스태미너 부족");
-                    setState(PlayerState.Idle);
-                    return;
-                }
-                return;
-        }
     }
     private void StateUpdate()
     {
@@ -199,6 +166,12 @@ public class PlayerMovementHandler : MonoBehaviour
                     return;
                 }
                 return;
+            case PlayerState.Floating:
+                if(player.isGrounded)
+                {
+                    setState(PlayerState.Idle);
+                }
+                return;
         }
     }
     private void AnimationUpdate()
@@ -294,7 +267,12 @@ public class PlayerMovementHandler : MonoBehaviour
         }
         Move();
     }
-
+    private void OnGravity()
+    {
+        Vector3 velocity = Vector3.zero;
+        velocity.y += gravity;
+        player.Move(velocity * Time.deltaTime);
+    }
     // 카메라
     private void LockOnUpdate()
     {
@@ -312,6 +290,36 @@ public class PlayerMovementHandler : MonoBehaviour
             }
         }
     }
+
+    // 기타
+    IEnumerator KnockBack(Vector3 knockBackDirection)
+    {
+        setState(PlayerState.Floating);
+        float timer = 0f;
+        while(timer < 1f)
+        {
+            timer += Time.deltaTime;
+            player.Move(knockBackDirection * Time.deltaTime);
+            yield return null ;
+            Debug.Log("넉백");
+        }
+        //setState(PlayerState.Idle);
+        
+    }
+
+    // Trigger, Collision
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
+            Vector3 knockBackDirection = getNormalVectorBetweenPlayerToBoss + new Vector3(knockbackPower, 60 * Mathf.Deg2Rad + knockbackPower, knockbackPower);
+            StartCoroutine(KnockBack(knockBackDirection));
+        }
+    }
+
+
+
 
     // Get 함수
     public bool getIsLockOn()
@@ -337,6 +345,7 @@ public class PlayerMovementHandler : MonoBehaviour
 
     public void setState(PlayerState state)
     {
+        previousState = currentState;
         currentState = state;
     }
 

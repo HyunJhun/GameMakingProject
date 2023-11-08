@@ -19,7 +19,11 @@ public class Boss : MonoBehaviour
     public float moveSpeed = 3f;
     public float rotationSpeed = 360f;
     public bool isBack { get; set; }
-    
+
+    // Raycast
+    private RaycastHit hitObject;    
+    private float attackDistance = 7f;
+    private LayerMask layerMask;
     public NavMeshAgent agent { get; set; }
 
     [Header("References")]
@@ -55,6 +59,17 @@ public class Boss : MonoBehaviour
         Debug.Log("¿Ã¡ÓπÈ : " + isBack);
         bossStateMachine.currentState.StateActionUpdate();
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
+        ShotRay();
+    }
+
+    private void ShotRay()
+    {
+        Debug.DrawRay(transform.position + new Vector3(0f,1f,0f), transform.forward * attackDistance, Color.red);
+        if(Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward,out hitObject,attackDistance,layerMask))
+        {
+            Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * attackDistance, Color.blue);
+        }
+
     }
 
     private void FixedUpdate()

@@ -26,6 +26,7 @@ public class BossAttack : BossState
     public override void Exit()
     {
         boss.agent.SetDestination(boss.transform.position);
+        isAttack = true;
         Debug.Log("공격을 한 후 보스의 공격 상태 : " + isAttack);
         Debug.Log("AttackExit");
     }
@@ -35,6 +36,7 @@ public class BossAttack : BossState
         if (isAttack)
         {
             boss.StartCoroutine(BossAttackPattern_One());
+            isAttack = false;
             Debug.Log("업데이트문");
         }    
         Debug.Log("현재 보스의 공격 상태 : " + isAttack);

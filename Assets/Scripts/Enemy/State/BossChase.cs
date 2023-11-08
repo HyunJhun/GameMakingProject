@@ -40,7 +40,6 @@ public class BossChase : BossState
         // 현재 탐지 범위의 반지름은 7.5 ... distance가 7.5가 최대치여야함
         float distance = Mathf.Abs(Vector3.Distance(boss.gameObject.transform.position, boss.player.transform.position));
         // 보스 회전
-
         if (distance <= chaseRange) // 추격 범위 설정
         {
             Debug.Log("추격 범위 안");
