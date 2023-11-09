@@ -10,7 +10,7 @@ public class DetectPlayer : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("플레이어가 몬스터의 감지 범위 안에 들어왓습니다.");
+            Debug.Log("플레이어가 몬스터의 공격 범위 안에 들어왓습니다.");
             isDetectPlayer = true;
         }
     }
@@ -20,7 +20,7 @@ public class DetectPlayer : MonoBehaviour
         {
             if (isDetectPlayer)
             {
-                Debug.Log("플레이어가 몬스터의 감지 범위를 벗어났습니다.");
+                Debug.Log("플레이어가 몬스터의 공격 범위를 벗어났습니다.");
                 isDetectPlayer = false;
             }
         }

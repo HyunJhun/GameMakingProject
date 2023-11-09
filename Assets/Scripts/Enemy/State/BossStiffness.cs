@@ -8,33 +8,21 @@ public class BossStiffness : BossState
 
 
     private float timer = 0f;
-    private float bugTimer = 0f;
     // 각 previousState에 따른 경직 시간 변수들
     private float stiffTimeOfOutOfRangeByChasing = 3f;
     private float stiffTimeOfOutOfRangeByAttack= 1.5f;
 
     public override void Enter()
     {
-        Debug.Log("StiffnesseEnter");  
         timer = 0f;
-        bugTimer = 0f;
     }
     public override void Exit()
     {
-        Debug.Log("StiffnessExit");
     }
     public override void StateActionUpdate()
     {
         ActionUpdateByPreviousState();
-        if(timer < 5f)
-        {
-            bugTimer += Time.deltaTime;
-        }
-        else
-        {
-            Debug.Log("버그 수정 - 경직");
-            bossStateMachine.ChangeState(bossStateMachine.previousState);
-        }
+
     }
 
     public override void StateActionFixedUpdate()

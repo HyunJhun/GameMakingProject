@@ -10,12 +10,10 @@ public class BossBack : BossState
 
     public override void Enter()
     {
-        Debug.Log("BackEnter");
     }
 
     public override void Exit()
     {
-        Debug.Log("BackExit");
     }
 
     public override void StateActionUpdate()

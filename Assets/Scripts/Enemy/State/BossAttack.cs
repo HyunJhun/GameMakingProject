@@ -19,7 +19,6 @@ public class BossAttack : BossState
     private List<IEnumerator> BossAttackPaterns;
     public override void Enter()
     {
-        Debug.Log("AttackEnter");
         isAttack = true;
         timer = 0f;
     }
@@ -28,7 +27,6 @@ public class BossAttack : BossState
         boss.agent.SetDestination(boss.transform.position);
         isAttack = true;
         Debug.Log("공격을 한 후 보스의 공격 상태 : " + isAttack);
-        Debug.Log("AttackExit");
     }
     public override void StateActionUpdate()
     {
@@ -49,9 +47,11 @@ public class BossAttack : BossState
     }
     IEnumerator BossAttackPattern_One()
     {
-        Vector3 attackDirection = (boss.player.transform.position - boss.transform.position).normalized; // 어차피 isAttack 시 한 번만 실행될 내용이라 그냥 update문에서 방향을 처리;
-        Vector3 destinationOfAttack = boss.transform.position + (attackDirection * distanceOfDestination); // 보스가 플레이어가 있는 방향으로 길이를 distanceOfDestination 만큼 "대쉬 공격" 진행.
-        boss.transform.LookAt(Vector3.Slerp(boss.transform.position,destinationOfAttack,turnSpeed));
+        // 어차피 isAttack 시 한 번만 실행될 내용이라 그냥 update문에서 방향을 처리;
+        Vector3 attackDirection = (boss.player.transform.position - boss.transform.position).normalized;
+        // 보스가 플레이어가 있는 방향으로 길이를 distanceOfDestination 만큼 "대쉬 공격" 진행. 
+        Vector3 destinationOfAttack = new Vector3(attackDirection.x * distanceOfDestination, 0f, attackDirection.z * distanceOfDestination) + boss.transform.position;
+        boss.transform.LookAt(destinationOfAttack);
         isAttack = false;
         Debug.Log("패턴 들어가고나서");
         while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.1f)
@@ -64,5 +64,10 @@ public class BossAttack : BossState
         bossStateMachine.ChangeState(boss.stiffnessState);
         
     }
-   
+    IEnumerator BossAttackPattern_Two()
+    {
+
+
+        yield return null;
+    }
 }

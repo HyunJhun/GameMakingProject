@@ -11,12 +11,10 @@ public class BossDetect : BossState
     private float timer;
     public override void Enter()
     {
-        Debug.Log("DetectEnter");
         timer = 0f;
     }
     public override void Exit()
     {
-        Debug.Log("DetectExit");
     }
     public override void StateActionUpdate()
     {

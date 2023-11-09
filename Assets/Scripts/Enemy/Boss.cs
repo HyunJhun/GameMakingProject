@@ -32,6 +32,7 @@ public class Boss : MonoBehaviour
     public GameObject player;
     public GameObject backPoint;
     public TMP_Text stateText;
+    public TMP_Text previousStateText;
     private void Start()
     {
         // GetComp
@@ -59,6 +60,7 @@ public class Boss : MonoBehaviour
         Debug.Log("ภฬม๎น้ : " + isBack);
         bossStateMachine.currentState.StateActionUpdate();
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
+        previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
         ShotRay();
     }
 

@@ -11,11 +11,9 @@ public class BossIdle : BossState
 
     public override void Enter() 
     {
-        Debug.Log("IdleEnter");
     }
     public override void Exit()
     {
-        Debug.Log("IdleExit");
     }
     public override void StateActionUpdate()
     {

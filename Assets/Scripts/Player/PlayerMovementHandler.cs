@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-
+using TMPro;
 public class PlayerMovementHandler : MonoBehaviour
 {
     public enum PlayerState
@@ -24,10 +24,13 @@ public class PlayerMovementHandler : MonoBehaviour
     private PlayerState previousState;
     [SerializeField] private bool isLockOn;
     private bool isSprint { get; set; } = false;
+    private bool isFloating { get; set; } = false;
 
     [Header("Property")]
     [SerializeField] private float gravity;
     [SerializeField] private float knockbackPower;
+    [SerializeField] private float maxHeight;
+    [SerializeField] private int degree;
 
     [Header("References")]
     public ThirdPersonCameraHandler cameraHandler;
@@ -36,6 +39,8 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] AnimationManager animationManager;
     [SerializeField] Status stats;
     [SerializeField] Boss boss;
+    [SerializeField] TMP_Text stateText;
+    [SerializeField] GroundChecker groundChecker; 
     CharacterController player;
 
     public bool movecheck = false;
@@ -57,7 +62,7 @@ public class PlayerMovementHandler : MonoBehaviour
         OnGravity();
         AnimationUpdate();
         LockOnUpdate();
-        Debug.Log("Cur = " + currentState);
+        stateText.text = currentState.ToString();
 
     }
     private void StateUpdate()
@@ -167,10 +172,6 @@ public class PlayerMovementHandler : MonoBehaviour
                 }
                 return;
             case PlayerState.Floating:
-                if(player.isGrounded)
-                {
-                    setState(PlayerState.Idle);
-                }
                 return;
         }
     }
@@ -296,14 +297,33 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         setState(PlayerState.Floating);
         float timer = 0f;
-        while(timer < 1f)
+        bool isReachMaxHeight = false;
+        Debug.Log("넉백 : " + isFloating);
+        while (isFloating)
         {
             timer += Time.deltaTime;
-            player.Move(knockBackDirection * Time.deltaTime);
-            yield return null ;
-            Debug.Log("넉백");
+            Debug.Log("넉백 파워ㅓㅓ");
+            float height= groundChecker.ShotRayForMaxHeightCheck();
+
+            if (height < maxHeight && !isReachMaxHeight) // 최대 높이를 정해서 사인함수의 형태로 움직이게끔
+            {
+                player.Move(knockBackDirection * Time.deltaTime);
+                Debug.Log("+");
+                yield return null;
+            }        
+            else
+            {
+                isReachMaxHeight = true;
+                if (player.isGrounded) break;
+                player.Move(new Vector3(knockBackDirection.x,0f, knockBackDirection.z)*Time.deltaTime);
+                Debug.Log("-");
+                yield return null;
+            }  
         }
-        //setState(PlayerState.Idle);
+        
+        Debug.Log("넉백 Over");
+        setState(PlayerState.Idle);
+        isFloating = false;
         
     }
 
@@ -313,7 +333,9 @@ public class PlayerMovementHandler : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
-            Vector3 knockBackDirection = getNormalVectorBetweenPlayerToBoss + new Vector3(knockbackPower, 60 * Mathf.Deg2Rad + knockbackPower, knockbackPower);
+            Vector3 knockBackDirection = 
+                new Vector3(knockbackPower* getNormalVectorBetweenPlayerToBoss.x, 45 * Mathf.Deg2Rad + knockbackPower, getNormalVectorBetweenPlayerToBoss .z* knockbackPower);
+            isFloating = true;
             StartCoroutine(KnockBack(knockBackDirection));
         }
     }
