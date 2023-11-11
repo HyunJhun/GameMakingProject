@@ -188,41 +188,6 @@ public class AnimationManager : MonoBehaviour
             && playerAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
     }
 
-    public void TurnOffPlayingAnimation(string currentWeaponState)
-    {
-        if (currentWeaponState == "OneHanded")
-        {
-            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack01"))
-            {
-                playerAnimator.SetBool("hit1", false);
-            }
-            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack02"))
-            {
-                playerAnimator.SetBool("hit2", false);
-            }
-            if (AnimationPlayingCheck(0, 0.7f, "RightHand@Attack03"))
-            {
-                playerAnimator.SetBool("hit3", false);
-                attackManager.conditionIntialize();
-            }
-        }
-        else if(currentWeaponState == "TwoHanded")
-        {
-            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack01"))
-            {
-                playerAnimator.SetBool("hit1", false);
-            }
-            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack02"))
-            {
-                playerAnimator.SetBool("hit2", false);
-            }
-            if (AnimationPlayingCheck(2, 0.7f, "2H@Attack03"))
-            {
-                playerAnimator.SetBool("hit3", false);
-                attackManager.conditionIntialize();
-            }
-        }
-    }
 
     public void IntializeToHitCondition()
     {

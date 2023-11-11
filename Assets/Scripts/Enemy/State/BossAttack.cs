@@ -10,11 +10,9 @@ public class BossAttack : BossState
 
     private bool isAttack { get; set; } = false;
     private float timeToArrive = 12f;
-    private int distanceOfDestination = 7;
+    public int distanceOfDestination { get; set; } = 8;
     private float timer;
     // boss trasnform 에 관련한 변수
-    private float turnSpeed = 360f;
-    private float bossMoveSpeedToAttack = 10f;
 
     private List<IEnumerator> BossAttackPaterns;
     public override void Enter()
@@ -30,7 +28,6 @@ public class BossAttack : BossState
     }
     public override void StateActionUpdate()
     {
-
         if (isAttack)
         {
             boss.StartCoroutine(BossAttackPattern_One());
@@ -41,7 +38,6 @@ public class BossAttack : BossState
         // attack 이 연속적으로 일어나면 일시적으로 attack 상태에서 상태변환이 안일어남
         // 그러면 일단 만약 몇초동안 움직임이 없다면 다시 추격 상태로 강제로 돌려야 하는 방법이 있을수도 있음.
     }
-
     public override void StateActionFixedUpdate()
     {
     }
@@ -54,19 +50,17 @@ public class BossAttack : BossState
         boss.transform.LookAt(destinationOfAttack);
         isAttack = false;
         Debug.Log("패턴 들어가고나서");
-        while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.1f)
+        while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.5f)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime;           
             boss.transform.position = Vector3.Lerp(boss.transform.position,destinationOfAttack,timer/timeToArrive); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
             yield return null;
         }
         Debug.Log("이동 완");
         bossStateMachine.ChangeState(boss.stiffnessState);
-        
     }
     IEnumerator BossAttackPattern_Two()
     {
-
 
         yield return null;
     }

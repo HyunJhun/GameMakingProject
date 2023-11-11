@@ -30,22 +30,30 @@ public class AttackManager : MonoBehaviour
 
     private void Update()
     {
-
-        if (currentWeapon == Weapon.OneHanded)
-        {   // normalizedTime 은 0~1까지의 값을 가지고 있고, 1에 가까울 수록 애니메이션 클립이 재생이 완료되고있음.
-            // isName("클립명") 은 이 애니메이션에 우선 진입했는지를 반환해주는 함수
-            playerAnimationManager.TurnOffPlayingAnimation("OneHanded");
-
-        }
-        else if (currentWeapon == Weapon.TwoHanded)
+        Debug.Log("이즈어택 : " + isAttack);
+        if (player.GetState() == PlayerMovementHandler.PlayerState.Attack)
         {
-            playerAnimationManager.TurnOffPlayingAnimation("TwoHanded");
-        }
+            if (currentWeapon == Weapon.OneHanded)
+            {   // normalizedTime 은 0~1까지의 값을 가지고 있고, 1에 가까울 수록 애니메이션 클립이 재생이 완료되고있음.
+                // isName("클립명") 은 이 애니메이션에 우선 진입했는지를 반환해주는 함수
+                TurnOffPlayingAnimation("OneHanded");
 
-        if (Time.time - lastClickedTime > maxComboDelay) // 만약 maxComboDelay 시간동안 클릭이 없으면 콤보를 초기화
-        {
-            conditionIntialize();
-            playerAnimationManager.IntializeToHitCondition();
+            }
+            else if (currentWeapon == Weapon.TwoHanded)
+            {
+                TurnOffPlayingAnimation("TwoHanded");
+            }
+
+            if (Time.time - lastClickedTime > maxComboDelay) // 만약 maxComboDelay 시간동안 클릭이 없으면 콤보를 초기화
+            {
+                if (isAttack)
+                {
+                    player.setState(PlayerMovementHandler.PlayerState.Idle);
+                    Debug.Log("하 시발");
+                }
+                conditionIntialize();
+                playerAnimationManager.IntializeToHitCondition();                
+            }
         }
     }
 
@@ -53,6 +61,7 @@ public class AttackManager : MonoBehaviour
     {
         isAttack = false;
         isAttackStart = false;
+        isEnterToAttack = false;
         countClick = 0;
     }
     private void ChangeAttackAnimation(Weapon currentWeaponState)
@@ -84,20 +93,57 @@ public class AttackManager : MonoBehaviour
             }
         }
     }
+    private void TurnOffPlayingAnimation(string currentWeaponState)
+    {
+        if (currentWeaponState == "OneHanded")
+        {
+            if (playerAnimationManager.AnimationPlayingCheck(0, 0.7f, "RightHand@Attack01"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+            }
+            if (playerAnimationManager.AnimationPlayingCheck(0, 0.7f, "RightHand@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+            }
+            if (playerAnimationManager.AnimationPlayingCheck(0, 0.7f, "RightHand@Attack03"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
+                player.setState(PlayerMovementHandler.PlayerState.Idle);
+                Debug.Log("되긴하냐?");
+                conditionIntialize();
+            }
+        }
+        else if (currentWeaponState == "TwoHanded")
+        {
+            if (playerAnimationManager.AnimationPlayingCheck(2, 0.7f, "2H@Attack01"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
+            }
+            if (playerAnimationManager.AnimationPlayingCheck(2, 0.7f, "2H@Attack02"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit2", false);
+            }
+            if (playerAnimationManager.AnimationPlayingCheck(2, 0.7f, "2H@Attack03"))
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
+                player.setState(PlayerMovementHandler.PlayerState.Idle);
+                Debug.Log("되긴하냐?");
+                conditionIntialize();
+            }
+        }
+    }
     public void OnAttack()
     {
 
         lastClickedTime = Time.time;
         countClick++;
         isAttack = true;
-
-        Debug.Log("공격");
-
+        isEnterToAttack = true;
         if (countClick == 1)
         {
             playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
         }
-
+        Debug.Log("공격");
 
         if (currentWeapon == Weapon.OneHanded)
         {
@@ -112,7 +158,10 @@ public class AttackManager : MonoBehaviour
     public void attack()
     {
         if (Input.GetButtonDown("Attack"))
+        {  
+            Debug.Log("호로롤");
             OnAttack();
+        }
         
     }
 

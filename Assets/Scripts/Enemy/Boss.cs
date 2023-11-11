@@ -22,7 +22,7 @@ public class Boss : MonoBehaviour
 
     // Raycast
     private RaycastHit hitObject;    
-    private float attackDistance = 7f;
+    private float attackDistance = 8f;
     private LayerMask layerMask;
     public NavMeshAgent agent { get; set; }
 
@@ -57,7 +57,6 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("¿Ã¡ÓπÈ : " + isBack);
         bossStateMachine.currentState.StateActionUpdate();
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
         previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
@@ -66,10 +65,14 @@ public class Boss : MonoBehaviour
 
     private void ShotRay()
     {
-        Debug.DrawRay(transform.position + new Vector3(0f,1f,0f), transform.forward * attackDistance, Color.red);
-        if(Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward,out hitObject,attackDistance,layerMask))
+        Debug.DrawRay(transform.position + new Vector3(0f,1f,0f), transform.forward * (attackDistance + 2), Color.red);
+        if(Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward,out hitObject,attackDistance + 2,layerMask))
         {
-            Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * attackDistance, Color.blue);
+            Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * (attackDistance + 2), Color.blue);
+            if(hitObject.transform.CompareTag("Obstacle"))
+            {
+                attackState.distanceOfDestination = (int)hitObject.distance; 
+            }
         }
 
     }

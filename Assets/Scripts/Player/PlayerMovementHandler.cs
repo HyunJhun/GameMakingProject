@@ -137,11 +137,6 @@ public class PlayerMovementHandler : MonoBehaviour
                 {
                     setState(PlayerState.Dodge);
                     return;
-                }             
-                if (attackManager.getIsAttack() == false)
-                {
-                    setState(PlayerState.Idle);
-                    return;
                 }
                 attackManager.attack(); // 수정 필요
                 return;
@@ -370,7 +365,6 @@ public class PlayerMovementHandler : MonoBehaviour
         previousState = currentState;
         currentState = state;
     }
-
     public void setIsDodge(bool values)
     {
         isDodge = values;

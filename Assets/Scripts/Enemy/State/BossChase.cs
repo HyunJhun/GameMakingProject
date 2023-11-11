@@ -14,9 +14,6 @@ public class BossChase : BossState
     private static float radius = 7.5f;
     private float chaseRange = radius + 5f;
     private float attackRange = radius - 3f;
-    
-
-    private float timer;
     public override void Enter()
     {
         // 만약 버그등으로 인해 상태가 잘못 들어왔을시를 방지
@@ -25,7 +22,6 @@ public class BossChase : BossState
             bossStateMachine.ChangeState(boss.idleState);
             return;
         }
-        timer = 0f;
         boss.agent.stoppingDistance = attackRange;
     }
     public override void Exit()
@@ -43,7 +39,6 @@ public class BossChase : BossState
             Debug.Log("추격 범위 안");
            // boss.agent.destination = boss.player.transform.position;
             boss.agent.SetDestination(boss.player.transform.position);
-            timer = 0f;
             if (distance < radius - 3f) // 공격 사정 거리
             {
                 bossStateMachine.ChangeState(boss.attackState);
