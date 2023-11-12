@@ -15,6 +15,7 @@ public class BossStiffness : BossState
     public override void Enter()
     {
         timer = 0f;
+        boss.agent.SetDestination(boss.transform.position);
     }
     public override void Exit()
     {
@@ -57,6 +58,10 @@ public class BossStiffness : BossState
             waitForNextAction(stiffTimeOfOutOfRangeByAttack, boss.chaseState);
         }
         else if (bossStateMachine.previousState == boss.chaseState)
+        {
+            waitForNextAction(stiffTimeOfOutOfRangeByAttack, boss.chaseState);
+        }
+        else if (bossStateMachine.previousState == boss.stiffnessState) // 버그 발생 방지
         {
             waitForNextAction(stiffTimeOfOutOfRangeByAttack, boss.chaseState);
         }

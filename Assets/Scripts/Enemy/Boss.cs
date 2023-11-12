@@ -19,16 +19,17 @@ public class Boss : MonoBehaviour
     public float moveSpeed = 3f;
     public float rotationSpeed = 360f;
     public bool isBack { get; set; }
-
+    public bool isCollision { get; set; }
     // Raycast
     private RaycastHit hitObject;    
     private float attackDistance = 8f;
-    private LayerMask layerMask;
+    [SerializeField]private LayerMask layerMask;
     public NavMeshAgent agent { get; set; }
 
     [Header("References")]
     [SerializeField] private Status stats ;
     public DetectPlayer detectPlayer;
+    public DetectPlayer_AttackRange detectPlayer_AttackRange;
     public GameObject player;
     public GameObject backPoint;
     public TMP_Text stateText;
@@ -51,8 +52,9 @@ public class Boss : MonoBehaviour
 
         // 기본 값 처리
         isBack = false;
-
+        isCollision = false;
         bossStateMachine.Initialize(idleState);
+        
     }
 
     private void Update()
@@ -61,6 +63,7 @@ public class Boss : MonoBehaviour
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
         previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
         ShotRay();
+        Debug.Log(isCollision);
     }
 
     private void ShotRay()
@@ -69,9 +72,10 @@ public class Boss : MonoBehaviour
         if(Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward,out hitObject,attackDistance + 2,layerMask))
         {
             Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * (attackDistance + 2), Color.blue);
-            if(hitObject.transform.CompareTag("Obstacle"))
+            if(hitObject.transform.CompareTag("Obstacle") && bossStateMachine.currentState != chaseState)
             {
-                attackState.distanceOfDestination = (int)hitObject.distance; 
+                attackState.distanceOfDestination = (int)hitObject.distance; // 공격 사거리를 줄이는 것보다 그냥 멈춰버리게 하ㅣ는게 좋을거같기도 하고..
+                Debug.Log("벽이야! 조심해!");
             }
         }
 
@@ -87,7 +91,7 @@ public class Boss : MonoBehaviour
         // 
         if(collision.gameObject.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
         {
-            Debug.Log("발동!");
+            isCollision = true;
             bossStateMachine.ChangeState(stiffnessState);
         }
     }

@@ -23,7 +23,6 @@ public class BossBack : BossState
 
         if (boss.isBack) // trigger로 체크
         {
-            Debug.Log("도착");
             boss.isBack = false; // 나중에 다시 돌아오는 걸 위해
             bossStateMachine.ChangeState(boss.idleState);
             return;

@@ -49,7 +49,6 @@ public class AttackManager : MonoBehaviour
                 if (isAttack)
                 {
                     player.setState(PlayerMovementHandler.PlayerState.Idle);
-                    Debug.Log("하 시발");
                 }
                 conditionIntialize();
                 playerAnimationManager.IntializeToHitCondition();                
@@ -159,7 +158,6 @@ public class AttackManager : MonoBehaviour
     {
         if (Input.GetButtonDown("Attack"))
         {  
-            Debug.Log("호로롤");
             OnAttack();
         }
         

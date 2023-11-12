@@ -288,22 +288,23 @@ public class PlayerMovementHandler : MonoBehaviour
     }
 
     // 기타
-    IEnumerator KnockBack(Vector3 knockBackDirection)
+    public IEnumerator KnockBack() // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까?
     {
         setState(PlayerState.Floating);
         float timer = 0f;
         bool isReachMaxHeight = false;
-        Debug.Log("넉백 : " + isFloating);
+        Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
+        Vector3 knockBackDirection =
+            new Vector3(knockbackPower * getNormalVectorBetweenPlayerToBoss.x, 45 * Mathf.Deg2Rad + knockbackPower, getNormalVectorBetweenPlayerToBoss.z * knockbackPower);
+        isFloating = true;
         while (isFloating)
         {
             timer += Time.deltaTime;
-            Debug.Log("넉백 파워ㅓㅓ");
             float height= groundChecker.ShotRayForMaxHeightCheck();
 
             if (height < maxHeight && !isReachMaxHeight) // 최대 높이를 정해서 사인함수의 형태로 움직이게끔
             {
                 player.Move(knockBackDirection * Time.deltaTime);
-                Debug.Log("+");
                 yield return null;
             }        
             else
@@ -311,12 +312,9 @@ public class PlayerMovementHandler : MonoBehaviour
                 isReachMaxHeight = true;
                 if (player.isGrounded) break;
                 player.Move(new Vector3(knockBackDirection.x,0f, knockBackDirection.z)*Time.deltaTime);
-                Debug.Log("-");
                 yield return null;
             }  
         }
-        
-        Debug.Log("넉백 Over");
         setState(PlayerState.Idle);
         isFloating = false;
         
@@ -327,11 +325,8 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
-            Vector3 knockBackDirection = 
-                new Vector3(knockbackPower* getNormalVectorBetweenPlayerToBoss.x, 45 * Mathf.Deg2Rad + knockbackPower, getNormalVectorBetweenPlayerToBoss .z* knockbackPower);
-            isFloating = true;
-            StartCoroutine(KnockBack(knockBackDirection));
+            
+            StartCoroutine(KnockBack());
         }
     }
 

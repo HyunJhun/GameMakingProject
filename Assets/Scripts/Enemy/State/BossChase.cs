@@ -22,11 +22,11 @@ public class BossChase : BossState
             bossStateMachine.ChangeState(boss.idleState);
             return;
         }
-        boss.agent.stoppingDistance = attackRange;
+        boss.agent.stoppingDistance = attackRange; // 공격 사거리 재조정
     }
     public override void Exit()
     {
-        boss.agent.destination = boss.transform.position; // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
+        boss.agent.SetDestination(boss.transform.position); // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
         boss.agent.stoppingDistance = 0f;
     }
     public override void StateActionUpdate()
@@ -47,7 +47,7 @@ public class BossChase : BossState
         }
         else // 추격 범위를 벗어나면
         {
-            boss.agent.destination = boss.transform.position;
+            boss.agent.SetDestination(boss.transform.position); // 추격 범위를 벗어나게 된다면 보스몬스터의 움직임이 멈춰야함. 즉, 위치가 고정되어야 함
             bossStateMachine.ChangeState(boss.stiffnessState);
             return;
         }
