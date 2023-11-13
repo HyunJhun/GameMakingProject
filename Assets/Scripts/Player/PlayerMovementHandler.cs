@@ -67,8 +67,13 @@ public class PlayerMovementHandler : MonoBehaviour
     }
     private void StateUpdate()
     {
-        switch (currentState)
+        if(!player.isGrounded) // 이 부분은 GlobalState로 넘어가야 하나?
         {
+            setState(PlayerState.Floating);
+            return;
+        }
+        switch (currentState)
+        {        
             case PlayerState.Idle:
                 if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
                 {
@@ -167,6 +172,11 @@ public class PlayerMovementHandler : MonoBehaviour
                 }
                 return;
             case PlayerState.Floating:
+                if(player.isGrounded)
+                {
+                    setState(PlayerState.Idle);
+                    return;
+                }
                 return;
         }
     }
@@ -288,9 +298,8 @@ public class PlayerMovementHandler : MonoBehaviour
     }
 
     // 기타
-    public IEnumerator KnockBack() // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까?
+    public IEnumerator KnockBack() // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까? => 날라가는건 플레이어인데 여기서 정의하는게 당연.
     {
-        setState(PlayerState.Floating);
         float timer = 0f;
         bool isReachMaxHeight = false;
         Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
@@ -300,7 +309,7 @@ public class PlayerMovementHandler : MonoBehaviour
         while (isFloating)
         {
             timer += Time.deltaTime;
-            float height= groundChecker.ShotRayForMaxHeightCheck();
+            float height= groundChecker.ShotRayForMaxHeightCheck(); // 공중에 떠있는 동안 플레이어의 높이를 체크
 
             if (height < maxHeight && !isReachMaxHeight) // 최대 높이를 정해서 사인함수의 형태로 움직이게끔
             {
@@ -315,7 +324,6 @@ public class PlayerMovementHandler : MonoBehaviour
                 yield return null;
             }  
         }
-        setState(PlayerState.Idle);
         isFloating = false;
         
     }
@@ -324,8 +332,7 @@ public class PlayerMovementHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
-        {
-            
+        {          
             StartCoroutine(KnockBack());
         }
     }
@@ -352,6 +359,11 @@ public class PlayerMovementHandler : MonoBehaviour
     public PlayerState GetState()
     {
         return currentState;
+    }
+
+    public GroundChecker GetGroundChecker()
+    {
+        return groundChecker;
     }
     // Set 함
 

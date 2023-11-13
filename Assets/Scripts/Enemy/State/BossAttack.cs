@@ -8,20 +8,23 @@ public class BossAttack : BossState
     {
     }
 
+    private List<IEnumerator> bossPatternList;
+
     private bool isAttack { get; set; } = false;
     private float timeToArrive = 12f;
     public int distanceOfDestination { get; set; } = 8;
     private float timer;
     private float delayTime = 1f;
 
+    // pattern one
     private int pattern_Two_Damage = 10; // temp Value 
-    // boss trasnform 에 관련한 변수
-
-    private List<IEnumerator> BossAttackPaterns;
+    // pattern two
     public override void Enter()
     {
         isAttack = true;
         timer = 0f;
+        bossPatternList[0] = BossAttackPattern_One();
+        bossPatternList[1] = BossAttackPattern_Two();
     }
     public override void Exit()
     {
@@ -32,7 +35,7 @@ public class BossAttack : BossState
     {
         if (isAttack)
         {
-            boss.StartCoroutine(BossAttackPattern_One());
+            boss.StartCoroutine(BossAttackPattern_Two());
             isAttack = false;
         }    
         // attack 이 연속적으로 일어나면 일시적으로 attack 상태에서 상태변환이 안일어남
@@ -40,6 +43,7 @@ public class BossAttack : BossState
     }
     public override void StateActionFixedUpdate()
     {
+        
     }
     IEnumerator BossAttackPattern_One()
     {
@@ -65,7 +69,8 @@ public class BossAttack : BossState
     {       
         yield return boss.StartCoroutine(delayBeforeAttack());  // 공격을 하기 전 전조 증상을 플레이어에게 보여주어 플레이어가 대처할 수 있도록 함
         boss.detectPlayer_AttackRange.getPlayerStatusForDamaged().hpDown(pattern_Two_Damage);
-        
+        boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack());     
+        bossStateMachine.ChangeState(boss.stiffnessState);
         // 이제 여기는 효과 부여
     }
 
@@ -74,6 +79,4 @@ public class BossAttack : BossState
         yield return new WaitForSeconds(delayTime);
 
     }
-
-
 }
