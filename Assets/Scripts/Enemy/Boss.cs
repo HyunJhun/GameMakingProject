@@ -16,13 +16,11 @@ public class Boss : MonoBehaviour
     public BossStiffness stiffnessState { get; set; }
 
     [Header("Basic Value")]
-    public float moveSpeed = 3f;
     public float rotationSpeed = 360f;
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
     // Raycast
     private RaycastHit hitObject;    
-    private float attackDistance = 8f;
     [SerializeField]private LayerMask layerMask;
     public NavMeshAgent agent { get; set; }
 
@@ -30,10 +28,12 @@ public class Boss : MonoBehaviour
     [SerializeField] private Status stats ;
     public DetectPlayer detectPlayer;
     public DetectPlayer_AttackRange detectPlayer_AttackRange;
+    public BossAnimationHandler bossAnimationHandler;
     public GameObject player;
     public GameObject backPoint;
     public TMP_Text stateText;
     public TMP_Text previousStateText;
+    
     private void Start()
     {
         // GetComp
@@ -60,25 +60,23 @@ public class Boss : MonoBehaviour
     private void Update()
     {
         bossStateMachine.currentState.StateActionUpdate();
+        bossAnimationHandler.animationUpdate(agent.velocity.magnitude,detectPlayer.isDetectPlayer);
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
         previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
-        ShotRay();
-        Debug.Log(isCollision);
     }
 
-    private void ShotRay()
+    public int ShotRay(float attackDistance)
     {
         Debug.DrawRay(transform.position + new Vector3(0f,1f,0f), transform.forward * (attackDistance + 2), Color.red);
-        if(Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward,out hitObject,attackDistance + 2,layerMask))
+        if (Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward, out hitObject, attackDistance + 2, layerMask))
         {
             Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * (attackDistance + 2), Color.blue);
-            if(hitObject.transform.CompareTag("Obstacle") && bossStateMachine.currentState != chaseState)
+            if (hitObject.transform.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
             {
-                attackState.distanceOfDestination = (int)hitObject.distance; // 공격 사거리를 줄이는 것보다 그냥 멈춰버리게 하ㅣ는게 좋을거같기도 하고..
-                Debug.Log("벽이야! 조심해!");
+                return (int)hitObject.distance - 1;
             }
         }
-
+        return attackState.distanceOfDestination;    
     }
 
     private void FixedUpdate()

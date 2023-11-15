@@ -8,29 +8,32 @@ public class AttackManager : MonoBehaviour
         OneHanded,
         TwoHanded
     }
-    [Header("References")]
     AnimationManager playerAnimationManager;
-    public GameObject attackArrange;
     private Status inRangeObjStats;
     public List<GameObject> weapons; // 0 = sheld, 1 = shortSword, 2 = twoHandeld
     public PlayerMovementHandler player;
+    [SerializeField]private List<GameObject> attackCollisionBox; // 0 = OneHanded , 1 = TwoHanded
 
     [Header("Values")]
     private int countClick = 0;
     private float lastClickedTime = 0f;
     private float maxComboDelay = 1f;
+
+    
+
+
     public bool isAttack { get; set; } = false;
-    public bool isEnterToAttack { get; set; } = false;
+    public bool isOneHandedAttack { get; set; }
     public bool isAttackStart { get; set; } = false;
     public Weapon currentWeapon;
     private void Start()
     {
         playerAnimationManager = GetComponent<AnimationManager>();
+        GetAttackRangeBoxByCurentWeapon().SetActive(false);
     }
 
     private void Update()
     {
-        Debug.Log("이즈어택 : " + isAttack);
         if (player.GetState() == PlayerMovementHandler.PlayerState.Attack)
         {
             if (currentWeapon == Weapon.OneHanded)
@@ -60,13 +63,18 @@ public class AttackManager : MonoBehaviour
     {
         isAttack = false;
         isAttackStart = false;
-        isEnterToAttack = false;
+        GetAttackRangeBoxByCurentWeapon().SetActive(false);
         countClick = 0;
     }
     private void ChangeAttackAnimation(Weapon currentWeaponState)
     {
         if (currentWeaponState == Weapon.OneHanded)
         {
+            if (countClick == 1)
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
+                playerAnimationManager.getPlayerAnimator().SetBool("isOneHandedAttack", isOneHandedAttack);
+            }
             if (countClick >= 2 && playerAnimationManager.AnimationPlayingCheck(0, 0.4f, "RightHand@Attack01"))
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
@@ -80,10 +88,16 @@ public class AttackManager : MonoBehaviour
         }
         else if (currentWeaponState == Weapon.TwoHanded)
         {
+            if (countClick == 1)
+            {
+                playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
+                playerAnimationManager.getPlayerAnimator().SetBool("isOneHandedAttack", isOneHandedAttack);
+            }
             if (countClick >= 2 && playerAnimationManager.AnimationPlayingCheck(2, 0.4f, "2H@Attack01"))
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit1", false);
                 playerAnimationManager.getPlayerAnimator().SetBool("hit2", true);
+
             }
             if (countClick >= 3 && playerAnimationManager.AnimationPlayingCheck(2, 0.4f, "2H@Attack02"))
             {
@@ -108,7 +122,6 @@ public class AttackManager : MonoBehaviour
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
                 player.setState(PlayerMovementHandler.PlayerState.Idle);
-                Debug.Log("되긴하냐?");
                 conditionIntialize();
             }
         }
@@ -126,7 +139,6 @@ public class AttackManager : MonoBehaviour
             {
                 playerAnimationManager.getPlayerAnimator().SetBool("hit3", false);
                 player.setState(PlayerMovementHandler.PlayerState.Idle);
-                Debug.Log("되긴하냐?");
                 conditionIntialize();
             }
         }
@@ -137,25 +149,22 @@ public class AttackManager : MonoBehaviour
         lastClickedTime = Time.time;
         countClick++;
         isAttack = true;
-        isEnterToAttack = true;
-        if (countClick == 1)
-        {
-            playerAnimationManager.getPlayerAnimator().SetBool("hit1", true);
-        }
-        Debug.Log("공격");
 
         if (currentWeapon == Weapon.OneHanded)
         {
-            ChangeAttackAnimation(currentWeapon); // 이건 조금 더 효율적으로 줄일 수 있을듯
+            isOneHandedAttack = true;
+            ChangeAttackAnimation(currentWeapon);
 
         }
         else if (currentWeapon == Weapon.TwoHanded)
         {
+            isOneHandedAttack = false;
             ChangeAttackAnimation(currentWeapon);
         }
     }
     public void attack()
     {
+        GetAttackRangeBoxByCurentWeapon().SetActive(true); // 공격 상태로 넘어가면 무기 collider가 활성화
         if (Input.GetButtonDown("Attack"))
         {  
             OnAttack();
@@ -164,18 +173,24 @@ public class AttackManager : MonoBehaviour
     }
 
 
-    public void ToDamage()
+    public void ToDamage(int idx)
     {
-        if (attackArrange.activeSelf == false)
+        player.GetStats().staminaDown(player.GetStats().GetAttackStamina(idx)); // 일단 공격 모션이 진행되면 공격을 한다는 판정이므로 스태미너 감소는 진행
+        if (GetAttackRangeBoxByCurentWeapon().GetComponent<AttackRangeCheck>().getStats() != null) // 스태미너가 감소된 이후 상대방이 닿았는지 체크
         {
-            attackArrange.SetActive(true);
+            inRangeObjStats = GetAttackRangeBoxByCurentWeapon().GetComponent<AttackRangeCheck>().getStats();
+            inRangeObjStats.hpDown(player.GetStats().GetAttackDamage(idx));
+        }       
+    }
+    private GameObject GetAttackRangeBoxByCurentWeapon() // 무기별로 가지고 있는 공격범위가 다르기때문에 그걸 반환해주는 역할
+    {
+        if(currentWeapon == Weapon.OneHanded)
+        {
+            return attackCollisionBox[0];
         }
-        inRangeObjStats = attackArrange.GetComponent<AttackRangeCheck>().getStats();
-
-        if (inRangeObjStats != null)
+        else
         {
-            inRangeObjStats.hpDown(inRangeObjStats.getDmg());
-            attackArrange.SetActive(false);
+            return attackCollisionBox[1];
         }
     }
 

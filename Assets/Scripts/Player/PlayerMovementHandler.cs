@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 public class PlayerMovementHandler : MonoBehaviour
@@ -26,11 +27,14 @@ public class PlayerMovementHandler : MonoBehaviour
     private bool isSprint { get; set; } = false;
     private bool isFloating { get; set; } = false;
 
+    public bool isCollisionWithBox { get; set; } = false;
     [Header("Property")]
     [SerializeField] private float gravity;
     [SerializeField] private float knockbackPower;
     [SerializeField] private float maxHeight;
     [SerializeField] private int degree;
+
+
 
     [Header("References")]
     public ThirdPersonCameraHandler cameraHandler;
@@ -67,11 +71,6 @@ public class PlayerMovementHandler : MonoBehaviour
     }
     private void StateUpdate()
     {
-        if(!player.isGrounded) // 이 부분은 GlobalState로 넘어가야 하나?
-        {
-            setState(PlayerState.Floating);
-            return;
-        }
         switch (currentState)
         {        
             case PlayerState.Idle:
@@ -88,6 +87,11 @@ public class PlayerMovementHandler : MonoBehaviour
                 if (Input.GetButtonDown("Dodge"))
                 {
                     setState(PlayerState.IdleToDodge);
+                    return;
+                }
+                if(!player.isGrounded)
+                {
+                    setState(PlayerState.Floating);
                     return;
                 }
                 return;
@@ -107,6 +111,11 @@ public class PlayerMovementHandler : MonoBehaviour
                     setState(PlayerState.Attack);
                     return;
                 }
+                if (!player.isGrounded)
+                {
+                    setState(PlayerState.Floating);
+                    return;
+                }
                 Move();
                 return;
             case PlayerState.Sprint:
@@ -121,6 +130,11 @@ public class PlayerMovementHandler : MonoBehaviour
                     stats.InvokeCancel("staminaDown_Sprint");
                     setPlayerSpeed(5f);
                     setState(PlayerState.Dodge);
+                    return;
+                }
+                if (!player.isGrounded)
+                {
+                    setState(PlayerState.Floating);
                     return;
                 }
                 if (Input.GetButtonUp("Sprint") || stats.getStamina() <= 0)
@@ -143,6 +157,11 @@ public class PlayerMovementHandler : MonoBehaviour
                     setState(PlayerState.Dodge);
                     return;
                 }
+                if (!player.isGrounded)
+                {
+                    setState(PlayerState.Floating);
+                    return;
+                }
                 attackManager.attack(); // 수정 필요
                 return;
             case PlayerState.IdleToDodge:
@@ -155,6 +174,11 @@ public class PlayerMovementHandler : MonoBehaviour
                 {
                     Debug.Log("스태미너 부족");
                     setState(PlayerState.Idle);
+                    return;
+                }
+                if (!player.isGrounded)
+                {
+                    setState(PlayerState.Floating);
                     return;
                 }
                 return;
@@ -300,6 +324,7 @@ public class PlayerMovementHandler : MonoBehaviour
     // 기타
     public IEnumerator KnockBack() // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까? => 날라가는건 플레이어인데 여기서 정의하는게 당연.
     {
+       
         float timer = 0f;
         bool isReachMaxHeight = false;
         Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
@@ -332,8 +357,8 @@ public class PlayerMovementHandler : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Enemy"))
-        {          
-            StartCoroutine(KnockBack());
+        {
+            isCollisionWithBox = true;
         }
     }
 
@@ -365,6 +390,12 @@ public class PlayerMovementHandler : MonoBehaviour
     {
         return groundChecker;
     }
+
+    public Status GetStats()
+    {
+        return stats;
+    }
+
     // Set 함
 
     public void setState(PlayerState state)

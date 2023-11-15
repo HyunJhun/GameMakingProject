@@ -11,16 +11,19 @@ public class BossIdle : BossState
 
     public override void Enter() 
     {
+        boss.agent.SetDestination(boss.transform.position);
     }
     public override void Exit()
     {
     }
     public override void StateActionUpdate()
     {
+        
         if (boss.detectPlayer.isDetectPlayer)
         {
             bossStateMachine.ChangeState(boss.detectState);
             return;
         }
+        
     }
 }

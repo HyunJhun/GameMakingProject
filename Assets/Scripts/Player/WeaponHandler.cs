@@ -27,18 +27,23 @@ public class WeaponHandler : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha1) && attackManger.currentWeapon != AttackManager.Weapon.OneHanded)
             {
                 attackManger.currentWeapon = AttackManager.Weapon.OneHanded;
+                attackManger.isOneHandedAttack = true;
 
                 attackManger.weapons[2].SetActive(false);
                 attackManger.weapons[0].SetActive(true);
                 attackManger.weapons[1].SetActive(true);
+
+
             }
             if (Input.GetKeyDown(KeyCode.Alpha2) && attackManger.currentWeapon != AttackManager.Weapon.TwoHanded)
             {
                 attackManger.currentWeapon = AttackManager.Weapon.TwoHanded;
+                attackManger.isOneHandedAttack = false;
+
                 attackManger.weapons[0].SetActive(false);
                 attackManger.weapons[1].SetActive(false);
                 attackManger.weapons[2].SetActive(true);
             }
-        } 
+        }
     }
 }

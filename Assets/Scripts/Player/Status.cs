@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Status : MonoBehaviour
 {
     [Header("Stats")]
     [SerializeField] private float hp;
     [SerializeField] private float stamina;
     [SerializeField] private float damage;
-    
+
+    [Header("Other")]
+    [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
+    [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
 
 
     // Start is called before the first frame update
@@ -20,7 +23,6 @@ public class Status : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
     // 스태미너 관련
     private void staminaDown_Sprint()
@@ -41,6 +43,15 @@ public class Status : MonoBehaviour
             this.stamina = 0;
         }
     }
+    public void staminaDown(float value)
+    {
+        if (this.stamina > 0)
+            this.stamina -= value;
+        if (this.stamina <= 0)
+        {
+            this.stamina = 0;
+        }
+    }
     public void InvokeCancel(string name)
     {
         CancelInvoke(name);
@@ -55,13 +66,25 @@ public class Status : MonoBehaviour
     }
 
     // 데미지 관련
-    public float getDmg()
+    public float GetDamag()
     {
         return damage;
     }
-
+    public float GetAttackDamage(int idx)
+    {
+        return attackDamage[idx];
+    }
+    public float GetAttackStamina(int idx)
+    {
+        return attackStamina[idx];
+    }
     public float getStamina()
     {
         return stamina;
+    }
+
+    public float getHp()
+    {
+        return hp;
     }
 }

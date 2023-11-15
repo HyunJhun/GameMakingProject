@@ -25,8 +25,11 @@ public class DetectPlayer_AttackRange : MonoBehaviour
         }
     }
 
-    public Status getPlayerStatusForDamaged()
+    public Status getPlayerStatusForDamaged() // 공격 직전에 플레이어가 공격범위를 벗어나게 되도 버그가 발생하지 않도록
     {
-        return player.GetComponent<Status>();
+        if (player != null) 
+            return player.GetComponent<Status>();
+        else 
+            return null;
     }
 }

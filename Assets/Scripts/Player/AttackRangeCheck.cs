@@ -3,7 +3,6 @@ using UnityEngine;
 public class AttackRangeCheck : MonoBehaviour
 {
     private Status triggerObjStatus;
-    // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
     {
         if (other != null) // 컬리젼 되는게 있다면
@@ -11,15 +10,20 @@ public class AttackRangeCheck : MonoBehaviour
             if (other.CompareTag("Enemy"))
             {
                 triggerObjStatus = other.GetComponent<Status>();
+                Debug.Log("name is : " + triggerObjStatus.name);
+            }
+            else
+            {
+                triggerObjStatus = null;
             }
         }
-        else
-            Debug.Log("아무 정보도 없음");
     }
-
     // Get
     public Status getStats()
     {
-        return triggerObjStatus;
+        if (triggerObjStatus != null)
+            return triggerObjStatus;
+        else
+            return null;
     }
 }
