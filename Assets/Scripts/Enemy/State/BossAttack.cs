@@ -74,19 +74,19 @@ public class BossAttack : BossState
         }
         bossStateMachine.ChangeState(boss.stiffnessState);     
     }
-    IEnumerator BossAttackPattern_BasicAttack()
+    IEnumerator BossAttackPattern_BasicAttack() 
     {       
         yield return boss.StartCoroutine(delayBeforeAttack());  // 공격을 하기 전 전조 증상을 플레이어에게 보여주어 플레이어가 대처할 수 있도록 함
-        if (!boss.player.GetComponent<PlayerMovementHandler>().getIsDodge())
-        {
-            boss.bossAnimationHandler.OnBasicAttack();
-            yield return new WaitForSeconds(0.6f); // 모션과 타이밍을 맞추기 위해 잠시 시간을 지연
-            if (boss.detectPlayer_AttackRange.getPlayerStatusForDamaged() != null)
+        boss.bossAnimationHandler.OnBasicAttack();
+        yield return new WaitForSeconds(0.6f); // 모션과 타이밍을 맞추기 위해 잠시 시간을 지연          
+            if (boss.detectPlayer_AttackRange.getPlayerStatusForDamaged() != null) // 공격 범위 안에 플레이어가 존재할 때
             {
-                boss.detectPlayer_AttackRange.getPlayerStatusForDamaged().hpDown(pattern_Two_Damage);
-                boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack());
-            }
-        }
+                if (!boss.player.GetComponent<PlayerMovementHandler>().getIsDodge())
+                {
+                    boss.detectPlayer_AttackRange.getPlayerStatusForDamaged().hpDown(pattern_Two_Damage);
+                    boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack());
+                }
+            }       
         bossStateMachine.ChangeState(boss.stiffnessState);
         // 이제 여기는 효과 부여
     }
