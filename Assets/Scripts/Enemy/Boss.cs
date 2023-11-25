@@ -15,6 +15,8 @@ public class Boss : MonoBehaviour
     public BossBack backState { get; set; }
     public BossStiffness stiffnessState { get; set; }
 
+    public BossFlight flightState { get; set; }
+
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
     public bool isBack { get; set; }
@@ -23,6 +25,8 @@ public class Boss : MonoBehaviour
     private RaycastHit hitObject;    
     [SerializeField]private LayerMask layerMask;
     public NavMeshAgent agent { get; set; }
+    public bool isEnterPhaseTwo { get; set; } = false; // 조건을 만족해도 페이즈가 한 번 넘어갔으면 더이상 넘어가지는 않도록 하는 장치.
+                                                       // true 가 되면 페이즈가 한 번 바뀌었던 적이 있다는 소리.
 
     [Header("References")]
     [SerializeField] private Status stats ;
@@ -48,6 +52,7 @@ public class Boss : MonoBehaviour
         attackState = new BossAttack(this, stats, bossStateMachine);
         stiffnessState = new BossStiffness(this, stats, bossStateMachine);
         backState = new BossBack(this, stats, bossStateMachine);
+        flightState = new BossFlight(this, stats, bossStateMachine);
 
 
         // 기본 값 처리

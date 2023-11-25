@@ -41,7 +41,6 @@ public class BossAttack : BossState
         }
         // attack 이 연속적으로 일어나면 일시적으로 attack 상태에서 상태변환이 안일어남
         // 그러면 일단 만약 몇초동안 움직임이 없다면 다시 추격 상태로 강제로 돌려야 하는 방법이 있을수도 있음.
-        Debug.Log("패턴 번호는? : " + boss.chaseState.coolTime_RushAttack);
     }
     public override void StateActionFixedUpdate()
     {

@@ -39,32 +39,28 @@ public class BossChase : BossState
     }
     public override void StateActionUpdate()
     {
-        if (coolTime_RushAttack <= 3f) coolTime_RushAttack += Time.deltaTime;
-        
-        // 현재 탐지 범위의 반지름은 7.5 ... distance가 7.5가 최대치여야함
+
+        if (checkBossHpForFlightPhase()) // 만약 hp가 50% 미만이라면 페이즈 2로 넘어갈 수 있는지 확인한다
+        {
+            Debug.Log("피 50 미만");
+            if (!boss.isEnterPhaseTwo) bossStateMachine.ChangeState(boss.flightState); // 만약 페이즈가 바뀐적이 없다면 페이즈를 변경한다.
+        }
+        else
+        {
+            if (coolTime_RushAttack <= 3f) coolTime_RushAttack += Time.deltaTime;
+            checkDistanceBetweenBossToPlayer();
+        }
+
+    }
+    private void checkDistanceBetweenBossToPlayer()
+    {
         float distance = Mathf.Abs(Vector3.Distance(boss.gameObject.transform.position, boss.player.transform.position));
-        // 보스 회전
+
         if (distance <= chaseRange) // 추격 범위 설정
         {
             boss.agent.SetDestination(boss.player.transform.position);
-            
-            if (distance < rushAttackRange && coolTime_RushAttack >= 3f) // 공격 사정 거리
-            {
-                if (Random.Range(0, 100) <= 45)
-                {
-                    boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
-                    bossStateMachine.ChangeState(boss.attackState);
-                    Debug.Log("러쉬");
-                }
-                coolTime_RushAttack = 0f;
-            }
-            if(distance < basicAttackRange)
-            {
-                boss.attackState.patternSelectNumber = 0;
-                bossStateMachine.ChangeState(boss.attackState);
-                Debug.Log("베이직");
-                return;
-            }
+
+            bossAttackPatternSelect(distance);
         }
         else // 추격 범위를 벗어나면
         {
@@ -72,6 +68,34 @@ public class BossChase : BossState
             bossStateMachine.ChangeState(boss.stiffnessState);
             return;
         }
-
+    }
+    private void bossAttackPatternSelect(float distance)
+    {
+        if (distance < rushAttackRange && coolTime_RushAttack >= 3f) // 공격 사정 거리
+        {
+            if (Random.Range(0, 100) <= 45)
+            {
+                boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
+                bossStateMachine.ChangeState(boss.attackState);
+                Debug.Log("러쉬");
+            }
+            coolTime_RushAttack = 0f;
+        }
+        if (distance < basicAttackRange)
+        {
+            boss.attackState.patternSelectNumber = 0;
+            bossStateMachine.ChangeState(boss.attackState);
+            Debug.Log("베이직");
+            return;
+        }
+    }
+    private bool checkBossHpForFlightPhase()
+    {
+        float bossCurrentHp = stats.getHp();
+        float bossMaxHp = stats.GetMaxHP();
+        if (bossCurrentHp < bossMaxHp / 2) // 보스의 HP가 50% 미만으로 떨어졌을 때 페이즈2 시작
+            return true;
+        else
+            return false;
     }
 }

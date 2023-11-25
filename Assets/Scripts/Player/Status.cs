@@ -6,13 +6,13 @@ public class Status : MonoBehaviour
 {
     [Header("Stats")]
     [SerializeField] private float hp;
+    [SerializeField] private float maxHp;
     [SerializeField] private float stamina;
     [SerializeField] private float damage;
 
-    [Header("Other")]
+    [Header("Player")]
     [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
     [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
-
 
     // Start is called before the first frame update
     void Start()
@@ -86,5 +86,15 @@ public class Status : MonoBehaviour
     public float getHp()
     {
         return hp;
+    }
+
+    public float GetMaxHP()
+    {
+        return maxHp;
+    }
+
+    public void SetBossHpToMaxHp()
+    {
+        hp = maxHp;
     }
 }
