@@ -5,7 +5,8 @@ using UnityEngine.AI;
 using TMPro;
 
 public class Boss : MonoBehaviour
-{  
+{
+
     // State
     public BossStateMachine bossStateMachine { get; set; }
     public BossIdle idleState { get; set; }
@@ -14,8 +15,8 @@ public class Boss : MonoBehaviour
     public BossAttack attackState { get; set; }
     public BossBack backState { get; set; }
     public BossStiffness stiffnessState { get; set; }
-
     public BossFlight flightState { get; set; }
+    public BossFlyAround flyAroundState { get; set; }
 
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
@@ -37,9 +38,11 @@ public class Boss : MonoBehaviour
     public GameObject backPoint;
     public TMP_Text stateText;
     public TMP_Text previousStateText;
+    public List<GameObject> flightPoint;
     
     private void Start()
     {
+
         // GetComp
         agent = GetComponent<NavMeshAgent>();
 
@@ -53,13 +56,20 @@ public class Boss : MonoBehaviour
         stiffnessState = new BossStiffness(this, stats, bossStateMachine);
         backState = new BossBack(this, stats, bossStateMachine);
         flightState = new BossFlight(this, stats, bossStateMachine);
+        flyAroundState = new BossFlyAround(this, stats, bossStateMachine);
 
 
         // 기본 값 처리
         isBack = false;
         isCollision = false;
         bossStateMachine.Initialize(idleState);
-        
+
+        //
+        for (int i = 1; i <= 8; i++)
+        {
+            flightPoint.Add(GameObject.Find("point" + i));
+        }
+
     }
 
     private void Update()

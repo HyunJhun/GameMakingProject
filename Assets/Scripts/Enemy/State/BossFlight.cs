@@ -23,13 +23,19 @@ public class BossFlight : BossState
 
     public override void Exit()
     {
-        
+        isFly = false;
     }
 
     public override void StateActionUpdate()
     {
         if(!isFly)
             boss.StartCoroutine(FlyToTheSkyFromGround());
+        if(boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).IsName("Fly Forward")) // 하늘로 날아 오르는 애니메이션이 끝나고 난 후 상태 변경
+        {
+            if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f)
+                bossStateMachine.ChangeState(boss.flyAroundState);
+        }
+
 
     }
 
@@ -56,8 +62,9 @@ public class BossFlight : BossState
         
     }
     
-    IEnumerator FlyToTheSkyFromGround()
+    IEnumerator FlyToTheSkyFromGround() // 부자연스럽게 날음.. 임시.(암만봐도 lerp 사용해야 할 것 같은데 그게 쉽지가 않네; 왜 정상 적용이 안되는거야
     {
+        yield return null;
         float timer = 0f;
         isFly = true;
         bossRd.useGravity = false; // 하늘을 날기 위해 중력은 적용하지 않음.
@@ -66,14 +73,14 @@ public class BossFlight : BossState
         while (boss.transform.position.y < maxHeightToFly)
         {
             timer += Time.deltaTime;
+            Vector3 flying = new Vector3(boss.transform.position.x, boss.transform.position.y + 1f, boss.transform.position.z);
             boss.bossAnimationHandler.OnFly(isFly);
-            boss.transform.Translate(Vector3.up);
-            yield return new WaitForSeconds(1f);
+            boss.transform.position = Vector3.Lerp(boss.transform.position,flying, timer / 20f); 
+            yield return null;
         }
         Debug.Log("공중 종료");
         yield return null;
     }
-
     
     // y = +2, x.rotation = +28
 }
