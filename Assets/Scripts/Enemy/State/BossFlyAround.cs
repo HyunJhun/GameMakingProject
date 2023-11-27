@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossFlyAround : BossState
 {
+
     public BossFlyAround(Boss boss, Status stats, BossStateMachine bossStateMachine) : base(boss, stats, bossStateMachine)
     {
 
@@ -11,7 +12,8 @@ public class BossFlyAround : BossState
     private List<GameObject> moveToPoints;
     private int count;
     private float timer;
-    private float timerToArrive = 20f;
+    private float timerToArrive = 500f;
+    private bool isMoving;
     public override void Enter()
     {
         moveToPoints = boss.flightPoint;
@@ -22,6 +24,7 @@ public class BossFlyAround : BossState
         }
         count = 0;
         timer = 0f;
+        isMoving = false;
         Debug.Log("name : " + moveToPoints[count] + " isTrigger : " + moveToPoints[count].GetComponent<DetectBossWhileFlight>().isTriggered);
     }
 
@@ -32,8 +35,9 @@ public class BossFlyAround : BossState
 
     public override void StateActionUpdate()
     {
-        if(timer == 0f)
+        if(!isMoving)
             boss.StartCoroutine(FlyToPoint());
+        Debug.Log("카운트는 ? : " + count);
     }
 
     public override void StateActionFixedUpdate()
@@ -42,17 +46,28 @@ public class BossFlyAround : BossState
     }
     IEnumerator FlyToPoint()
     {
+        isMoving = true;
+        //yield return new WaitForSeconds(1f);
+        Debug.Log("과연 ? : " + count);
         Vector3 FlyToPosition = moveToPoints[count].transform.position;
-        timer += Time.deltaTime;
-        //bool isTrigger = moveToPoints[count].GetComponent<DetectBossWhileFlight>().isTriggered;
-        while (Vector3.Distance(boss.transform.position,FlyToPosition) < 0.2f)
-        { 
+
+        while (Vector3.Distance(boss.transform.position,FlyToPosition) > 0.2f)
+        {
+            timer += Time.deltaTime;
+            boss.transform.LookAt(Vector3.Slerp(boss.transform.position,FlyToPosition,360f));
             boss.transform.position = Vector3.Slerp(boss.transform.position, FlyToPosition, timer / timerToArrive);
-            moveToPoints.Remove(moveToPoints[count]);
+            Debug.Log("횟수 체크");
+            yield return null;
         }
         count++;
         timer = 0f;
-        yield return null;
+        boss.transform.LookAt(Vector3.Slerp(boss.transform.position, boss.player.transform.position, 360f));
+
+        if (count != moveToPoints.Count) // 만약 모든 지점을 들리지 않았다면
+            isMoving = false;
+        else
+            bossStateMachine.ChangeState(boss.landingState); // 만약 모든 지점을 들렸다면 공중 패턴이 끝난 것이므로 다시 지상패턴으로 가기 위해 땅으로 랜딩한다.
+        yield return new WaitForSeconds(1f);
     }
     private void ShuffleList<T>(List<T> list)
     {

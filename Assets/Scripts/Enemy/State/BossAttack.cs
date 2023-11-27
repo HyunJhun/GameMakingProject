@@ -26,7 +26,7 @@ public class BossAttack : BossState
     }
     public override void Exit()
     {
-        boss.agent.SetDestination(boss.transform.position);
+        //boss.agent.SetDestination(boss.transform.position);
         patternSelectNumber = -1;
     }
     public override void StateActionUpdate()
@@ -100,5 +100,6 @@ public class BossAttack : BossState
     {
         isAttack = true;
         timer = 0f;
+        boss.agent.SetDestination(boss.transform.position);
     }
 }

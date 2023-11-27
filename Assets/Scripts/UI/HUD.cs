@@ -18,11 +18,11 @@ public class HUD : MonoBehaviour
     [SerializeField] private TMP_Text bossNameText;
     void Start()
     {
-        playerHpBar.maxValue = player.getHp();
+        playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
         playerStaminaBar.maxValue = player.getStamina();
         playerStaminaBar.minValue = 0f;
-        bossHpBar.maxValue = boss.getHp();
+        bossHpBar.maxValue = boss.GetMaxHP();
         bossHpBar.minValue = 0f;
         bossNameText.text = boss.ToString();
     }

@@ -11,6 +11,7 @@ public class BossStiffness : BossState
     // 각 previousState에 따른 경직 시간 변수들
     private float stiffTimeOfOutOfRangeByChasing = 3f;
     private float stiffTimeOfOutOfRangeByAttack= 1.5f;
+    private float stiffTimeOfAfterLanding = 5f;
 
     public override void Enter()
     {
@@ -51,7 +52,7 @@ public class BossStiffness : BossState
 
         if (bossStateMachine.previousState == boss.chaseState)
         {
-            waitForNextAction(stiffTimeOfOutOfRangeByChasing, boss.backState);         
+            waitForNextAction(stiffTimeOfOutOfRangeByChasing, boss.backState);
         }
         else if (bossStateMachine.previousState == boss.attackState) // 공격을 한 이후 정해진 시간만큼 경직이 일어난다.
         {
@@ -64,6 +65,10 @@ public class BossStiffness : BossState
         else if (bossStateMachine.previousState == boss.stiffnessState) // 버그 발생 방지
         {
             waitForNextAction(stiffTimeOfOutOfRangeByAttack, boss.chaseState);
+        }
+        else if (bossStateMachine.previousState == boss.landingState)
+        {
+            waitForNextAction(stiffTimeOfAfterLanding, boss.chaseState); // 랜딩 후에는 잠시의 딜타임 (5초)
         }
     }
 }

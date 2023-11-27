@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BossChase : BossState
 {
@@ -34,7 +35,7 @@ public class BossChase : BossState
     }
     public override void Exit()
     {
-        boss.agent.SetDestination(boss.transform.position); // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
+        //boss.agent.SetDestination(boss.transform.position); // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
         boss.agent.stoppingDistance = 2f;
     }
     public override void StateActionUpdate()
@@ -60,16 +61,16 @@ public class BossChase : BossState
         {
             boss.agent.SetDestination(boss.player.transform.position);
 
-            bossAttackPatternSelect(distance);
+            bossAttackPatternSelectByDistance(distance);
         }
         else // 추격 범위를 벗어나면
         {
-            boss.agent.SetDestination(boss.transform.position); // 추격 범위를 벗어나게 된다면 보스몬스터의 움직임이 멈춰야함. 즉, 위치가 고정되어야 함
+            //boss.agent.SetDestination(boss.transform.position); // 추격 범위를 벗어나게 된다면 보스몬스터의 움직임이 멈춰야함. 즉, 위치가 고정되어야 함
             bossStateMachine.ChangeState(boss.stiffnessState);
             return;
         }
     }
-    private void bossAttackPatternSelect(float distance)
+    private void bossAttackPatternSelectByDistance(float distance)
     {
         if (distance < rushAttackRange && coolTime_RushAttack >= 3f) // 공격 사정 거리
         {

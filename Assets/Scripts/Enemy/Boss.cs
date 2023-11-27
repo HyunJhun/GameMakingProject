@@ -17,6 +17,8 @@ public class Boss : MonoBehaviour
     public BossStiffness stiffnessState { get; set; }
     public BossFlight flightState { get; set; }
     public BossFlyAround flyAroundState { get; set; }
+    public BossFlightAttack flightAttackState { get; set; }
+    public BossLanding landingState { get; set; }
 
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
@@ -57,6 +59,7 @@ public class Boss : MonoBehaviour
         backState = new BossBack(this, stats, bossStateMachine);
         flightState = new BossFlight(this, stats, bossStateMachine);
         flyAroundState = new BossFlyAround(this, stats, bossStateMachine);
+        landingState = new BossLanding(this, stats, bossStateMachine);
 
 
         // 기본 값 처리

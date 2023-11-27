@@ -11,7 +11,7 @@ public class BossIdle : BossState
 
     public override void Enter() 
     {
-        boss.agent.SetDestination(boss.transform.position);
+        //boss.agent.SetDestination(boss.transform.position);
     }
     public override void Exit()
     {

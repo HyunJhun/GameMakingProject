@@ -68,13 +68,13 @@ public class BossFlight : BossState
         float timer = 0f;
         isFly = true;
         bossRd.useGravity = false; // 하늘을 날기 위해 중력은 적용하지 않음.
-        boss.bossAnimationHandler.OnBossAnimationLayerChanger(isFly); // 애니메이션 레이어를 변경
+        boss.bossAnimationHandler.OnBossAnimationLayerChanger(true); // 애니메이션 레이어를 변경
 
         while (boss.transform.position.y < maxHeightToFly)
         {
             timer += Time.deltaTime;
             Vector3 flying = new Vector3(boss.transform.position.x, boss.transform.position.y + 1f, boss.transform.position.z);
-            boss.bossAnimationHandler.OnFly(isFly);
+            boss.bossAnimationHandler.OnFly(true);
             boss.transform.position = Vector3.Lerp(boss.transform.position,flying, timer / 20f); 
             yield return null;
         }
