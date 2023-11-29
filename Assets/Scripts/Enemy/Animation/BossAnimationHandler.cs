@@ -66,7 +66,11 @@ public class BossAnimationHandler : MonoBehaviour
             bossAnimator.SetLayerWeight(1, 0); // Flight Layer Turn Off
         }
     }
-
+    public bool AnimationPlayingCheck(int currentAnimationLayerNumber, float normalizedTime, string currentAnimationName)
+    {
+        return bossAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).normalizedTime > normalizedTime
+            && bossAnimator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
+    }
     public Animator GetBossAnimator()
     {
         return bossAnimator;

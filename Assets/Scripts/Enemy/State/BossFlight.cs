@@ -30,12 +30,9 @@ public class BossFlight : BossState
     {
         if(!isFly)
             boss.StartCoroutine(FlyToTheSkyFromGround());
-        if(boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).IsName("Fly Forward")) // 하늘로 날아 오르는 애니메이션이 끝나고 난 후 상태 변경
-        {
-            if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f)
-                bossStateMachine.ChangeState(boss.flyAroundState);
-        }
 
+        if(boss.bossAnimationHandler.AnimationPlayingCheck(1,0.9f,"Fly Forward"))
+            bossStateMachine.ChangeState(boss.flyAroundState);
 
     }
 
@@ -78,7 +75,6 @@ public class BossFlight : BossState
             boss.transform.position = Vector3.Lerp(boss.transform.position,flying, timer / 20f); 
             yield return null;
         }
-        Debug.Log("공중 종료");
         yield return null;
     }
     

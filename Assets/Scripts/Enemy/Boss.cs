@@ -41,10 +41,11 @@ public class Boss : MonoBehaviour
     public TMP_Text stateText;
     public TMP_Text previousStateText;
     public List<GameObject> flightPoint;
+    public GameObject fireballPrefab;
+    public GameObject fireballShotingPoint;
     
     private void Start()
     {
-
         // GetComp
         agent = GetComponent<NavMeshAgent>();
 
@@ -59,6 +60,7 @@ public class Boss : MonoBehaviour
         backState = new BossBack(this, stats, bossStateMachine);
         flightState = new BossFlight(this, stats, bossStateMachine);
         flyAroundState = new BossFlyAround(this, stats, bossStateMachine);
+        flightAttackState = new BossFlightAttack(this, stats, bossStateMachine);
         landingState = new BossLanding(this, stats, bossStateMachine);
 
 
@@ -95,6 +97,15 @@ public class Boss : MonoBehaviour
             }
         }
         return attackState.distanceOfDestination;    
+    }
+
+    public void InstanceAndShootFireball()
+    {
+        Quaternion rotation = Quaternion.Euler(0, 0, 45);
+        Vector3 directionBetweenBossToPlayer = (player.transform.position - gameObject.transform.position).normalized;
+        GameObject fireballClone = Instantiate(fireballPrefab, fireballShotingPoint.transform.position, rotation);
+        fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer);
+        
     }
 
     private void FixedUpdate()
