@@ -67,15 +67,9 @@ public class BossFlyAround : BossState
 
     private void PatternSelectToFlightAttackAndChangeState()
     {
-        /*
-        1. 파이어볼 발사
-        2. 날아가면서 불똥 투하(밝거나 시간 지나면 터짐)
-        3. 가끔 날아가다가 하강해서 박치기
-        4. 잠시 하강해서 휴식(딜타임)
-        */
         if (count == 0)
         {
-            patternSelectByPercentage(2);
+            patternSelectByPercentage(0);
         }
         else
         {
@@ -83,21 +77,30 @@ public class BossFlyAround : BossState
         }
         Debug.Log("공중 공격 횟수 체크");
     }
+
+    private bool checkDistanceBetweenTwoPoint()
+    {
+        return Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) < 21f;
+    }
+    private bool checkDistanceBetweenTwoPoint(float distance)
+    {
+        return Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > distance;
+    }
     private void patternSelectByDistance()
     {
-        if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) < 21f) // 일직선 가장 가까운 두 지점
+        if (checkDistanceBetweenTwoPoint()) // 일직선 가장 가까운 두 지점
         {
             patternSelectByPercentage(0);
         }
-        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 21f) // 대각선 가장 가까운 두 지점
+        else if (checkDistanceBetweenTwoPoint(21f)) // 대각선 가장 가까운 두 지점
         {
             patternSelectByPercentage(0);
         }
-        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 41f) // 일직선 가장 먼 두 지점
+        else if (checkDistanceBetweenTwoPoint(41f)) // 일직선 가장 먼 두 지점
         {
             patternSelectByPercentage(1);
         }
-        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 55f) // 대각선 가장 먼 두 지점
+        else if (checkDistanceBetweenTwoPoint(55f)) // 대각선 가장 먼 두 지점
         {
             patternSelectByPercentage(2);
         }
@@ -162,7 +165,7 @@ public class BossFlyAround : BossState
         int random1, random2;
         T temp;
 
-        for (int i = 0; i < list.Count; ++i)
+        for (int i = 0; i < list.Count; i++)
         {
             random1 = Random.Range(0, list.Count);
             random2 = Random.Range(0, list.Count);

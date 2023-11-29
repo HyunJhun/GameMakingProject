@@ -37,12 +37,6 @@ public class BossLanding : BossState
             }
         }
     }
-
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     IEnumerator LandToGroundFromSky() // 
     {
         yield return null;
