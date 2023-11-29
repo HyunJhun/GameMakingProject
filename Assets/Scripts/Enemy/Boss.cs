@@ -40,11 +40,15 @@ public class Boss : MonoBehaviour
     public BossAnimationHandler bossAnimationHandler;
     public GameObject player;
     public GameObject backPoint;
+    // State 확인용 텍스트 - 후에 지워야함
     public TMP_Text stateText;
     public TMP_Text previousStateText;
+    public TMP_Text countOfBossFlight;
     public List<GameObject> flightPoint;
     [SerializeField] GameObject fireballPrefab;
     [SerializeField] GameObject fireballShotingPoint;
+    [SerializeField] GameObject firebombPrefab;
+    [SerializeField] GameObject firebombDropPoint;
 
     private void Start()
     {
@@ -85,6 +89,7 @@ public class Boss : MonoBehaviour
         bossAnimationHandler.animationUpdate(agent.velocity.magnitude,detectPlayer.isDetectPlayer);
         stateText.text = "State : " + bossStateMachine.currentState.ToString();
         previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
+        countOfBossFlight.text = flyAroundState.count.ToString(); 
     }
 
     public int ShotRay(float attackDistance)
@@ -102,10 +107,24 @@ public class Boss : MonoBehaviour
     }
     public void InstanceAndShootFireball()
     {
-        Quaternion rotation = Quaternion.Euler(0, 0, 45);
         Vector3 directionBetweenBossToPlayer = (player.transform.position - transform.position).normalized;
         GameObject fireballClone = MonoBehaviour.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
         fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer * fireballSpeed);
+    }
+    public void InstanceAndDrobFirebomb()
+    {
+        Vector3 dropDirection = Vector3.down;
+        int rand = Random.Range(0, 2);
+        if (rand == 0)
+        {
+            GameObject fireballClone = MonoBehaviour.Instantiate(firebombPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+            fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection);
+        }
+        else
+        {
+            GameObject fireballClone = MonoBehaviour.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+            fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection * fireballSpeed);
+        }
     }
     private void FixedUpdate()
     {

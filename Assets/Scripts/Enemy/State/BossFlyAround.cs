@@ -9,8 +9,8 @@ public class BossFlyAround : BossState
     {
 
     }
-    private List<GameObject> moveToPoints;
-    private int count;
+    public List<GameObject> moveToPoints;
+    public int count { get; set; }
     private float timer;
     private float timerToArrive = 500f;
     private bool isMoving;
@@ -22,7 +22,6 @@ public class BossFlyAround : BossState
         {
             InitializeProperties();
             ShuffleList(moveToPoints);
-            Debug.Log("아싸 호랑나비 : " + moveToPoints.Count);
         }
     }
     public override void Exit()
@@ -57,7 +56,7 @@ public class BossFlyAround : BossState
         }
         boss.transform.LookAt(Vector3.Slerp(boss.transform.position, boss.player.transform.position, 360f));         
         yield return new WaitForSeconds(1f);
-        PatternSelectToFlightAttack();
+        PatternSelectToFlightAttackAndChangeState();
         count++;
 
         if (count < moveToPoints.Count) // 만약 모든 지점을 들리지 않았다면
@@ -66,7 +65,7 @@ public class BossFlyAround : BossState
             bossStateMachine.ChangeState(boss.landingState); // 만약 모든 지점을 들렸다면 공중 패턴이 끝난 것이므로 다시 지상패턴으로 가기 위해 땅으로 랜딩한다.
     }
 
-    private void PatternSelectToFlightAttack()
+    private void PatternSelectToFlightAttackAndChangeState()
     {
         /*
         1. 파이어볼 발사
@@ -74,79 +73,90 @@ public class BossFlyAround : BossState
         3. 가끔 날아가다가 하강해서 박치기
         4. 잠시 하강해서 휴식(딜타임)
         */
-        int randomNumber = -1;
         if (count == 0)
         {
-            if (randomNumber <= 100) // 70% 확률로 파이어 볼 발사
-            {
-                boss.flightAttackState.patternSelectNumber = 0;
-                bossStateMachine.ChangeState(boss.flightAttackState);
-                return;
-            }
-            else
-            {
-                boss.flightAttackState.patternSelectNumber = 1;
-                bossStateMachine.ChangeState(boss.flightAttackState);
-                return;
-            }
+            patternSelectByPercentage(2);
         }
         else
         {
-            if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 21f) // 일직선 상 가까운 두 지점
-            {
-                randomNumber = Random.Range(0, 100);
-                // 파이어볼 or 활강 돌진
-                if (randomNumber <= 100) // 70% 확률로 파이어 볼 발사
-                {
-                    boss.flightAttackState.patternSelectNumber = 0;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-                else
-                {
-                    boss.flightAttackState.patternSelectNumber = 1;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-            }
-            else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 41f) // 일직선 상 먼 두 지점
-            {
-                randomNumber = Random.Range(0, 100);
-                //폭탄 투하 or 파이어볼 or 활강돌진
-                if (randomNumber <= 100) // 70% 확률로 파이어 볼 발사
-                {
-                    boss.flightAttackState.patternSelectNumber = 0;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-                else if (70 < randomNumber && randomNumber <= 95) // 25% 확률로 활강 돌진
-                {
-                    boss.flightAttackState.patternSelectNumber = 1;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-                else if (randomNumber > 95) // 폭탄 투하
-                {
-                    boss.flightAttackState.patternSelectNumber = 2;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-            }
-            else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 55f) // 대각선 가장 먼 지점
-            {   // 폭탄 투하 확정
-                if (randomNumber <= 100) // 70% 확률로 파이어 볼 발사
-                {
-                    boss.flightAttackState.patternSelectNumber = 0;
-                    bossStateMachine.ChangeState(boss.flightAttackState);
-                    return;
-                }
-                else
-                    boss.flightAttackState.patternSelectNumber = 2;
-
-            }
+            patternSelectByDistance();
         }
         Debug.Log("공중 공격 횟수 체크");
     }
+    private void patternSelectByDistance()
+    {
+        if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) < 21f) // 일직선 가장 가까운 두 지점
+        {
+            patternSelectByPercentage(0);
+        }
+        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 21f) // 대각선 가장 가까운 두 지점
+        {
+            patternSelectByPercentage(0);
+        }
+        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 41f) // 일직선 가장 먼 두 지점
+        {
+            patternSelectByPercentage(1);
+        }
+        else if (Vector3.Distance(moveToPoints[count].transform.position, moveToPoints[count - 1].transform.position) > 55f) // 대각선 가장 먼 두 지점
+        {
+            patternSelectByPercentage(2);
+        }
+    }
+
+    private void patternSelectByPercentage(int numberToSelect)
+    {
+        int randomNumber = Random.Range(0, 100);
+
+        if (numberToSelect == 0) // 일직선 상 가까운 두 지점
+        {
+
+            if(randomNumber <= 70) // 70% 확률로 파이어 볼 발사
+            {
+                patternSelectAndChangeState(0);
+            }
+            else
+            {
+                patternSelectAndChangeState(2);
+            }
+
+        }
+        else if(numberToSelect == 1) // 일직선 상 먼 두 지점
+        {
+
+            //폭탄 투하 or 파이어볼 or 활강돌진
+            if (randomNumber <= 60) // 70% 확률로 파이어 볼 발사
+            {
+                patternSelectAndChangeState(0);
+            }
+            else if (60 < randomNumber && randomNumber <= 95) // 25% 확률로 활강 돌진
+            {
+                patternSelectAndChangeState(2);
+            }
+            else if (randomNumber > 95) // 폭탄 투하
+            {
+                patternSelectAndChangeState(2);
+            }
+
+        }
+        else if (numberToSelect == 2) // 대각선 가장 먼 지점
+        {
+
+            if (randomNumber <= 20) // 70% 확률로 파이어 볼 발사
+            {
+                patternSelectAndChangeState(0);
+            }
+            else
+                patternSelectAndChangeState(2);
+
+        }
+    }
+    private void patternSelectAndChangeState(int patternSelectNumber)
+    {
+        boss.flightAttackState.patternSelectNumber = patternSelectNumber;
+        bossStateMachine.ChangeState(boss.flightAttackState);
+        return;
+    }
+
     private void ShuffleList<T>(List<T> list)
     {
         int random1, random2;
