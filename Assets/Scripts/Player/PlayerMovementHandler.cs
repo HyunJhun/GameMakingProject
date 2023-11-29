@@ -322,7 +322,7 @@ public class PlayerMovementHandler : MonoBehaviour
     }
 
     // 기타
-    public IEnumerator KnockBack() // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까? => 날라가는건 플레이어인데 여기서 정의하는게 당연.
+    public IEnumerator KnockBack(Transform transformForDirectionOfKnockBack) // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까? => 날라가는건 플레이어인데 여기서 정의하는게 당연.
     {
        
         float timer = 0f;
@@ -359,6 +359,11 @@ public class PlayerMovementHandler : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             isCollisionWithBox = true;
+        }
+        if(collision.gameObject.CompareTag("Attackable")) // 플레이어에게 공격이 가능한 Object (ex. Fireball , Bomb)
+        {
+            stats.hpDown(15);
+            StartCoroutine(KnockBack(collision.gameObject.transform));
         }
     }
 

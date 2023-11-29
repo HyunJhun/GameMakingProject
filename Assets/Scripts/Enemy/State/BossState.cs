@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossState
+public class BossState 
 {
     protected Boss boss;
     protected Status stats;

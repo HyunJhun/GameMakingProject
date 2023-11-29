@@ -3263,15 +3263,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1866478428980314726, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.8836355
+      value: 1.82
       objectReference: {fileID: 0}
     - target: {fileID: 1866478428980314726, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4366135
+      value: 9.69
       objectReference: {fileID: 0}
     - target: {fileID: 1866478428980314726, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.077048
+      value: 8.91
       objectReference: {fileID: 0}
     - target: {fileID: 1866478428980314726, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3305,6 +3305,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fireball
       objectReference: {fileID: 0}
+    - target: {fileID: 1866478428980314727, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2058890021239011137, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
+      propertyPath: bombParticle
+      value: 
+      objectReference: {fileID: 198357973136645638, guid: 67a684e320da6e7439421a07e3fa265c, type: 3}
     - target: {fileID: 8518359393360606855, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
       propertyPath: m_Convex
       value: 1
@@ -7572,7 +7580,7 @@ GameObject:
   - component: {fileID: 1591514828}
   m_Layer: 3
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
@@ -9315,7 +9323,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005093349}
-  m_LocalRotation: {x: 0.09252102, y: -0.00000001765986, z: 0.0000000016409466, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: 0.000000017659854, z: -0.0000000016409462, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9500,7 +9508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 48
+  hp: 5
   maxHp: 100
   stamina: 0
   damage: 0

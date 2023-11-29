@@ -13,6 +13,8 @@ public class BossFlightAttack : BossState
     public int patternSelectNumber { get; set; } = -1; // 0 : 파이어볼 , 1 : 활강 돌진 , 2 : 폭탄 투하
     private float readyTimeToAttack = 3f;
     private bool isFlightAttack;
+
+    // Fireball Attack Property
     public BossFlightAttack(Boss boss,Status stats,BossStateMachine bossStateMachine) : base(boss,stats,bossStateMachine)
     {
 
@@ -55,15 +57,15 @@ public class BossFlightAttack : BossState
             //boss.StartCoroutine(bossFlightAttackPattern_DiveBomber());
             Debug.Log("pattern 2");
         }
+        
     }
-
+    
     IEnumerator bossFlightAttackPattern_Fireball()
     {
         isFlightAttack = true;
         yield return null;
         boss.bossAnimationHandler.OnFireballAttack();
-        Debug.Log("ASDFSDFSD");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f); // 모션이 충분히 나올 시간을 줌.
         isFlightAttack = false;
         bossStateMachine.ChangeState(boss.flyAroundState);
 
@@ -78,5 +80,5 @@ public class BossFlightAttack : BossState
         yield return new WaitForSeconds(readyTimeToAttack);
         Debug.Log("DiveBomber");
     }
-    
+
 }

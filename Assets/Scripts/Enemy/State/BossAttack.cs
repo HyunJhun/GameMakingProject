@@ -65,7 +65,7 @@ public class BossAttack : BossState
             boss.transform.position = Vector3.Lerp(boss.transform.position,destinationOfAttack,timer/timeToArrive); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
             if (boss.player.GetComponent<PlayerMovementHandler>().isCollisionWithBox)
             {
-                boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack());
+                boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack(boss.transform));
                 boss.player.GetComponent<PlayerMovementHandler>().isCollisionWithBox = false;
                 break;
             }
@@ -83,7 +83,7 @@ public class BossAttack : BossState
                 if (!boss.player.GetComponent<PlayerMovementHandler>().getIsDodge())
                 {
                     boss.detectPlayer_AttackRange.getPlayerStatusForDamaged().hpDown(pattern_Two_Damage);
-                    boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack());
+                    boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack(boss.transform));
                 }
             }       
         bossStateMachine.ChangeState(boss.stiffnessState);

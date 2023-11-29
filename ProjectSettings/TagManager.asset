@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - BackPoint
   - Obstacle
+  - Attackable
   layers:
   - Default
   - TransparentFX

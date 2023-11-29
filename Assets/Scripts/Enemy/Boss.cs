@@ -22,11 +22,13 @@ public class Boss : MonoBehaviour
 
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
+    private RaycastHit hitObject;    
+    [SerializeField]private LayerMask layerMask;
+    private float fireballSpeed = 1800f;
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
     // Raycast
-    private RaycastHit hitObject;    
-    [SerializeField]private LayerMask layerMask;
+    
     public NavMeshAgent agent { get; set; }
     public bool isEnterPhaseTwo { get; set; } = false; // 조건을 만족해도 페이즈가 한 번 넘어갔으면 더이상 넘어가지는 않도록 하는 장치.
                                                        // true 가 되면 페이즈가 한 번 바뀌었던 적이 있다는 소리.
@@ -41,9 +43,9 @@ public class Boss : MonoBehaviour
     public TMP_Text stateText;
     public TMP_Text previousStateText;
     public List<GameObject> flightPoint;
-    public GameObject fireballPrefab;
-    public GameObject fireballShotingPoint;
-    
+    [SerializeField] GameObject fireballPrefab;
+    [SerializeField] GameObject fireballShotingPoint;
+
     private void Start()
     {
         // GetComp
@@ -98,16 +100,13 @@ public class Boss : MonoBehaviour
         }
         return attackState.distanceOfDestination;    
     }
-
     public void InstanceAndShootFireball()
     {
         Quaternion rotation = Quaternion.Euler(0, 0, 45);
-        Vector3 directionBetweenBossToPlayer = (player.transform.position - gameObject.transform.position).normalized;
-        GameObject fireballClone = Instantiate(fireballPrefab, fireballShotingPoint.transform.position, rotation);
-        fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer);
-        
+        Vector3 directionBetweenBossToPlayer = (player.transform.position - transform.position).normalized;
+        GameObject fireballClone = MonoBehaviour.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+        fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer * fireballSpeed);
     }
-
     private void FixedUpdate()
     {
         bossStateMachine.currentState.StateActionFixedUpdate();
