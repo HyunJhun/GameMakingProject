@@ -110,6 +110,7 @@ public class BossFlyAround : BossState
     {
         int randomNumber = Random.Range(0, 100);
 
+
         if (numberToSelect == 0) // 일직선 상 가까운 두 지점
         {
 

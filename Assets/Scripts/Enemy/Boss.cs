@@ -45,10 +45,10 @@ public class Boss : MonoBehaviour
     public TMP_Text previousStateText;
     public TMP_Text countOfBossFlight;
     public List<GameObject> flightPoint;
-    [SerializeField] GameObject fireballPrefab;
-    [SerializeField] GameObject fireballShotingPoint;
-    [SerializeField] GameObject firebombPrefab;
-    [SerializeField] GameObject firebombDropPoint;
+    [SerializeField] private GameObject fireballPrefab;
+    [SerializeField] private GameObject fireballShotingPoint;
+    [SerializeField] private GameObject firebombPrefab;
+    [SerializeField] private GameObject firebombDropPoint;
 
     private void Start()
     {
@@ -105,10 +105,11 @@ public class Boss : MonoBehaviour
         }
         return attackState.distanceOfDestination;    
     }
+    
     public void InstanceAndShootFireball()
     {
         Vector3 directionBetweenBossToPlayer = (player.transform.position - transform.position).normalized;
-        GameObject fireballClone = MonoBehaviour.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+        GameObject fireballClone = GameObject.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
         fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer * fireballSpeed);
     }
     public void InstanceAndDrobFirebomb()
@@ -117,7 +118,7 @@ public class Boss : MonoBehaviour
         int rand = Random.Range(0, 2);
         if (rand == 0)
         {
-            GameObject fireballClone = MonoBehaviour.Instantiate(firebombPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+            GameObject fireballClone = GameObject.Instantiate(firebombPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection);
         }
         else
@@ -126,6 +127,7 @@ public class Boss : MonoBehaviour
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection * fireballSpeed);
         }
     }
+    
     private void FixedUpdate()
     {
         bossStateMachine.currentState.StateActionFixedUpdate();

@@ -18,9 +18,12 @@ public class BossFlightAttack : BossState
     private List<GameObject> shuffledFlightPoint;
     private List<GameObject> dropBombPoint = new List<GameObject>();
     private List<Vector3> setOfDivePosition = new List<Vector3>();
+    private Dictionary<string,List<Vector3>> setOfTravelPointWhileDropBomb = new Dictionary<string,List<Vector3>>();
     private int currentIndex;
     private float timerToArrive = 500f;
     // Fireball Attack Property
+    private delegate List<Vector3> AddList(string first, string second, string third);
+    AddList addList;
     public BossFlightAttack(Boss boss, Status stats, BossStateMachine bossStateMachine) : base(boss, stats, bossStateMachine)
     {
 
@@ -33,12 +36,12 @@ public class BossFlightAttack : BossState
         shuffledFlightPoint = boss.flightPoint;
         setOfDivePosition.Clear();
         IntializeOrderToDropBombPoint();
-
+        SetDropBombPosition();
     }
 
     public override void Exit()
     {
-
+        setOfTravelPointWhileDropBomb.Clear();
     }
 
     public override void StateActionUpdate()
@@ -95,8 +98,28 @@ public class BossFlightAttack : BossState
         isFlightAttack = true;
         yield return null;
 
-        SetDropBombPosition();
+        Debug.Log("카운트는 : " + setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name].Count + " 이고 이름은 각각 " +
+            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][0] + " & " +
+            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][1] + " & " +
+            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][2]);
 
+        for (int i = 0; i < setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name].Count; i++)
+        {
+            float timer = 0f;
+            Vector3 FlyToPosition = setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][i];
+            boss.InvokeRepeating("InstanceAndDrobFirebomb", 0f, 0.5f);
+            while (Vector3.Distance(boss.transform.position, FlyToPosition) > 0.2f)
+            {
+                timer += Time.deltaTime;
+                boss.transform.LookAt(Vector3.Slerp(boss.transform.position, FlyToPosition, 360f));
+                boss.transform.position = Vector3.Slerp(boss.transform.position, FlyToPosition, timer / timerToArrive);
+                yield return null;
+            }
+            boss.CancelInvoke("InstanceAndDrobFirebomb");
+            yield return null;
+        }
+
+        /*
         for (int i = 0; i < setOfDivePosition.Count; i++)
         {
             float timer = 0f;
@@ -112,6 +135,7 @@ public class BossFlightAttack : BossState
             boss.CancelInvoke("InstanceAndDrobFirebomb");
             yield return null;
         }
+        */
 
         bossStateMachine.ChangeState(boss.flyAroundState);
         yield return null;
@@ -135,6 +159,15 @@ public class BossFlightAttack : BossState
     private void SetDropBombPosition()
     {
         // set 1
+        setOfTravelPointWhileDropBomb.Add("point1",Action("point4", "point6", "point1",AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point4", Action("point1", "point6", "point4", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point6", Action("point4", "point1", "point6", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point2", Action("point4", "point7", "point2", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point7", Action("point4", "point2", "point7", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point3", Action("point5", "point8", "point3", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point5", Action("point3", "point8", "point5", AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point8", Action("point3", "point5", "point8", AddPointToSetList));
+        /*
         if (shuffledFlightPoint[currentIndex].name == "point1")
         {
             AddPointToSetList("point4", "point6", "point1");
@@ -169,12 +202,36 @@ public class BossFlightAttack : BossState
         {
             AddPointToSetList("point3", "point5", "point8");
         }
+        */
     }
-    private void AddPointToSetList(string first,string second,string third)
+    private List<Vector3> AddPointToSetList(string first,string second,string third)
     {
+        List<Vector3> divePos = new List<Vector3>();
         // 람다식 사용, List.Find() 를 사용하려면 Find() 의 매개변수가 predicate 즉 대체자의 자료형을 가지고 있는데 이는 람다식을 통해 이용 가능
-        setOfDivePosition.Add(shuffledFlightPoint.Find(x => x.name == first).transform.position);
-        setOfDivePosition.Add(shuffledFlightPoint.Find(x => x.name == second).transform.position);
-        setOfDivePosition.Add(shuffledFlightPoint.Find(x => x.name == third).transform.position);
+        divePos.Add(shuffledFlightPoint.Find(x => x.name == first).transform.position);
+        divePos.Add(shuffledFlightPoint.Find(x => x.name == second).transform.position);
+        divePos.Add(shuffledFlightPoint.Find(x => x.name == third).transform.position);
+
+        return divePos;
+    }
+
+    private List<Vector3> Action(string first, string second, string third, AddList addList)
+    {
+        return addList(first, second, third);
+    }
+    private void ShuffleList<T>(List<T> list)
+    {
+        int random1, random2;
+        T temp;
+
+        for (int i = 0; i < list.Count; i++)
+        {
+            random1 = Random.Range(0, list.Count);
+            random2 = Random.Range(0, list.Count);
+
+            temp = list[random1];
+            list[random1] = list[random2];
+            list[random2] = temp;
+        }
     }
 }
