@@ -5,18 +5,22 @@ using TMPro;
 public class Firebomb : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bombParticle;
+    [SerializeField] private GameObject explodeArea;
     [SerializeField] private TMP_Text timerText;
-    private float timer;
+    public float timer { get; set; }
     private bool collisionObstacle;
+
     private void Start()
     {
-        timer = 30f;
+        timer = 7f;
         collisionObstacle = false;
+
     }
 
     private void Update()
     {
         timerText.text = ((int)timer).ToString();
+        if (timer <= 5f) explodeArea.SetActive(true);
         if (collisionObstacle)
         {
             timer -= Time.deltaTime;

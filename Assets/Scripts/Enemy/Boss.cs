@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using TMPro;
 
 public class Boss : MonoBehaviour
 {
@@ -22,19 +21,20 @@ public class Boss : MonoBehaviour
 
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
-    private RaycastHit hitObject;    
-    [SerializeField]private LayerMask layerMask;
+    private RaycastHit hitObject;
+    [SerializeField] private LayerMask wallLayerMask;
+    [SerializeField] private LayerMask playerLayerMask;
     private float fireballSpeed = 1800f;
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
     // Raycast
-    
+
     public NavMeshAgent agent { get; set; }
     public bool isEnterPhaseTwo { get; set; } = false; // 조건을 만족해도 페이즈가 한 번 넘어갔으면 더이상 넘어가지는 않도록 하는 장치.
                                                        // true 가 되면 페이즈가 한 번 바뀌었던 적이 있다는 소리.
 
     [Header("References")]
-    [SerializeField] private Status stats ;
+    [SerializeField] private Status stats;
     public DetectPlayer detectPlayer;
     public DetectPlayer_AttackRange detectPlayer_AttackRange;
     public BossAnimationHandler bossAnimationHandler;
@@ -44,11 +44,12 @@ public class Boss : MonoBehaviour
     public TMP_Text stateText;
     public TMP_Text previousStateText;
     public TMP_Text countOfBossFlight;
+    public DetectBossCollision bossCollisionBox;
     public List<GameObject> flightPoint;
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private GameObject fireballShotingPoint;
     [SerializeField] private GameObject firebombPrefab;
-    [SerializeField] private GameObject firebombDropPoint;
+    [SerializeField] private GameObject firebombDropPoint; 
 
     private void Start()
     {
@@ -85,17 +86,22 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        bossStateMachine.currentState.StateActionUpdate();
-        bossAnimationHandler.animationUpdate(agent.velocity.magnitude,detectPlayer.isDetectPlayer);
-        stateText.text = "State : " + bossStateMachine.currentState.ToString();
-        previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
-        countOfBossFlight.text = flyAroundState.count.ToString(); 
+        if (!player.GetComponent<PlayerMovementHandler>().isDie)
+        {
+            bossStateMachine.currentState.StateActionUpdate();
+            bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
+            stateText.text = "State : " + bossStateMachine.currentState.ToString();
+            previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
+            countOfBossFlight.text = flyAroundState.count.ToString();
+        }
+        else agent.isStopped = true;
+        
     }
 
     public int ShotRay(float attackDistance)
     {
-        Debug.DrawRay(transform.position + new Vector3(0f,1f,0f), transform.forward * (attackDistance + 2), Color.red);
-        if (Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward, out hitObject, attackDistance + 2, layerMask))
+        Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * (attackDistance + 2), Color.red);
+        if (Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), transform.forward, out hitObject, attackDistance + 2, wallLayerMask))
         {
             Debug.DrawRay(transform.position + new Vector3(0f, 1f, 0f), transform.forward * (attackDistance + 2), Color.blue);
             if (hitObject.transform.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
@@ -103,9 +109,9 @@ public class Boss : MonoBehaviour
                 return (int)hitObject.distance - 1;
             }
         }
-        return attackState.distanceOfDestination;    
+        return attackState.distanceOfDestination;
     }
-    
+
     public void InstanceAndShootFireball()
     {
         Vector3 directionBetweenBossToPlayer = (player.transform.position - transform.position).normalized;
@@ -123,11 +129,11 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            GameObject fireballClone = MonoBehaviour.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
+            GameObject fireballClone = GameObject.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection * fireballSpeed);
         }
     }
-    
+
     private void FixedUpdate()
     {
         bossStateMachine.currentState.StateActionFixedUpdate();
@@ -136,15 +142,21 @@ public class Boss : MonoBehaviour
     {
         // 보스가 패턴 1 공격 중 장애물에 부딪혀도 정해진 공격 사거리 만큼 이동하는 것을 막기위해
         // 
-        if(collision.gameObject.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
+        if (collision.gameObject.CompareTag("Obstacle") && bossStateMachine.currentState == attackState)
         {
             isCollision = true;
             bossStateMachine.ChangeState(stiffnessState);
         }
+        Debug.Log("구우웃?");
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        Debug.Log("하이");
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("BackPoint"))
+        if (other.CompareTag("BackPoint"))
         {
             isBack = true;
         }
@@ -155,5 +167,34 @@ public class Boss : MonoBehaviour
         {
             isBack = false;
         }
+    }
+
+    public void BossCollisionBoxActive(bool active)
+    {
+        bossCollisionBox.gameObject.SetActive(active);
+    }
+    public void DamagingToPlayer(Transform attackerTransform,float valueOfPlayerHpDown)
+    {
+        if (!player.GetComponent<PlayerMovementHandler>().isDamaged)
+        {
+            player.GetComponent<PlayerMovementHandler>().isDamaged = true;
+            StartCoroutine(player.GetComponent<PlayerMovementHandler>().KnockBack(attackerTransform));
+            player.GetComponent<PlayerMovementHandler>().GetStats().hpDown(valueOfPlayerHpDown);
+        }
+    }
+    public bool CheckPlayerCollisionToBoss(float valueOfHpDown)
+    {
+        if (bossCollisionBox.isCollisionWithPlayer)
+        {
+            DamagingToPlayer(transform, valueOfHpDown);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public bool CheckPlayerDodge()
+    {
+        return player.GetComponent<PlayerMovementHandler>().getIsDodge() ? true : false;
     }
 }

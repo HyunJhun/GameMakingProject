@@ -28,6 +28,7 @@ public class AnimationManager : MonoBehaviour
     }
     public void PlayerMoveAnimation(Vector3 direction)
     {
+        playerAnimator.SetBool("isDie", player.isDie);
         if (attackManager.currentWeapon == AttackManager.Weapon.OneHanded)
         {
             if (player.getIsLockOn() == true)
@@ -100,6 +101,7 @@ public class AnimationManager : MonoBehaviour
     }
     public void PlayerMoveAnimation()
     {
+        playerAnimator.SetBool("isDie", player.isDie);
         if (attackManager.currentWeapon == AttackManager.Weapon.OneHanded)
         {
             if (player.getIsLockOn() == true)

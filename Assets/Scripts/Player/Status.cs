@@ -64,7 +64,6 @@ public class Status : MonoBehaviour
         if (this.hp <= 0)
             this.hp = 0;
     }
-
     // 데미지 관련
     public float GetDamag()
     {

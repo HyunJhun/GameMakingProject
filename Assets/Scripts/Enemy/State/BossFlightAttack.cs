@@ -11,8 +11,12 @@ public class BossFlightAttack : BossState
     4. 잠시 하강해서 휴식(딜타임)
      */
     public int patternSelectNumber { get; set; } = -1; // 0 : 파이어볼 , 1 : 활강 돌진 , 2 : 폭탄 투하
-    private float readyTimeToAttack = 3f;
     private bool isFlightAttack;
+    // damage
+    private float pattern_Zero_Damage = 13f;
+    private float pattern_One_Damage = 15f;
+    private float pattern_Two_Damage = 16f;
+
 
     // DropBomb Property
     private List<GameObject> shuffledFlightPoint;
@@ -20,7 +24,8 @@ public class BossFlightAttack : BossState
     private List<Vector3> setOfDivePosition = new List<Vector3>();
     private Dictionary<string,List<Vector3>> setOfTravelPointWhileDropBomb = new Dictionary<string,List<Vector3>>();
     private int currentIndex;
-    private float timerToArrive = 500f;
+    private float timeToArrive = 500f;
+    private float timeToArriveOfGlideRush = 220f;
     // Fireball Attack Property
     private delegate List<Vector3> AddList(string first, string second, string third);
     AddList addList;
@@ -30,13 +35,7 @@ public class BossFlightAttack : BossState
     }
     public override void Enter()
     {
-        Debug.Log("패턴 넘버는? : " + patternSelectNumber);
-        isFlightAttack = false;
-        currentIndex = boss.flyAroundState.count;
-        shuffledFlightPoint = boss.flightPoint;
-        setOfDivePosition.Clear();
-        IntializeOrderToDropBombPoint();
-        SetDropBombPosition();
+        Initialize();
     }
 
     public override void Exit()
@@ -63,7 +62,7 @@ public class BossFlightAttack : BossState
         }
         else if (patternSelectNumber == 1)
         {
-            //boss.StartCoroutine(bossFlightAttackPattern_GlideRush());
+            boss.StartCoroutine(bossFlightAttackPattern_GlideRush());
             Debug.Log("pattern 1");
         }
         else if (patternSelectNumber == 2)
@@ -86,22 +85,28 @@ public class BossFlightAttack : BossState
         }
         isFlightAttack = false;
         bossStateMachine.ChangeState(boss.flyAroundState);
-        yield return null;
     }
     IEnumerator bossFlightAttackPattern_GlideRush()
     {
-        yield return new WaitForSeconds(readyTimeToAttack);
-        Debug.Log("GlideRush");
+        isFlightAttack = true;
+        yield return null;
+        float timer = 0f;
+        boss.BossCollisionBoxActive(true); // 콜리전 박스 키기
+        Vector3 directionToPlayer = boss.player.transform.position;
+        while (Vector3.Distance(boss.transform.position, directionToPlayer) > 0.2f)
+        {
+            timer += Time.deltaTime;
+            boss.transform.position = Vector3.Lerp(boss.transform.position, directionToPlayer, timer / timeToArriveOfGlideRush); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
+            if (boss.CheckPlayerCollisionToBoss(pattern_One_Damage)) break; // bool 값 체크하는 곳에서 이러는게 조금 그렇긴 함
+            yield return null;
+        }
+        boss.BossCollisionBoxActive(false); // 끄기
+        bossStateMachine.ChangeState(boss.flyAroundState);
     }
     IEnumerator bossFlightAttackPattern_DropBomb()
     {
         isFlightAttack = true;
         yield return null;
-
-        Debug.Log("카운트는 : " + setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name].Count + " 이고 이름은 각각 " +
-            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][0] + " & " +
-            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][1] + " & " +
-            setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name][2]);
 
         for (int i = 0; i < setOfTravelPointWhileDropBomb[shuffledFlightPoint[currentIndex].name].Count; i++)
         {
@@ -112,7 +117,7 @@ public class BossFlightAttack : BossState
             {
                 timer += Time.deltaTime;
                 boss.transform.LookAt(Vector3.Slerp(boss.transform.position, FlyToPosition, 360f));
-                boss.transform.position = Vector3.Slerp(boss.transform.position, FlyToPosition, timer / timerToArrive);
+                boss.transform.position = Vector3.Slerp(boss.transform.position, FlyToPosition, timer / timeToArrive);
                 yield return null;
             }
             boss.CancelInvoke("InstanceAndDrobFirebomb");
@@ -138,7 +143,6 @@ public class BossFlightAttack : BossState
         */
 
         bossStateMachine.ChangeState(boss.flyAroundState);
-        yield return null;
     }
 
     private void IntializeOrderToDropBombPoint()
@@ -159,7 +163,7 @@ public class BossFlightAttack : BossState
     private void SetDropBombPosition()
     {
         // set 1
-        setOfTravelPointWhileDropBomb.Add("point1",Action("point4", "point6", "point1",AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point1", Action("point4", "point6", "point1",AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point4", Action("point1", "point6", "point4", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point6", Action("point4", "point1", "point6", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point2", Action("point4", "point7", "point2", AddPointToSetList));
@@ -233,5 +237,21 @@ public class BossFlightAttack : BossState
             list[random1] = list[random2];
             list[random2] = temp;
         }
+    }
+
+    private void Initialize()
+    {
+        isFlightAttack = false;
+        currentIndex = boss.flyAroundState.count;
+        shuffledFlightPoint = boss.flightPoint;
+
+        // GlideRush
+        boss.bossCollisionBox.isCollisionWithPlayer = false; // 공격을 할 때마다 새로 콜리전을 체크.
+
+
+        // DrobBomb Init
+        setOfDivePosition.Clear();
+        IntializeOrderToDropBombPoint();
+        SetDropBombPosition();
     }
 }

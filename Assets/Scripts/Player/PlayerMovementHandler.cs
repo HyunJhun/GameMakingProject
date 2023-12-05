@@ -12,7 +12,8 @@ public class PlayerMovementHandler : MonoBehaviour
         Dodge,
         Floating,
         IdleToDodge,
-        Attack
+        Attack,
+        Die
     }
     [Header("Input Property")]
     [SerializeField] private float walkSpeed = 5.0f; // 캐릭터 움직이는 속도
@@ -27,12 +28,18 @@ public class PlayerMovementHandler : MonoBehaviour
     private bool isSprint { get; set; } = false;
     private bool isFloating { get; set; } = false;
 
+    public bool isDamaged { get; set; } = false;
     public bool isCollisionWithBox { get; set; } = false;
+
+    public bool isDie { get; set; } = false;
+    private float isDamgedTimer = 0f;
+
     [Header("Property")]
     [SerializeField] private float gravity;
     [SerializeField] private float knockbackPower;
     [SerializeField] private float maxHeight;
     [SerializeField] private int degree;
+    
 
 
 
@@ -63,9 +70,11 @@ public class PlayerMovementHandler : MonoBehaviour
     void Update()
     {
         StateUpdate();
+        CheckPlayerDie();
         OnGravity();
         AnimationUpdate();
         LockOnUpdate();
+        IsDamagedUpdate(); 
         stateText.text = currentState.ToString();
 
     }
@@ -202,6 +211,8 @@ public class PlayerMovementHandler : MonoBehaviour
                     return;
                 }
                 return;
+            case PlayerState.Die:
+                return; // 죽는 애니메이션 나오고 게임오버 처리 해주는 함수 추가 예정
         }
     }
     private void AnimationUpdate()
@@ -320,14 +331,34 @@ public class PlayerMovementHandler : MonoBehaviour
             }
         }
     }
+    private void IsDamagedUpdate()
+    {
+        if(isDamaged)
+        {
+            isDamgedTimer += Time.deltaTime;
+            if(isDamgedTimer >= 1f)
+            {
+                isDamgedTimer = 0f;
+                isDamaged = false;
+            }
+        }
 
+    }
+    private void CheckPlayerDie()
+    {
+        if (stats.getHp() <= 0f)
+        {
+            isDie = true;
+            setState(PlayerState.Die);
+            return;
+        }
+    }
     // 기타
     public IEnumerator KnockBack(Transform transformForDirectionOfKnockBack) // 넉백을 여기서 말고 그냥 다른데서 처리하는게 나을까? => 날라가는건 플레이어인데 여기서 정의하는게 당연.
-    {
-       
+    {      
         float timer = 0f;
         bool isReachMaxHeight = false;
-        Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - boss.transform.position).normalized; // 날라갈 방향
+        Vector3 getNormalVectorBetweenPlayerToBoss = (player.transform.position - transformForDirectionOfKnockBack.position).normalized; // 날라갈 방향
         Vector3 knockBackDirection =
             new Vector3(knockbackPower * getNormalVectorBetweenPlayerToBoss.x, 45 * Mathf.Deg2Rad + knockbackPower, getNormalVectorBetweenPlayerToBoss.z * knockbackPower);
         isFloating = true;
@@ -349,74 +380,35 @@ public class PlayerMovementHandler : MonoBehaviour
                 yield return null;
             }  
         }
-        isFloating = false;
-        
+        isFloating = false;      
     }
-
     // Trigger, Collision
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
-        {
-            isCollisionWithBox = true;
-        }
         if(collision.gameObject.CompareTag("Attackable")) // 플레이어에게 공격이 가능한 Object (ex. Fireball , Bomb)
         {
-            stats.hpDown(15);
-            StartCoroutine(KnockBack(collision.gameObject.transform));
+            if (!isDamaged)
+            {
+                stats.hpDown(15);
+                StartCoroutine(KnockBack(collision.gameObject.transform));
+            }
         }
     }
-
-
-
-
     // Get 함수
-    public bool getIsLockOn()
-    {
-        return isLockOn;
-    }
-
-    public bool getIsDodge()
-    {
-        return isDodge;
-    }
-
-    public CharacterController getPlayerController()
-    {
-        return player;
-    }
-
-    public PlayerState GetState()
-    {
-        return currentState;
-    }
-
-    public GroundChecker GetGroundChecker()
-    {
-        return groundChecker;
-    }
-
-    public Status GetStats()
-    {
-        return stats;
-    }
-
-    // Set 함
-
+    public bool getIsLockOn() { return isLockOn; }
+    public bool getIsDodge() { return isDodge; }
+    public CharacterController getPlayerController() { return player; }
+    public PlayerState GetState() { return currentState; }
+    public GroundChecker GetGroundChecker() { return groundChecker; }
+    public Status GetStats() { return stats; }
+    // Set 함수
     public void setState(PlayerState state)
     {
         previousState = currentState;
         currentState = state;
     }
-    public void setIsDodge(bool values)
-    {
-        isDodge = values;
-    }
-
-    public void setPlayerSpeed(float speed)
-    {
-        walkSpeed = speed;
-    }
+    public void setIsDodge(bool values) { isDodge = values; }
+    public void setPlayerSpeed(float speed) { walkSpeed = speed; }
 }
 
 
