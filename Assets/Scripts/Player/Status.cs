@@ -8,6 +8,7 @@ public class Status : MonoBehaviour
     [SerializeField] private float hp;
     [SerializeField] private float maxHp;
     [SerializeField] private float stamina;
+    [SerializeField] private float maxStamina;
     [SerializeField] private float damage;
 
     [Header("Player")]
@@ -17,7 +18,6 @@ public class Status : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        stamina = 100f;
     }
 
     // Update is called once per frame
@@ -81,7 +81,7 @@ public class Status : MonoBehaviour
     {
         return stamina;
     }
-
+    public float getMaxStamina() { return maxStamina; }
     public float getHp()
     {
         return hp;

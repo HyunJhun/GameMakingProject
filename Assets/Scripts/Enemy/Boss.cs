@@ -18,6 +18,7 @@ public class Boss : MonoBehaviour
     public BossFlyAround flyAroundState { get; set; }
     public BossFlightAttack flightAttackState { get; set; }
     public BossLanding landingState { get; set; }
+    public BossDead deadState { get; set; }
 
     [Header("Basic Value")]
     public float rotationSpeed = 360f;
@@ -25,6 +26,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private LayerMask wallLayerMask;
     [SerializeField] private LayerMask playerLayerMask;
     private float fireballSpeed = 1800f;
+    public bool isDie { get; set; } = false;
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
     // Raycast
@@ -69,7 +71,7 @@ public class Boss : MonoBehaviour
         flyAroundState = new BossFlyAround(this, stats, bossStateMachine);
         flightAttackState = new BossFlightAttack(this, stats, bossStateMachine);
         landingState = new BossLanding(this, stats, bossStateMachine);
-
+        deadState = new BossDead(this, stats, bossStateMachine);
 
         // 기본 값 처리
         isBack = false;
@@ -95,7 +97,12 @@ public class Boss : MonoBehaviour
             countOfBossFlight.text = flyAroundState.count.ToString();
         }
         else agent.isStopped = true;
-        
+
+        if (stats.getHp() <= 0)
+        {
+            bossStateMachine.ChangeState(deadState);
+            return;
+        }
     }
 
     public int ShotRay(float attackDistance)

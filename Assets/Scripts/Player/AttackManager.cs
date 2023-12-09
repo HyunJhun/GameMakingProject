@@ -19,6 +19,9 @@ public class AttackManager : MonoBehaviour
     private float lastClickedTime = 0f;
     private float maxComboDelay = 1f;
 
+    [Header("Preference")]
+    [SerializeField] private BossAnimationHandler bossAnimation;
+
     
 
 
@@ -180,6 +183,8 @@ public class AttackManager : MonoBehaviour
         {
             inRangeObjStats = GetAttackRangeBoxByCurentWeapon().GetComponent<AttackRangeCheck>().getStats();
             inRangeObjStats.hpDown(player.GetStats().GetAttackDamage(idx));
+            if(!player.GetBoss().isDie)
+                bossAnimation.GetBossAnimator().SetTrigger("GetHit");
         }       
     }
     private GameObject GetAttackRangeBoxByCurentWeapon() // 무기별로 가지고 있는 공격범위가 다르기때문에 그걸 반환해주는 역할

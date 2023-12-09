@@ -401,6 +401,8 @@ public class PlayerMovementHandler : MonoBehaviour
     public PlayerState GetState() { return currentState; }
     public GroundChecker GetGroundChecker() { return groundChecker; }
     public Status GetStats() { return stats; }
+
+    public Boss GetBoss() { return boss; }
     // Set ÇÔ¼ö
     public void setState(PlayerState state)
     {

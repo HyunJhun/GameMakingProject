@@ -114,48 +114,43 @@ public class BossFlyAround : BossState
         if (numberToSelect == 0) // 일직선 상 가까운 두 지점
         {
 
-            /*
-            if(randomNumber <= 70) // 70% 확률로 파이어 볼 발사
+            
+            if(randomNumber <= 50) // 70% 확률로 파이어 볼 발사
             {
                 patternSelectAndChangeState(0);
+            }
+            else if(randomNumber > 50 && randomNumber <= 85)
+            {
+                patternSelectAndChangeState(1);
             }
             else
             {
                 patternSelectAndChangeState(2);
             }
-            */
-            patternSelectAndChangeState(2);
+            
         }
         else if(numberToSelect == 1) // 일직선 상 먼 두 지점
         {
-            /*
+            
             //폭탄 투하 or 파이어볼 or 활강돌진
             if (randomNumber <= 60) // 70% 확률로 파이어 볼 발사
             {
                 patternSelectAndChangeState(0);
             }
-            else if (60 < randomNumber && randomNumber <= 95) // 25% 확률로 활강 돌진
+            else if (60 < randomNumber && randomNumber <= 80) // 25% 확률로 활강 돌진
+            {
+                patternSelectAndChangeState(1);
+            }
+            else// 폭탄 투하
             {
                 patternSelectAndChangeState(2);
             }
-            else if (randomNumber > 95) // 폭탄 투하
-            {
-                patternSelectAndChangeState(2);
-            }
-            */
-            patternSelectAndChangeState(2);
+            
         }
         else if (numberToSelect == 2) // 대각선 가장 먼 지점
-        {
-            /*
-            if (randomNumber <= 20) // 70% 확률로 파이어 볼 발사
-            {
-                patternSelectAndChangeState(0);
-            }
-            else
-                patternSelectAndChangeState(2);
-            */
-            patternSelectAndChangeState(2);
+        {     
+            patternSelectAndChangeState(2); 
+            
         }
     }
     private void patternSelectAndChangeState(int patternSelectNumber)

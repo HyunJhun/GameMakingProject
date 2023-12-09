@@ -4162,6 +4162,37 @@ Transform:
   m_Father: {fileID: 1990535472}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &882483102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882483103}
+  m_Layer: 7
+  m_Name: SwordParticleHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &882483103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882483102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1990535472}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &885537503
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7523,6 +7554,55 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806, type: 3}
   m_PrefabInstance: {fileID: 1536803032}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1742350501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1742350503}
+  - component: {fileID: 1742350502}
+  m_Layer: 0
+  m_Name: ParticleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1742350502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742350501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oneHandedAttackParticles:
+  - {fileID: 198815321472276864, guid: 657c58e27fc88b440a69c08252c5842b, type: 3}
+  - {fileID: 198815321472276864, guid: 6f9af84ea356466419877c8acb38142a, type: 3}
+  - {fileID: 198815321472276864, guid: 3f0def245cefa134c838d34a7f6d2556, type: 3}
+  swordSlashHolder: {fileID: 882483102}
+--- !u!4 &1742350503
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742350501}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 29.601927, y: -22.670485, z: 13.780117}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1756834079
 GameObject:
   m_ObjectHideFlags: 3
@@ -8295,6 +8375,7 @@ GameObject:
   - component: {fileID: 1990535476}
   - component: {fileID: 1990535477}
   - component: {fileID: 1990535478}
+  - component: {fileID: 1990535479}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -8329,7 +8410,7 @@ MonoBehaviour:
   attackManager: {fileID: 1990535474}
   animationManager: {fileID: 1990535475}
   stats: {fileID: 1990535476}
-  boss: {fileID: 0}
+  boss: {fileID: 2019823017}
   stateText: {fileID: 2111500095}
   groundChecker: {fileID: 1990535478}
   movecheck: 0
@@ -8368,6 +8449,7 @@ Transform:
   - {fileID: 878423936}
   - {fileID: 1973695114}
   - {fileID: 137151905}
+  - {fileID: 882483103}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8412,6 +8494,7 @@ MonoBehaviour:
   attackCollisionBox:
   - {fileID: 226931226}
   - {fileID: 1774808326}
+  bossAnimation: {fileID: 2019823023}
   currentWeapon: 0
 --- !u!114 &1990535475
 MonoBehaviour:
@@ -8438,9 +8521,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 10
+  hp: 100
   maxHp: 100
-  stamina: 500
+  stamina: 200
+  maxStamina: 200
   damage: 10
   attackStamina:
   - 5
@@ -8485,6 +8569,23 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 72
+--- !u!114 &1990535479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990535469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oneHandedAttackParticles:
+  - {fileID: 198815321472276864, guid: 657c58e27fc88b440a69c08252c5842b, type: 3}
+  - {fileID: 198815321472276864, guid: 6f9af84ea356466419877c8acb38142a, type: 3}
+  - {fileID: 198815321472276864, guid: 3f0def245cefa134c838d34a7f6d2556, type: 3}
+  swordSlashHolder: {fileID: 882483102}
 --- !u!1 &2005093349
 GameObject:
   m_ObjectHideFlags: 3
@@ -8736,6 +8837,7 @@ MonoBehaviour:
   hp: 60
   maxHp: 100
   stamina: 0
+  maxStamina: 0
   damage: 0
   attackStamina: []
   attackDamage: []

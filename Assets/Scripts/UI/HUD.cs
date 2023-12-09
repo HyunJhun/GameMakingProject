@@ -20,7 +20,7 @@ public class HUD : MonoBehaviour
     {
         playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
-        playerStaminaBar.maxValue = player.getStamina();
+        playerStaminaBar.maxValue = player.getMaxStamina();
         playerStaminaBar.minValue = 0f;
         bossHpBar.maxValue = boss.GetMaxHP();
         bossHpBar.minValue = 0f;
