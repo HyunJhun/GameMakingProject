@@ -14,10 +14,14 @@ public class Status : MonoBehaviour
     [Header("Player")]
     [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
     [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
+    
+
 
     // Start is called before the first frame update
     void Start()
     {
+        
+        
     }
 
     // Update is called once per frame
@@ -51,6 +55,12 @@ public class Status : MonoBehaviour
         {
             this.stamina = 0;
         }
+    }
+    public void staminaUp()
+    {
+        if (this.stamina >= maxStamina)
+            this.stamina = maxStamina;   
+        this.stamina += 1;
     }
     public void InvokeCancel(string name)
     {
@@ -95,5 +105,19 @@ public class Status : MonoBehaviour
     public void SetBossHpToMaxHp()
     {
         hp = maxHp;
+    }
+    public void SetStaminaToMaxStamina()
+    {
+        stamina = maxStamina;
+    }
+
+    private void StaminaIncrease()
+    {
+        Invoke("staminaUp", 1f);
+        Debug.Log("·Ö?");
+    }
+    private void StaminaCheck()
+    {
+        if (stamina >= maxStamina) SetStaminaToMaxStamina();
     }
 }

@@ -792,6 +792,13 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
+      - time: 0.40716612
+        functionName: BasicAttackParticleInstance
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
+        floatParameter: 0
+        intParameter: 5
+        messageOptions: 0
       - time: 0.40758297
         functionName: ToDamage
         data: 

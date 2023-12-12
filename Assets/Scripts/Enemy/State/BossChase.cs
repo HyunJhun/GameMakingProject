@@ -40,7 +40,7 @@ public class BossChase : BossState
     }
     public override void StateActionUpdate()
     {
-        /*
+        
         if (checkBossHpForFlightPhase()) // 만약 hp가 50% 미만이라면 페이즈 2로 넘어갈 수 있는지 확인한다
         {
             Debug.Log("피 50 미만");
@@ -51,7 +51,7 @@ public class BossChase : BossState
             if (coolTime_RushAttack <= 3f) coolTime_RushAttack += Time.deltaTime;
             checkDistanceBetweenBossToPlayer();
         }
-        */
+        
         
     }
     private void checkDistanceBetweenBossToPlayer()

@@ -43,15 +43,14 @@ public class Boss : MonoBehaviour
     public GameObject player;
     public GameObject backPoint;
     // State 확인용 텍스트 - 후에 지워야함
-    public TMP_Text stateText;
-    public TMP_Text previousStateText;
-    public TMP_Text countOfBossFlight;
     public DetectBossCollision bossCollisionBox;
     public List<GameObject> flightPoint;
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private GameObject fireballShotingPoint;
     [SerializeField] private GameObject firebombPrefab;
-    [SerializeField] private GameObject firebombDropPoint; 
+    [SerializeField] private GameObject firebombDropPoint;
+
+    public ParticleManager bossParticleManager;
 
     private void Start()
     {
@@ -92,9 +91,6 @@ public class Boss : MonoBehaviour
         {
             bossStateMachine.currentState.StateActionUpdate();
             bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
-            stateText.text = "State : " + bossStateMachine.currentState.ToString();
-            previousStateText.text = "P_State : " + bossStateMachine.previousState.ToString();
-            countOfBossFlight.text = flyAroundState.count.ToString();
         }
         else agent.isStopped = true;
 

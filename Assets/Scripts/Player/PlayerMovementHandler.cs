@@ -50,7 +50,6 @@ public class PlayerMovementHandler : MonoBehaviour
     [SerializeField] AnimationManager animationManager;
     [SerializeField] Status stats;
     [SerializeField] Boss boss;
-    [SerializeField] TMP_Text stateText;
     [SerializeField] GroundChecker groundChecker; 
     CharacterController player;
 
@@ -64,19 +63,19 @@ public class PlayerMovementHandler : MonoBehaviour
         isDodge = false;
         //init
         previousState = currentState;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         StateUpdate();
+        setSpeedByWeaponState();
         CheckPlayerDie();
         OnGravity();
         AnimationUpdate();
         LockOnUpdate();
-        IsDamagedUpdate(); 
-        stateText.text = currentState.ToString();
-
+        IsDamagedUpdate();
     }
     private void StateUpdate()
     {
@@ -305,6 +304,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 stats.InvokeRepeating("staminaDown_Sprint", 1f, 1f);
                 setPlayerSpeed(8f);
             }
+            Debug.Log("¿Ö?");
         }
         Move();
     }
@@ -349,8 +349,18 @@ public class PlayerMovementHandler : MonoBehaviour
         if (stats.getHp() <= 0f)
         {
             isDie = true;
+            stats.CancelInvoke("staminaUp");
             setState(PlayerState.Die);
             return;
+        }
+    }
+
+    private void setSpeedByWeaponState()
+    {
+        if (currentState != PlayerState.Sprint)
+        {
+            if (attackManager.currentWeapon == AttackManager.Weapon.TwoHanded) setPlayerSpeed(3f);
+            else setPlayerSpeed(5f);
         }
     }
     // ±âÅ¸
