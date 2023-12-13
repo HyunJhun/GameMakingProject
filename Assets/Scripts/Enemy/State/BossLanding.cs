@@ -17,17 +17,17 @@ public class BossLanding : BossState
     {
         isLand = false;
         bossRd = boss.GetComponent<Rigidbody>();
+
+        if (!isLand)
+            boss.StartCoroutine(LandToGroundFromSky());
     }
 
     public override void Exit()
     {
         base.Exit();
     }
-
     public override void StateActionUpdate()
     {
-        if (!isLand)
-            boss.StartCoroutine(LandToGroundFromSky());
         if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).IsName("Land")) // 하늘로 날아 오르는 애니메이션이 끝나고 난 후 상태 변경
         {
             if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f)

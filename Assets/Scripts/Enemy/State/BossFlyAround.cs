@@ -23,6 +23,8 @@ public class BossFlyAround : BossState
             InitializeProperties();
             ShuffleList(moveToPoints);
         }
+        if (!isMoving)
+            boss.StartCoroutine(FlyToPoint());
     }
     public override void Exit()
     {
@@ -31,8 +33,7 @@ public class BossFlyAround : BossState
 
     public override void StateActionUpdate()
     {
-        if(!isMoving)
-            boss.StartCoroutine(FlyToPoint());
+        
     }
 
     public override void StateActionFixedUpdate()
@@ -75,7 +76,6 @@ public class BossFlyAround : BossState
         {
             patternSelectByDistance();
         }
-        Debug.Log("공중 공격 횟수 체크");
     }
 
     private bool checkDistanceBetweenTwoPoint()

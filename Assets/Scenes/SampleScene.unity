@@ -4366,7 +4366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 7.3, y: -44.3}
+  m_AnchoredPosition: {x: 7.299988, y: -44.300003}
   m_SizeDelta: {x: 200, y: 20}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1012139515
@@ -8255,7 +8255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 100
+  hp: 10
   maxHp: 100
   stamina: 150
   maxStamina: 150
@@ -8395,7 +8395,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2005093349}
-  m_LocalRotation: {x: 0.09252102, y: 0.000000017659856, z: -0.0000000016409463, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: -0.000000017659858, z: 0.0000000016409465, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -20,10 +20,10 @@ public class Firebomb : MonoBehaviour
     private void Update()
     {
         timerText.text = ((int)timer).ToString();
-        if (timer <= 5f) explodeArea.SetActive(true);
         if (collisionObstacle)
         {
             timer -= Time.deltaTime;
+            if (timer <= 0.1f) explodeArea.SetActive(true);
             if (timer <= 0f)
             {
                 ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);

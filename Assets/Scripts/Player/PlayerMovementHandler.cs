@@ -63,7 +63,7 @@ public class PlayerMovementHandler : MonoBehaviour
         isDodge = false;
         //init
         previousState = currentState;
-
+        StaminaCheck();
     }
 
     // Update is called once per frame
@@ -76,6 +76,7 @@ public class PlayerMovementHandler : MonoBehaviour
         AnimationUpdate();
         LockOnUpdate();
         IsDamagedUpdate();
+        
     }
     private void StateUpdate()
     {
@@ -354,7 +355,10 @@ public class PlayerMovementHandler : MonoBehaviour
             return;
         }
     }
-
+    private void StaminaCheck()
+    {
+        stats.StaminaIncrease();
+    }
     private void setSpeedByWeaponState()
     {
         if (currentState != PlayerState.Sprint)

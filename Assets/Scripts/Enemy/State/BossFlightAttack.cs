@@ -27,6 +27,7 @@ public class BossFlightAttack : BossState
     private float timeToArrive = 500f;
     private float timeToArriveOfGlideRush = 220f;
     // Fireball Attack Property
+
     private delegate List<Vector3> AddList(string first, string second, string third);
     AddList addList;
     public BossFlightAttack(Boss boss, Status stats, BossStateMachine bossStateMachine) : base(boss, stats, bossStateMachine)
@@ -36,6 +37,8 @@ public class BossFlightAttack : BossState
     public override void Enter()
     {
         Initialize();
+        if (!isFlightAttack)
+            bossPatternCheck_FlightAttack();
     }
 
     public override void Exit()
@@ -81,7 +84,9 @@ public class BossFlightAttack : BossState
         for (int i = 0; i < 3; i++)
         {
             boss.bossAnimationHandler.OnFireballAttack();
-            yield return new WaitForSeconds(2f); // 모션이 충분히 나올 시간을 줌.
+            yield return new WaitUntil(() => boss.bossAnimationHandler.AnimationPlayingCheck(1, 0.95f, "Fly Fireball Shoot"));
+            Debug.Log($"발사 {i} 회차");
+            yield return new WaitForSeconds(0.5f); // 시간을 지연시키지 않으면 다음 모션이 실행되기 전에 위에서 bool값이 true가 되버림
         }
         isFlightAttack = false;
         bossStateMachine.ChangeState(boss.flyAroundState);
@@ -93,6 +98,7 @@ public class BossFlightAttack : BossState
         float timer = 0f;
         boss.BossCollisionBoxActive(true); // 콜리전 박스 키기
         Vector3 directionToPlayer = boss.player.transform.position;
+        Vector3 directionToMovePoint = boss.flyAroundState.moveToPoints[boss.flyAroundState.count].transform.position;
         while (Vector3.Distance(boss.transform.position, directionToPlayer) > 0.2f)
         {
             timer += Time.deltaTime;
@@ -101,6 +107,15 @@ public class BossFlightAttack : BossState
             yield return null;
         }
         boss.BossCollisionBoxActive(false); // 끄기
+        timer = 0f;
+        yield return new WaitForSeconds(3f); // 딜타임
+        while(Vector3.Distance(boss.transform.position, directionToMovePoint) > 0.05f)
+        {
+            timer += Time.deltaTime;
+            boss.transform.LookAt(Vector3.Slerp(boss.transform.position, directionToMovePoint, 360f));
+            boss.transform.position = Vector3.Slerp(boss.transform.position, directionToMovePoint, timer / timeToArriveOfGlideRush); // 일종의 waypoint처럼 position은 lerp를 사용해 스무스하게 움직인다.
+            yield return null;
+        }
         bossStateMachine.ChangeState(boss.flyAroundState);
     }
     IEnumerator bossFlightAttackPattern_DropBomb()
@@ -124,40 +139,16 @@ public class BossFlightAttack : BossState
             yield return null;
         }
 
-        /*
-        for (int i = 0; i < setOfDivePosition.Count; i++)
-        {
-            float timer = 0f;
-            Vector3 FlyToPosition = setOfDivePosition[i];
-            boss.InvokeRepeating("InstanceAndDrobFirebomb", 0f, 0.5f);
-            while (Vector3.Distance(boss.transform.position, FlyToPosition) > 0.2f)
-            {
-                timer += Time.deltaTime;
-                boss.transform.LookAt(Vector3.Slerp(boss.transform.position, FlyToPosition, 360f));
-                boss.transform.position = Vector3.Slerp(boss.transform.position, FlyToPosition, timer / timerToArrive);               
-                yield return null;
-            }
-            boss.CancelInvoke("InstanceAndDrobFirebomb");
-            yield return null;
-        }
-        */
-
         bossStateMachine.ChangeState(boss.flyAroundState);
     }
 
     private void IntializeOrderToDropBombPoint()
     {
-        // set 1
-        dropBombPoint.Add(GameObject.Find("point1"));
-        dropBombPoint.Add(GameObject.Find("point4"));
-        dropBombPoint.Add(GameObject.Find("point6"));
-        // set 2 (with point4)
-        dropBombPoint.Add(GameObject.Find("point2"));
-        dropBombPoint.Add(GameObject.Find("point7"));
-        // set 3
-        dropBombPoint.Add(GameObject.Find("point3"));
-        dropBombPoint.Add(GameObject.Find("point5"));
-        dropBombPoint.Add(GameObject.Find("point8"));
+        for(int i = 1; i <= 8; i++)
+        {
+            dropBombPoint.Add(GameObject.Find($"point{i}"));
+            Debug.Log(dropBombPoint[i-1]);
+        }
     }
 
     private void SetDropBombPosition()
@@ -171,42 +162,6 @@ public class BossFlightAttack : BossState
         setOfTravelPointWhileDropBomb.Add("point3", Action("point5", "point8", "point3", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point5", Action("point3", "point8", "point5", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point8", Action("point3", "point5", "point8", AddPointToSetList));
-        /*
-        if (shuffledFlightPoint[currentIndex].name == "point1")
-        {
-            AddPointToSetList("point4", "point6", "point1");
-        }
-        else if (shuffledFlightPoint[currentIndex].name == "point4")
-        {
-            AddPointToSetList("point1", "point6", "point4");
-        }
-        else if (shuffledFlightPoint[currentIndex].name == "point6")
-        {
-            AddPointToSetList("point4", "point1", "point6");
-        }
-        // set 2
-        else if (shuffledFlightPoint[currentIndex].name == "point2")
-        {
-            AddPointToSetList("point4", "point7", "point2");
-        }
-        else if (shuffledFlightPoint[currentIndex].name == "point7")
-        {
-            AddPointToSetList("point4", "point2", "point7");
-        }
-        // set 3
-        else if (shuffledFlightPoint[currentIndex].name == "point3")
-        {
-            AddPointToSetList("point5", "point8", "point3");
-        }
-        else if (shuffledFlightPoint[currentIndex].name == "point5")
-        {
-            AddPointToSetList("point3", "point8", "point5");
-        }
-        else if (shuffledFlightPoint[currentIndex].name == "point8")
-        {
-            AddPointToSetList("point3", "point5", "point8");
-        }
-        */
     }
     private List<Vector3> AddPointToSetList(string first,string second,string third)
     {

@@ -21,7 +21,6 @@ public class Status : MonoBehaviour
     void Start()
     {
         
-        
     }
 
     // Update is called once per frame
@@ -56,7 +55,7 @@ public class Status : MonoBehaviour
             this.stamina = 0;
         }
     }
-    public void staminaUp()
+    private void staminaUp()
     {
         if (this.stamina >= maxStamina)
             this.stamina = maxStamina;   
@@ -111,9 +110,9 @@ public class Status : MonoBehaviour
         stamina = maxStamina;
     }
 
-    private void StaminaIncrease()
+    public void StaminaIncrease()
     {
-        Invoke("staminaUp", 1f);
+        InvokeRepeating("staminaUp", 1f,1f);
         Debug.Log("·Ö?");
     }
     private void StaminaCheck()

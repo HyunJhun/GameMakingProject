@@ -150,13 +150,8 @@ public class Boss : MonoBehaviour
             isCollision = true;
             bossStateMachine.ChangeState(stiffnessState);
         }
-        Debug.Log("구우웃?");
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        Debug.Log("하이");
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("BackPoint"))

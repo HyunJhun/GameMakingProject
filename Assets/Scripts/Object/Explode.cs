@@ -3,7 +3,6 @@ using UnityEngine;
 public class Explode : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Firebomb fireBomb;
     private Boss boss;
     private float explodeDamage = 13f;
 
@@ -28,16 +27,14 @@ public class Explode : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (fireBomb.timer <= 0.3f)
+            if (!boss.player.GetComponent<PlayerMovementHandler>().isDamaged)
             {
-                if (!boss.player.GetComponent<PlayerMovementHandler>().isDamaged)
+                if (!boss.CheckPlayerDodge())
                 {
-                    if (!boss.CheckPlayerDodge())
-                    {
-                        boss.DamagingToPlayer(boss.transform, explodeDamage);
-                    }
+                    boss.DamagingToPlayer(boss.transform, explodeDamage);
                 }
             }
+
         }
     }
 }
