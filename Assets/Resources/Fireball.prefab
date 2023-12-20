@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 1866478428980314726}
   - component: {fileID: 5739044956424369607}
   - component: {fileID: 2058890021239011137}
+  - component: {fileID: 1886823428940794496}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Attackable
@@ -175,6 +176,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bombParticle: {fileID: 198357973136645638, guid: 67a684e320da6e7439421a07e3fa265c, type: 3}
   explodeArea: {fileID: 1568180054072424113}
+--- !u!114 &1886823428940794496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866478428980314727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcb049edcdac4d459ec09cfd2fd7070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fractured: {fileID: 4340192539558346156, guid: 50509b2d0cea7a54ab565a3e98a5948c, type: 3}
 --- !u!1001 &1866478428166395164
 PrefabInstance:
   m_ObjectHideFlags: 0

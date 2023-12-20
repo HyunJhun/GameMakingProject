@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 8867709846003114490}
   - component: {fileID: 5826601769095844722}
   - component: {fileID: 2948819991170686481}
+  - component: {fileID: 7807969166863109826}
   m_Layer: 0
   m_Name: Firebomb
   m_TagString: Attackable
@@ -168,6 +169,19 @@ MonoBehaviour:
   bombParticle: {fileID: 198357973136645638, guid: 67a684e320da6e7439421a07e3fa265c, type: 3}
   explodeArea: {fileID: 2350701133774772255}
   timerText: {fileID: 1304543886576408827}
+--- !u!114 &7807969166863109826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2156332828818173728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddcb049edcdac4d459ec09cfd2fd7070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fractured: {fileID: 4340192539558346156, guid: 50509b2d0cea7a54ab565a3e98a5948c, type: 3}
 --- !u!1 &2350701133774772255
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331b02aa3f0e02c48933c641e90e3c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireBomb: {fileID: 2948819991170686481}
 --- !u!135 &5980661898288921644
 SphereCollider:
   m_ObjectHideFlags: 0

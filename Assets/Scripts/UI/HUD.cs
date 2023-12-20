@@ -24,7 +24,7 @@ public class HUD : MonoBehaviour
         playerStaminaBar.minValue = 0f;
         bossHpBar.maxValue = boss.GetMaxHP();
         bossHpBar.minValue = 0f;
-        bossNameText.text = boss.ToString();
+        bossNameText.text = "Boss";
     }
 
     // Update is called once per frame

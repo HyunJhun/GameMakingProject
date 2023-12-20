@@ -7,6 +7,8 @@ public class Firebomb : MonoBehaviour
     [SerializeField] private ParticleSystem bombParticle;
     [SerializeField] private GameObject explodeArea;
     [SerializeField] private TMP_Text timerText;
+
+    private Destructible fractured;
     public float timer { get; set; }
     private bool collisionObstacle;
 
@@ -14,7 +16,7 @@ public class Firebomb : MonoBehaviour
     {
         timer = 7f;
         collisionObstacle = false;
-
+        fractured = GetComponent<Destructible>();
     }
 
     private void Update()
@@ -29,7 +31,7 @@ public class Firebomb : MonoBehaviour
                 ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
                 bombEffect.Play();
                 Destroy(bombEffect.gameObject, 1f);
-                Destroy(gameObject, 0.3f);
+                fractured.BreakFracturedObject();
             }
         }
     }

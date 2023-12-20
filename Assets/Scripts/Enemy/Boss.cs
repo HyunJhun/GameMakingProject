@@ -195,4 +195,9 @@ public class Boss : MonoBehaviour
     {
         return player.GetComponent<PlayerMovementHandler>().getIsDodge() ? true : false;
     }
+
+    public Status GetStatus()
+    {
+        return stats;
+    }
 }

@@ -4,6 +4,14 @@ public class Fireball : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bombParticle;
     [SerializeField] private GameObject explodeArea;
+
+    private Destructible fractured;
+
+    private void Start()
+    {
+        fractured = GetComponent<Destructible>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
 
@@ -13,7 +21,7 @@ public class Fireball : MonoBehaviour
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
             bombEffect.Play();
             Destroy(bombEffect.gameObject, 1f);
-            Destroy(gameObject, 0.3f);
+            fractured.BreakFracturedObject();
         }
 
     }
