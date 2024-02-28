@@ -9,22 +9,26 @@ public class PlayerIdle : PlayerState
 
     public override void Enter()
     {
-        base.Enter();
     }
     public override void StateActionUpdate()
     {
-        if(Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
+        if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
         {
-
+            playerStateMachine.ChangeState(player.movingState);
+            return;
+        }
+        if (Input.GetButtonDown("Attack"))
+        {
+            playerStateMachine.ChangeState(player.offenseState);
+            return;
+        }
+        if (Input.GetButtonDown("Dodge"))
+        {
+            playerStateMachine.ChangeState(player.dodgeState);
+            return;
         }
     }
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
-        base.Exit();
     }
 }
