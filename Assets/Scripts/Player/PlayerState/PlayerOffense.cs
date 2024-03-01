@@ -23,13 +23,13 @@ public class PlayerOffense : PlayerState
         }
         if (!player.b_IsAttack)
         {
-            if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+            if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
             {
                 playerStateMachine.ChangeState(player.movingState);
                 return;
             }
         }
-        if(player.f_PlayerLastAttackTime > 1.0f && player.b_IsAttack)
+        if(player.f_PlayerLastAttackTime > 1.0f && !player.b_IsAttack)
         {
             playerStateMachine.ChangeState(player.idleState);
             return;
@@ -70,10 +70,11 @@ public class PlayerOffense : PlayerState
             currentAttack = 1;
 
         // Call Triger;
-        if (!player.GetPlayerAnimationManager().GetPlayerAnimator().GetBool("Attack1"))
+        if (!player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("Attack1") && currentAttack == 1)
         {
             player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("Attack1", true);
         }
+
         // Player Move During Attack
         //player.StartCoroutine(MoveToAttackForward());
         // Reset Timer

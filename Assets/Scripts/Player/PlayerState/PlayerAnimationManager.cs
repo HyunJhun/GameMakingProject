@@ -9,7 +9,8 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private Player player;
 
-    int attackCount = 0;
+    private int attackCount = 0;
+    private bool b_IsCompleteAttackAnimation = false;
     void Start()
     {
         player = GetComponent<Player>();
@@ -50,32 +51,49 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     public void PlayerAttackAnimation()
     {
-        if(player.playerStateMachine.currentState != player.offenseState)
+        // Init
+        attackCount = player.offenseState.GetCurrentAttack();
+
+        // Content
+        if (player.playerStateMachine.currentState != player.offenseState)
         {
             animator.SetBool("Attack1", false);
             animator.SetBool("Attack2", false);
             animator.SetBool("Attack3", false);
         }
         animator.SetBool("isAttack", player.b_IsAttack);
-        if (AnimationPlayingCheck(0, 0.5f, "Attack" + player.offenseState.GetCurrentAttack()))
+        if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
-            attackCount = player.offenseState.GetCurrentAttack();
-            switch(attackCount)
-            {
-                case 1:
-                    animator.SetBool("Attack1", false);
-                    animator.SetBool("Attack2", true);
-                    break;
-                case 2:
-                    animator.SetBool("Attack2", false);
-                    animator.SetBool("Attack3", true);
-                    break;
-                case 3:
-                    animator.SetBool("Attack3", false);
-                    break;
-
-            }
+            player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("Attack1", false);
         }
+        if (attackCount >= 2 && AnimationPlayingCheck(0, 0.6f, "Attack1"))
+        {
+            animator.SetBool("Attack2", true);
+        }
+        if (attackCount >= 3 && AnimationPlayingCheck(0, 0.6f, "Attack2"))
+        {
+            animator.SetBool("Attack2", false);
+            animator.SetBool("Attack3", true);
+        }
+        //if (AnimationPlayingCheck(0, 0.5f, "Attack" + player.offenseState.GetCurrentAttack()))
+        //{
+        //    attackCount = player.offenseState.GetCurrentAttack();
+        //    switch(attackCount)
+        //    {
+        //        case 1:
+        //            animator.SetBool("Attack1", false);
+        //            animator.SetBool("Attack2", true);
+        //            break;
+        //        case 2:
+        //            animator.SetBool("Attack2", false);
+        //            animator.SetBool("Attack3", true);
+        //            break;
+        //        case 3:
+        //            animator.SetBool("Attack3", false);
+        //            break;
+
+        //    }
+        //}
 
     }
     public bool AnimationPlayingCheck(int currentAnimationLayerNumber, float normalizedTime, string currentAnimationName)
