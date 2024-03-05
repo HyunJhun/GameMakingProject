@@ -631,7 +631,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216995109}
-  m_LocalRotation: {x: 0.047631975, y: 0.0000000021483564, z: -1.02446746e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.047631975, y: -0.0000000021483564, z: 1.02446746e-10, w: 0.99886495}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1064,7 +1064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 971994670, guid: 31a77d5e57bdce243a1c38bc0ba2808f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 971994670, guid: 31a77d5e57bdce243a1c38bc0ba2808f, type: 3}
       propertyPath: m_TagString
@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obj_StatusList: []
-  player: {fileID: 1990535476}
+  player: {fileID: 1248553732}
   boss: {fileID: 2019823018}
   playerP: {fileID: 1248553731}
   playerStateText: {fileID: 1191556433}
@@ -2771,7 +2771,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605604646}
-  m_LocalRotation: {x: 0.047631975, y: 0.000000007746008, z: -3.6937692e-10, w: 0.99886495}
+  m_LocalRotation: {x: 0.047631975, y: -0.000000007746008, z: 3.6937692e-10, w: 0.99886495}
   m_LocalPosition: {x: 0, y: 1.874, z: -7.579}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5949,6 +5949,8 @@ GameObject:
   - component: {fileID: 1248553731}
   - component: {fileID: 1248553732}
   - component: {fileID: 1248553737}
+  - component: {fileID: 1248553738}
+  - component: {fileID: 1248553739}
   m_Layer: 7
   m_Name: PlayerOther
   m_TagString: Player
@@ -5996,12 +5998,13 @@ MonoBehaviour:
   - 10
   - 15
   attackDamage:
+  - 4
   - 7
-  - 9
-  - 13
+  - 8
   - 10
   - 13
   - 18
+  player: {fileID: 0}
 --- !u!95 &1248553734
 Animator:
   serializedVersion: 5
@@ -6077,6 +6080,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1248553734}
   player: {fileID: 1248553731}
+--- !u!114 &1248553738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248553730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  basicAttackParticles:
+  - {fileID: 6838234871597298030, guid: 590b917b819b6fd40b847425f77f2750, type: 3}
+  - {fileID: 358536259608400843, guid: 38ebe2fa1895bcf4496f14934d62e1be, type: 3}
+  - {fileID: 7195573021755067417, guid: 8c92f3c27aac6da4b8cdce035bcb49bf, type: 3}
+  - {fileID: 3619238923182872696, guid: 97326e3a3fdc35345a0e1d6a178154c6, type: 3}
+  - {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
+  - {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
+  bossAttackParticles: []
+  swordHolder: {fileID: 295296126}
+  player: {fileID: 1248553730}
+  boss: {fileID: 2019823015}
+--- !u!114 &1248553739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248553730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d943d54d65533542b8f233bdf0092d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 8
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 72
 --- !u!1001 &1249155310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6985,7 +7027,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 8
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1508662959
 Transform:
   m_ObjectHideFlags: 0
@@ -10199,6 +10241,7 @@ MonoBehaviour:
   - 10
   - 13
   - 18
+  player: {fileID: 0}
 --- !u!114 &1990535477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10476,7 +10519,7 @@ MonoBehaviour:
   detectPlayer: {fileID: 1209539057}
   detectPlayer_AttackRange: {fileID: 577953638}
   bossAnimationHandler: {fileID: 2019823023}
-  player: {fileID: 1990535469}
+  player: {fileID: 1248553730}
   backPoint: {fileID: 2049197713}
   bossCollisionBox: {fileID: 559161005}
   flightPoint: []
@@ -10504,6 +10547,7 @@ MonoBehaviour:
   damage: 0
   attackStamina: []
   attackDamage: []
+  player: {fileID: 0}
 --- !u!54 &2019823020
 Rigidbody:
   m_ObjectHideFlags: 0

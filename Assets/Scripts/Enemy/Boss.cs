@@ -87,7 +87,7 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        if (!player.GetComponent<PlayerMovementHandler>().isDie)
+        if (!player.GetComponent<Player>().b_IsDie)
         {
             bossStateMachine.currentState.StateActionUpdate();
             bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
@@ -173,18 +173,18 @@ public class Boss : MonoBehaviour
     }
     public void DamagingToPlayer(Transform attackerTransform,float valueOfPlayerHpDown)
     {
-        if (!player.GetComponent<PlayerMovementHandler>().isDamaged)
+        if (!player.GetComponent<Player>().b_IsHit)
         {
-            player.GetComponent<PlayerMovementHandler>().isDamaged = true;
-            StartCoroutine(player.GetComponent<PlayerMovementHandler>().KnockBack(attackerTransform));
-            player.GetComponent<PlayerMovementHandler>().GetStats().hpDown(valueOfPlayerHpDown);
+            StartCoroutine(player.GetComponent<Player>().floatingState.KnockBack(attackerTransform));
+            player.GetComponent<Player>().b_IsHit = true;
+            player.GetComponent<Player>().GetPlayerStatus().hpDown(valueOfPlayerHpDown);
         }
     }
     public bool CheckPlayerCollisionToBoss(float valueOfHpDown)
     {
         if (bossCollisionBox.isCollisionWithPlayer)
         {
-            DamagingToPlayer(transform, valueOfHpDown);
+             DamagingToPlayer(transform, valueOfHpDown);
             return true;
         }
         else
@@ -193,7 +193,7 @@ public class Boss : MonoBehaviour
 
     public bool CheckPlayerDodge()
     {
-        return player.GetComponent<PlayerMovementHandler>().getIsDodge() ? true : false;
+        return player.GetComponent<Player>().b_IsDodege ? true : false;
     }
 
     public Status GetStatus()

@@ -23,7 +23,17 @@ public class PlayerSprnt : PlayerState
     }
     public override void StateActionUpdate()
     {
-        if(Input.GetButtonUp("Sprint"))
+        if (Input.GetButtonDown("Attack"))
+        {
+            playerStateMachine.ChangeState(player.offenseState);
+            return;
+        }
+        if (Input.GetButtonDown("Dodge"))
+        {
+            playerStateMachine.ChangeState(player.dodgeState);
+            return;
+        }
+        if (Input.GetButtonUp("Sprint"))
         {
             playerStateMachine.ChangeState(player.idleState);
             return;

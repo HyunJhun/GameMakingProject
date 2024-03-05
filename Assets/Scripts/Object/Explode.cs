@@ -14,7 +14,7 @@ public class Explode : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!boss.player.GetComponent<PlayerMovementHandler>().isDamaged)
+            if (!boss.player.GetComponent<Player>().b_IsHit)
             {
                 if (!boss.CheckPlayerDodge())
                 {
@@ -27,7 +27,7 @@ public class Explode : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (!boss.player.GetComponent<PlayerMovementHandler>().isDamaged)
+            if (!boss.player.GetComponent<Player>().b_IsHit)
             {
                 if (!boss.CheckPlayerDodge())
                 {

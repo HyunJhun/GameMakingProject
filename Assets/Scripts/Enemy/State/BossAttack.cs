@@ -57,7 +57,6 @@ public class BossAttack : BossState
         // 보스가 플레이어가 있는 방향으로 길이를 distanceOfDestination 만큼 "대쉬 공격" 진행. 
         Vector3 destinationOfAttack = new Vector3(attackDirection.x * distanceOfDestination, 0f, attackDirection.z * distanceOfDestination) + boss.transform.position;
         boss.transform.LookAt(destinationOfAttack);
-        Debug.Log("테스트문구");
         isAttack = false;
         while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.2f)
         {
@@ -98,7 +97,8 @@ public class BossAttack : BossState
             if (!boss.CheckPlayerDodge())
             {
                 boss.detectPlayer_AttackRange.getPlayerStatusForDamaged().hpDown(pattern_Two_Damage);
-                boss.StartCoroutine(boss.player.GetComponent<PlayerMovementHandler>().KnockBack(boss.transform));
+                boss.player.GetComponent<Player>().b_IsHit = true;
+                boss.player.GetComponent<Player>().b_IsKnockback = true;
             }
         }
     }

@@ -457,16 +457,16 @@ ModelImporter:
       - time: 0.3536546
         functionName: ToDamage
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 8d557d014610d5a4fadb800aba959517, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
       - time: 0.6960784
-        functionName: ResetIsAttackToFalse
+        functionName: ResetAttackParameter
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 3b96140db58ce704891b37681edb0021, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 4db556e4e685ab04f882a824593deb3c, type: 3}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 2
         messageOptions: 0
       transformMask: []
       maskType: 3

@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject attackCollisionBox;
     private CharacterController playerControllerBody;
     private PlayerAnimationManager playerAnimationManager;
+    private GroundChecker playerGroundChecker;
     // Reference of Others
     [Header("Other References")]
     public Transform cam;
@@ -37,6 +38,8 @@ public class Player : MonoBehaviour
     public float f_PlayerRotationSpeed { get; set; }
     public float f_PlayerDodgeSpeed { get; set; }
     public float f_PlayerLastAttackTime { get; set; }
+    public float f_PlayerKnockbackPower { get; set; }
+    public float f_PlayerMaxHeight { get; set; }
 
     // Environment
     [SerializeField] private float f_Graivty { get; set; }
@@ -47,11 +50,14 @@ public class Player : MonoBehaviour
     public bool b_IsBlock { get; set; }
     public bool b_IsSprint { get; set; }
     public bool b_IsFloating { get; set; }
+    public bool b_IsHit { get; set; }
+    public bool b_IsKnockback { get; set; }
     public bool b_IsDie { get; set; }
     void Start()
     {
         // Init Player Var
         OnInitialize();
+        stats.StaminaIncrease();
     }
 
     // Update is called once per frame
@@ -59,9 +65,14 @@ public class Player : MonoBehaviour
     {
         Environment();
 
-        if(!playerControllerBody.isGrounded)
+        if (stats.getHp() <= 0)
         {
+            playerStateMachine.ChangeState(dieState);
+            return;
+        }
+        if (b_IsKnockback){
             playerStateMachine.ChangeState(floatingState);
+            return;
         }
         playerStateMachine.currentState.StateActionUpdate();    
     }
@@ -107,6 +118,7 @@ public class Player : MonoBehaviour
         playerControllerBody = GetComponent<CharacterController>();
         stats = GetComponent<Status>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerGroundChecker = GetComponent<GroundChecker>();
         playerStateMachine.Initialize(idleState);
         // About Player
         f_PlayerWalkSpeed = 5.0f;
@@ -114,6 +126,8 @@ public class Player : MonoBehaviour
         f_PlayerRotationSpeed = 360f;
         f_PlayerDodgeSpeed = 0.8f;
         f_StaminaUsageForDodge = 10f;
+        f_PlayerKnockbackPower = 10f;
+        f_PlayerMaxHeight = 4f;
         // About Environment
         f_Graivty = -5f;
 
@@ -124,11 +138,21 @@ public class Player : MonoBehaviour
         b_IsFloating = false;
         b_IsSprint = false;
         b_IsDie = false;
+        b_IsHit = false;
+        b_IsKnockback = false;
     }
 
-    public void ResetIsAttackToFalse()
+    private void OnCollisionEnter(Collision collision)
     {
-        b_IsAttack = false;
+        if (collision.gameObject.CompareTag("Attackable")) // 플레이어에게 공격이 가능한 Object (ex. Fireball , Bomb)
+        {
+            if (!b_IsHit)
+            {
+                stats.hpDown(15);
+                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("GetHit");
+                b_IsKnockback = true;
+            }
+        }
     }
 
     // Set Functions
@@ -142,4 +166,5 @@ public class Player : MonoBehaviour
     public GameObject GetPlayerAttackCollisionBox() { return attackCollisionBox; }
     public Boss GetBossComponent() { return bossComponent; }
     public PlayerAnimationManager GetPlayerAnimationManager() { return playerAnimationManager; }
+    public GroundChecker GetPlayerGroundChecker() { return playerGroundChecker; }
 }

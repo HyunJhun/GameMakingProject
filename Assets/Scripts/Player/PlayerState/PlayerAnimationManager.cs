@@ -51,50 +51,50 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     public void PlayerAttackAnimation()
     {
-        // Init
-        attackCount = player.offenseState.GetCurrentAttack();
-
-        // Content
-        if (player.playerStateMachine.currentState != player.offenseState)
-        {
-            animator.SetBool("Attack1", false);
-            animator.SetBool("Attack2", false);
-            animator.SetBool("Attack3", false);
-        }
         animator.SetBool("isAttack", player.b_IsAttack);
-        if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
-        {
-            player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("Attack1", false);
-        }
-        if (attackCount >= 2 && AnimationPlayingCheck(0, 0.6f, "Attack1"))
-        {
-            animator.SetBool("Attack2", true);
-        }
-        if (attackCount >= 3 && AnimationPlayingCheck(0, 0.6f, "Attack2"))
-        {
-            animator.SetBool("Attack2", false);
-            animator.SetBool("Attack3", true);
-        }
-        //if (AnimationPlayingCheck(0, 0.5f, "Attack" + player.offenseState.GetCurrentAttack()))
-        //{
-        //    attackCount = player.offenseState.GetCurrentAttack();
-        //    switch(attackCount)
-        //    {
-        //        case 1:
-        //            animator.SetBool("Attack1", false);
-        //            animator.SetBool("Attack2", true);
-        //            break;
-        //        case 2:
-        //            animator.SetBool("Attack2", false);
-        //            animator.SetBool("Attack3", true);
-        //            break;
-        //        case 3:
-        //            animator.SetBool("Attack3", false);
-        //            break;
+        if (player.b_IsAttack)
+        {// Init
+            attackCount = player.offenseState.GetCurrentAttack();
 
-        //    }
-        //}
+            // Content
+            
+            if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
+            {
+                player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("Attack1", false);
+            }
+            if (attackCount >= 2 && AnimationPlayingCheck(0, 0.5f, "Attack1"))
+            {
+                animator.SetBool("Attack2", true);
+            }
+            if (attackCount >= 3 && AnimationPlayingCheck(0, 0.5f, "Attack2"))
+            {
+                animator.SetBool("Attack2", false);
+                animator.SetBool("Attack3", true);
+            }
+            //if (AnimationPlayingCheck(0, 0.5f, "Attack" + player.offenseState.GetCurrentAttack()))
+            //{
+            //    attackCount = player.offenseState.GetCurrentAttack();
+            //    switch(attackCount)
+            //    {
+            //        case 1:
+            //            animator.SetBool("Attack1", false);
+            //            animator.SetBool("Attack2", true);
+            //            break;
+            //        case 2:
+            //            animator.SetBool("Attack2", false);
+            //            animator.SetBool("Attack3", true);
+            //            break;
+            //        case 3:
+            //            animator.SetBool("Attack3", false);
+            //            break;
 
+            //    }
+            //}
+        }
+    }
+    public void ResetHitParameter()
+    {
+        player.b_IsHit = false;
     }
     public bool AnimationPlayingCheck(int currentAnimationLayerNumber, float normalizedTime, string currentAnimationName)
     {
@@ -102,6 +102,20 @@ public class PlayerAnimationManager : MonoBehaviour
             && animator.GetCurrentAnimatorStateInfo(currentAnimationLayerNumber).IsName(currentAnimationName);
     }
 
+    public bool CheckCurrentAnimationName(string currentAnimationName)
+    {
+        return player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName(currentAnimationName);
+    }
+
     // Get Function
+    public void ResetAttackParameter(int numOfAttack)
+    {
+        if (numOfAttack == 3)
+        {
+            player.b_IsAttack = false;
+            player.offenseState.SetAttackCooltime(1);
+        }
+        animator.SetBool("Attack" + numOfAttack, false);
+    }
     public Animator GetPlayerAnimator() { return animator; }
 }

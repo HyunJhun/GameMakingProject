@@ -8,7 +8,8 @@ public class PlayerDie : PlayerState
     { }
     public override void Enter()
     {
-
+        player.b_IsDie = true;
+        stats.CancelInvoke("StaminaIncrease");
     }
     public override void StateActionUpdate()
     {

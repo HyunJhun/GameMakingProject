@@ -14,13 +14,14 @@ public class Status : MonoBehaviour
     [Header("Player")]
     [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
     [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
+    [SerializeField] private Player player;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -59,7 +60,7 @@ public class Status : MonoBehaviour
     {
         if (this.stamina >= maxStamina)
             this.stamina = maxStamina;   
-        this.stamina += 1;
+        this.stamina += 0.5f;
     }
     public void InvokeCancel(string name)
     {
@@ -74,6 +75,22 @@ public class Status : MonoBehaviour
             this.hp = 0;
     }
     // 데미지 관련
+    public void ToDamage(int indexOfAttackMotion)
+    {
+        player.GetPlayerStatus().staminaDown(player.GetPlayerStatus().GetAttackStamina(indexOfAttackMotion)); // 공격 스태미너 감소
+        if (player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
+        else // 적이 있다면
+        {
+            if (player.GetBossComponent().isDie == false)
+            {
+                Status statusOfInRangeObject = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats();
+                statusOfInRangeObject.hpDown(player.GetPlayerStatus().GetAttackDamage(indexOfAttackMotion));
+                // 보스 맞는 애니메이션 추가.
+            }
+        }
+
+    }
+
     public float GetDamag()
     {
         return damage;
@@ -112,8 +129,7 @@ public class Status : MonoBehaviour
 
     public void StaminaIncrease()
     {
-        InvokeRepeating("staminaUp", 1f,1f);
-        Debug.Log("롸?");
+        InvokeRepeating("staminaUp", 1f,0.1f);
     }
     private void StaminaCheck()
     {

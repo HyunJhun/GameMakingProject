@@ -8,14 +8,17 @@ public class PlayerOffense : PlayerState
     { }
 
     int currentAttack = 0;
-
+    float attackCooltime = 0.0f;
     public override void Enter()
     {
         player.GetPlayerAttackCollisionBox().SetActive(true);
+        player.b_IsAttack = true;
         OnAttack();
     }
     public override void StateActionUpdate()
     {
+        if (attackCooltime <= 1) attackCooltime -= Time.deltaTime;
+
         if (Input.GetButtonDown("Dodge"))
         {
             playerStateMachine.ChangeState(player.dodgeState);
@@ -29,20 +32,24 @@ public class PlayerOffense : PlayerState
                 return;
             }
         }
-        if(player.f_PlayerLastAttackTime > 1.0f && !player.b_IsAttack)
+        if(player.f_PlayerLastAttackTime > 1.0f)
         {
             playerStateMachine.ChangeState(player.idleState);
             return;
         }
         if (Input.GetButtonDown("Attack")) // 한번 클릭시 체크가 안되는것은 상태가 변환했기 때문.
         {
-            OnAttack();
+            if(attackCooltime <= 0)
+                OnAttack();
         }
 
     }
     public override void StateActionFixedUpdate()
     {
-        base.StateActionFixedUpdate();
+        if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
+        {
+            player.GetPlayerController().Move(player.movingState.GetLastPlayerMoveDirection() * 0.1f * Time.fixedDeltaTime);
+        }
     }
 
     public override void Exit()
@@ -60,53 +67,29 @@ public class PlayerOffense : PlayerState
         // Content
 
         currentAttack++;
-        player.b_IsAttack = true;
+        if (player.b_IsAttack == false) player.b_IsAttack = true;
 
-        if (currentAttack > 3)
-            currentAttack = 1;
+        if (currentAttack > 3) currentAttack = 1;
 
         // Reset
-        if (player.f_PlayerLastAttackTime > 1.0f)
-            currentAttack = 1;
+        if (player.f_PlayerLastAttackTime > 1.0f) currentAttack = 1;
 
         // Call Triger;
-        if (!player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName("Attack1") && currentAttack == 1)
+        //그러니까 지금 애니메이션 상태가 attack1이 아니고 attac2와 attack3 둘다 실행이 안되고있을떄.
+
+        if (!player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack1") &&
+            !player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack2") &&
+            !player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack3"))
         {
             player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("Attack1", true);
         }
-
-        // Player Move During Attack
-        //player.StartCoroutine(MoveToAttackForward());
         // Reset Timer
         player.f_PlayerLastAttackTime = 0f;
-        Debug.Log("Last Attack is : " + currentAttack);
+        Debug.Log("Last Attack is : " + player.f_PlayerLastAttackTime);
 
-    }
-
-    public void OnDamage(int indexOfAttackMotion)
-    {
-        player.GetPlayerStatus().staminaDown(player.GetPlayerStatus().GetAttackStamina(indexOfAttackMotion)); // 공격 스태미너 감소
-        if(player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats() != null) // 적이 있다면
-        {
-            if (player.GetBossComponent().isDie == false)
-            {
-                Status statusOfInRangeObject = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats();
-                statusOfInRangeObject.hpDown(player.GetPlayerStatus().GetAttackDamage(indexOfAttackMotion));
-                // 보스 맞는 애니메이션 추가.
-            }
-        }
-    }
-    IEnumerator MoveToAttackForward()
-    {
-        yield return null;
-        float timer = 0f;
-        while (timer < 3f)
-        {
-            timer += Time.deltaTime;
-            player.GetPlayerController().Move(player.transform.forward.normalized * 1f * Time.fixedDeltaTime); 
-        }
     }
 
     // Get Function
     public int GetCurrentAttack() { return currentAttack; }
+    public void SetAttackCooltime(float time) { attackCooltime = time; }
 }
