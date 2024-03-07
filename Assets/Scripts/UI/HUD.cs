@@ -10,7 +10,7 @@ public class HUD : MonoBehaviour
     [SerializeField]private List<Status> obj_StatusList;
     [SerializeField] private Status player;
     [SerializeField] private Status boss;
-    [SerializeField] private Player playerP;
+    [SerializeField] private Enemy playerP;
     [SerializeField] private TMP_Text playerStateText;
     [Header("SliderUI")]
     [SerializeField] private Slider playerHpBar;
@@ -35,6 +35,6 @@ public class HUD : MonoBehaviour
         playerStaminaBar.value = player.getStamina();
         bossHpBar.value = boss.getHp();
 
-        playerStateText.text = playerP.playerStateMachine.currentState.ToString();
+        playerStateText.text = playerP.enemyStateMachine.currentState.ToString();
     }
 }

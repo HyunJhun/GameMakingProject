@@ -70,27 +70,12 @@ public class PlayerAnimationManager : MonoBehaviour
             {
                 animator.SetBool("Attack2", false);
                 animator.SetBool("Attack3", true);
-            }
-            //if (AnimationPlayingCheck(0, 0.5f, "Attack" + player.offenseState.GetCurrentAttack()))
-            //{
-            //    attackCount = player.offenseState.GetCurrentAttack();
-            //    switch(attackCount)
-            //    {
-            //        case 1:
-            //            animator.SetBool("Attack1", false);
-            //            animator.SetBool("Attack2", true);
-            //            break;
-            //        case 2:
-            //            animator.SetBool("Attack2", false);
-            //            animator.SetBool("Attack3", true);
-            //            break;
-            //        case 3:
-            //            animator.SetBool("Attack3", false);
-            //            break;
-
-            //    }
-            //}
+            }      
         }
+    }
+    public void PlayerDieAnimation()
+    {
+        animator.SetTrigger("isDie");
     }
     public void ResetHitParameter()
     {

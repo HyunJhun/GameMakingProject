@@ -9,7 +9,9 @@ public class PlayerDie : PlayerState
     public override void Enter()
     {
         player.b_IsDie = true;
-        stats.CancelInvoke("StaminaIncrease");
+        stats.CancelInvoke("staminaUp");
+        player.GetPlayerAnimationManager().PlayerDieAnimation();
+        
     }
     public override void StateActionUpdate()
     {

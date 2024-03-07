@@ -70,7 +70,12 @@ public class Player : MonoBehaviour
             playerStateMachine.ChangeState(dieState);
             return;
         }
-        if (b_IsKnockback){
+        if(b_IsHit)
+        {
+            playerStateMachine.ChangeState(getHitState);
+            return;
+        }
+        if (!playerControllerBody.isGrounded && b_IsKnockback){
             playerStateMachine.ChangeState(floatingState);
             return;
         }
@@ -149,7 +154,7 @@ public class Player : MonoBehaviour
             if (!b_IsHit)
             {
                 stats.hpDown(15);
-                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("GetHit");
+                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("isHit");
                 b_IsKnockback = true;
             }
         }

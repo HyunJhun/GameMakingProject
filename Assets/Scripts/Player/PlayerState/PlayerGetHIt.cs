@@ -14,6 +14,11 @@ public class PlayerGetHIt : PlayerState
     }
     public override void StateActionUpdate()
     {
+        if(player.b_IsKnockback)
+        {
+            playerStateMachine.ChangeState(player.floatingState);
+            return;
+        }
         if (player.GetPlayerAnimationManager().AnimationPlayingCheck(0, 0.6f, "GetHit"))
         {
             playerStateMachine.ChangeState(player.idleState);
