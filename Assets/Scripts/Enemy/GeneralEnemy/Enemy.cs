@@ -22,8 +22,9 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent enemyAgent;
     private Vector3 initPosition;
     [Header("Reference")]
-    [SerializeField] Player player;
-
+    [SerializeField] private Player player;
+    [SerializeField] private DetectPlayer rangeOfDetectPlayer;
+    [SerializeField] private DetectPlayer_AttackRange rangeOfAttack;
     [Header("LayerMask")]
     [SerializeField] private LayerMask WallLayerMask;
 
@@ -32,7 +33,10 @@ public class Enemy : MonoBehaviour
     public bool b_isPatrol { get; set; }
     public bool b_isDie { get; set; }
 
-    public float f_patrolLenght { get; set; }
+    public float f_patrolLength { get; set; }
+    public float f_patrolStopingDistance { get; set; }
+    public float f_chaseStopingDistacne { get; set; }
+    public List<float> AttackDamageList { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +87,13 @@ public class Enemy : MonoBehaviour
         initPosition = transform.position;
 
         f_enemyTurnSpeed = 360f;
-        f_patrolLenght = 10f;
+        f_patrolLength = 10f;
+        f_patrolStopingDistance = 1f;
+        f_chaseStopingDistacne = 5f;
+
+        AttackDamageList.Add(5f);
+        AttackDamageList.Add(7f);
+        AttackDamageList.Add(8f);
 
         b_isChase = false;
         b_isIdle = true;
@@ -95,10 +105,13 @@ public class Enemy : MonoBehaviour
     }
 
     // Get Function
+    public Player GetPlayer() { return player; }
     public Status GetEnemyStatus() { return status; }
     public NavMeshAgent GetEnemyNavMeshAgent() { return enemyAgent; }
     public Vector3 GetInitPosition() { return initPosition; }
     public LayerMask GetWallLayerMask() { return WallLayerMask; }
+    public DetectPlayer GetDetectPlayerRange() { return rangeOfDetectPlayer; }
+    public DetectPlayer_AttackRange GetAttackRange() { return rangeOfAttack; }
     // Set Function
     public void SetAgentSpeed(float speed) { enemyAgent.speed = speed; }
 }

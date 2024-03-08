@@ -26,4 +26,9 @@ public class EnemyAttack : EnemyState
     {
         base.Exit();
     }
+
+    public void ToDamage(int numOfAttack)
+    {
+
+    }
 }

@@ -5,12 +5,13 @@ using UnityEngine;
 public class DetectPlayer_AttackRange : MonoBehaviour
 {
     private Status player;
-    
+    public bool b_isPlayerInRangeOfAttack { get; set; } = false;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            b_isPlayerInRangeOfAttack = true;
             player = other.GetComponent<Status>(); // 만약 공격 사거리 안에 들어와 있다면 정보를 가져옴
         }
     }
@@ -18,6 +19,7 @@ public class DetectPlayer_AttackRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            b_isPlayerInRangeOfAttack = false;
             if (player != null)
             {
                 player = null; // 기존 정보를 초기화시켜줌

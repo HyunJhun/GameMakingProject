@@ -31,7 +31,7 @@ public class EnemyPatrol : EnemyState
     {
         OnInitialize();
         OnPatrol();
-        startPos = enemy.transform.position;
+        
     }
 
     public override void StateActionUpdate()
@@ -43,6 +43,12 @@ public class EnemyPatrol : EnemyState
             enemyStateMachine.ChangeState(enemy.returnState);
             return;
         }
+        if (enemy.GetDetectPlayerRange().isDetectPlayer)
+        {
+            enemyStateMachine.ChangeState(enemy.detectState);
+            return;
+        }
+
         if (Vector3.Distance(enemy.transform.position,enemy.GetEnemyNavMeshAgent().destination) < 1f)
         {
             enemyStateMachine.ChangeState(enemy.idleState);
@@ -50,7 +56,7 @@ public class EnemyPatrol : EnemyState
         }
         else
         {
-            Debug.DrawRay(startPos,ve * enemy.f_patrolLenght, Color.blue);
+            Debug.DrawRay(startPos,ve * enemy.f_patrolLength, Color.blue);
         }
 
     }
@@ -69,7 +75,8 @@ public class EnemyPatrol : EnemyState
     private void OnInitialize()
     {
         enemy.b_isPatrol = true;
-
+        startPos = enemy.transform.position;
+        enemy.GetEnemyNavMeshAgent().stoppingDistance = enemy.f_patrolStopingDistance;
 
         // Direction Init
         directionDictionary.Add(Direction.Forward,enemy.transform.forward);
@@ -86,7 +93,7 @@ public class EnemyPatrol : EnemyState
     {
         foreach(KeyValuePair<Direction,Vector3> pair in directionDictionary)
         {
-            if (!Physics.Raycast(enemy.transform.position, pair.Value * enemy.f_patrolLenght, out hitObject, 7, enemy.GetWallLayerMask()))
+            if (!Physics.Raycast(enemy.transform.position, pair.Value * enemy.f_patrolLength, out hitObject, 7, enemy.GetWallLayerMask()))
             {
                 movableDirectionList.Add(pair.Key);
             }
@@ -111,6 +118,8 @@ public class EnemyPatrol : EnemyState
     {
         Vector3 MoveToDirection = SelectNextPatrolPoint();
         ve = MoveToDirection;
-        enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position + (MoveToDirection * enemy.f_patrolLenght));
+        enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position + (MoveToDirection * enemy.f_patrolLength));
     }
+
+    public Vector3 GetPatrolStartPosition() { return startPos; }
 }
