@@ -20,6 +20,11 @@ public class EnemyChase : EnemyState
         {
             enemy.GetEnemyNavMeshAgent().SetDestination(enemy.GetPlayer().transform.position);
         }
+        else
+        {
+            enemyStateMachine.ChangeState(enemy.returnState);
+            return;
+        }
         if(enemy.GetAttackRange().b_isPlayerInRangeOfAttack)
         {
             enemyStateMachine.ChangeState(enemy.attackState);
@@ -33,6 +38,6 @@ public class EnemyChase : EnemyState
 
     public override void Exit()
     {
-        base.Exit();
+        enemy.b_isChase = false;
     }
 }

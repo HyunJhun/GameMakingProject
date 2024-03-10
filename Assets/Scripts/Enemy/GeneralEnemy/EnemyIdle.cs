@@ -18,8 +18,14 @@ public class EnemyIdle : EnemyState
 
     public override void StateActionUpdate()
     {
+
         if(f_timer < 2f)
-        {
+        {      
+            if (enemy.GetDetectPlayerRange().isDetectPlayer)
+            {
+                enemyStateMachine.ChangeState(enemy.detectState);
+                return;
+            }
             f_timer += Time.deltaTime;
         }
         else
@@ -27,6 +33,7 @@ public class EnemyIdle : EnemyState
             enemyStateMachine.ChangeState(enemy.patrolState);
             return;
         }
+
     }
 
     public override void Exit()

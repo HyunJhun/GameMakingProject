@@ -37,7 +37,7 @@ public class EnemyPatrol : EnemyState
     public override void StateActionUpdate()
     {
         currentPosition = enemy.transform.position;
-
+        ShotRayEightDirection();
         if (Vector3.Distance(currentPosition,enemy.GetInitPosition()) > 20) // 초기 스폰 위치에서 너무 벗어나게 되면 다시 돌아오도록 설정. 이렇게 안하면 특정 영역에 머물지 못함
         {
             enemyStateMachine.ChangeState(enemy.returnState);
@@ -56,7 +56,7 @@ public class EnemyPatrol : EnemyState
         }
         else
         {
-            Debug.DrawRay(startPos,ve * enemy.f_patrolLength, Color.blue);
+            //Debug.DrawRay(startPos,ve * enemy.f_patrolLength, Color.blue);
         }
 
     }
@@ -120,6 +120,16 @@ public class EnemyPatrol : EnemyState
         ve = MoveToDirection;
         enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position + (MoveToDirection * enemy.f_patrolLength));
     }
-
+    private void ShotRayEightDirection()
+    {
+        Debug.DrawRay(enemy.transform.position, enemy.transform.forward * 7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, enemy.transform.forward * -7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, enemy.transform.right * 7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, enemy.transform.right * -7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, (enemy.transform.forward + enemy.transform.right).normalized * 7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, (enemy.transform.forward + enemy.transform.right).normalized * -7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, (enemy.transform.forward + (-enemy.transform.right)).normalized * 7, Color.blue);
+        Debug.DrawRay(enemy.transform.position, (enemy.transform.forward + (-enemy.transform.right)).normalized * -7, Color.blue);
+    }
     public Vector3 GetPatrolStartPosition() { return startPos; }
 }

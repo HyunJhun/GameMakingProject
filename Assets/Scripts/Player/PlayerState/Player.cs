@@ -136,7 +136,7 @@ public class Player : MonoBehaviour
         // About Environment
         f_Graivty = -5f;
 
-        // About Boolean
+        // About Check State
         b_IsDodege = false;
         b_IsAttack = false;
         b_IsBlock = false;

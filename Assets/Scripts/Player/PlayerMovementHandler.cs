@@ -171,7 +171,7 @@ public class PlayerMovementHandler : MonoBehaviour
                     setState(PlayerState.Floating);
                     return;
                 }
-                attackManager.attack(); // 수정 필요
+                attackManager.attack(); 
                 return;
             case PlayerState.IdleToDodge:
                 if (stats.getStamina() >= 10)
@@ -212,7 +212,7 @@ public class PlayerMovementHandler : MonoBehaviour
                 }
                 return;
             case PlayerState.Die:
-                return; // 죽는 애니메이션 나오고 게임오버 처리 해주는 함수 추가 예정
+                return; 
         }
     }
     private void AnimationUpdate()

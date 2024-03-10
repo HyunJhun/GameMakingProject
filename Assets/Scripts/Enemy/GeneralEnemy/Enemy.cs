@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public float f_enemyPatrolSpeed;
     public float f_enemyChasingSpeed;
     private float f_enemyTurnSpeed;
+    private float f_timerForPatrol;
     private Status status;
     private NavMeshAgent enemyAgent;
     private Vector3 initPosition;
@@ -32,11 +33,13 @@ public class Enemy : MonoBehaviour
     public bool b_isChase { get; set; }
     public bool b_isPatrol { get; set; }
     public bool b_isDie { get; set; }
+    public bool b_isAttack { get; set; }
 
     public float f_patrolLength { get; set; }
     public float f_patrolStopingDistance { get; set; }
     public float f_chaseStopingDistacne { get; set; }
-    public List<float> AttackDamageList { get; set; }
+    public float f_attackRoundSpeed { get; set; }
+    public List<float> AttackDamageList { get; set; } = new List<float>();
 
     // Start is called before the first frame update
     void Start()
@@ -90,6 +93,8 @@ public class Enemy : MonoBehaviour
         f_patrolLength = 10f;
         f_patrolStopingDistance = 1f;
         f_chaseStopingDistacne = 5f;
+        f_attackRoundSpeed = 7f;
+        f_timerForPatrol = 0f;
 
         AttackDamageList.Add(5f);
         AttackDamageList.Add(7f);
@@ -99,11 +104,35 @@ public class Enemy : MonoBehaviour
         b_isIdle = true;
         b_isPatrol = false;
         b_isDie = false;
+        b_isAttack = false;
 
         SetAgentSpeed(f_enemyPatrolSpeed);
         enemyStateMachine.Initialize(idleState);
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")
+            && !collision.gameObject.CompareTag("Ground")) // 만약 플레이어나 몬스터가 아닌 대상, 즉 각종 맵 오브젝트들과 부딪힐 시
+        {
+            f_timerForPatrol = 0f;
+        }
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+        if(!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")
+            && !collision.gameObject.CompareTag("Ground")) // 만약 플레이어나 몬스터가 아닌 대상, 즉 각종 맵 오브젝트들과 부딪힐 시
+        {
+            f_timerForPatrol += Time.deltaTime;
+            if(f_timerForPatrol >= 5f)
+            {
+                if(enemyStateMachine.currentState == patrolState)
+                {
+                    enemyStateMachine.ChangeState(idleState);
+                    return;
+                }
+            }
+        }
+    }
     // Get Function
     public Player GetPlayer() { return player; }
     public Status GetEnemyStatus() { return status; }
