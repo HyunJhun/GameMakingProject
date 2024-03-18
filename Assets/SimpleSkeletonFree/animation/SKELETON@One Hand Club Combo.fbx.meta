@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4f1a0213e1717224c849b3a35ca20309
+guid: b4b72dc2dfee3a94899fbe83989eed1e
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,30 +33,51 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Standing Run Forward
+      name: One Hand Club Combo
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 22
+      lastFrame: 109
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.19297275
+        functionName: ToDamage
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.35384616
+        functionName: ToDamage
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.6
+        functionName: ToDamage
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

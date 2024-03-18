@@ -29,6 +29,13 @@ public class EnemyPatrol : EnemyState
 
     public override void Enter()
     {
+        if(Vector3.Distance(enemy.GetInitPosition(),enemy.transform.position) > enemy.f_patrolMaxDistance)
+        {
+            enemyStateMachine.ChangeState(enemy.returnState);
+            return;
+        }
+
+        enemy.GetAnimator().SetBool("isPatrol", true);
         OnInitialize();
         OnPatrol();
         
@@ -37,7 +44,7 @@ public class EnemyPatrol : EnemyState
     public override void StateActionUpdate()
     {
         currentPosition = enemy.transform.position;
-        ShotRayEightDirection();
+        //ShotRayEightDirection();
         if (Vector3.Distance(currentPosition,enemy.GetInitPosition()) > 20) // 초기 스폰 위치에서 너무 벗어나게 되면 다시 돌아오도록 설정. 이렇게 안하면 특정 영역에 머물지 못함
         {
             enemyStateMachine.ChangeState(enemy.returnState);
@@ -45,7 +52,7 @@ public class EnemyPatrol : EnemyState
         }
         if (enemy.GetDetectPlayerRange().isDetectPlayer)
         {
-            enemyStateMachine.ChangeState(enemy.detectState);
+            enemyStateMachine.ChangeState(enemy.chaseState);
             return;
         }
 
@@ -56,7 +63,7 @@ public class EnemyPatrol : EnemyState
         }
         else
         {
-            //Debug.DrawRay(startPos,ve * enemy.f_patrolLength, Color.blue);
+            Debug.DrawRay(startPos, ve * enemy.f_patrolLength, Color.blue);
         }
 
     }
@@ -67,14 +74,13 @@ public class EnemyPatrol : EnemyState
 
     public override void Exit()
     {
-        enemy.b_isPatrol = false;
+        enemy.GetAnimator().SetBool("isPatrol", false);
         movableDirectionList.Clear();
         directionDictionary.Clear();
     }
 
     private void OnInitialize()
     {
-        enemy.b_isPatrol = true;
         startPos = enemy.transform.position;
         enemy.GetEnemyNavMeshAgent().stoppingDistance = enemy.f_patrolStopingDistance;
 

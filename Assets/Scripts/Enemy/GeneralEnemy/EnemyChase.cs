@@ -9,27 +9,28 @@ public class EnemyChase : EnemyState
 
     public override void Enter()
     {
-        enemy.b_isChase = true;
+        enemy.GetAnimator().SetBool("isChase", true);
         enemy.SetAgentSpeed(enemy.f_enemyChasingSpeed);
         enemy.GetEnemyNavMeshAgent().stoppingDistance = enemy.f_chaseStopingDistacne;
     }
 
     public override void StateActionUpdate()
     {
-        if(Vector3.Distance(enemy.GetPlayer().transform.position,enemy.transform.position) < 20f)
-        {
-            enemy.GetEnemyNavMeshAgent().SetDestination(enemy.GetPlayer().transform.position);
-        }
-        else
-        {
-            enemyStateMachine.ChangeState(enemy.returnState);
-            return;
-        }
         if(enemy.GetAttackRange().b_isPlayerInRangeOfAttack)
         {
-            enemyStateMachine.ChangeState(enemy.attackState);
+            enemyStateMachine.ChangeState(enemy.readyForAttackState);
             return;
         }
+
+        if(Vector3.Distance(enemy.GetPlayer().transform.position,enemy.transform.position) > enemy.f_chaseMaxDistance)
+        {
+            enemyStateMachine.ChangeState(enemy.patrolState);
+            return;
+            
+        } 
+        enemy.GetEnemyNavMeshAgent().SetDestination(enemy.GetPlayer().transform.position);
+        
+        
     }
     public override void StateActionFixedUpdate()
     {
@@ -38,6 +39,7 @@ public class EnemyChase : EnemyState
 
     public override void Exit()
     {
-        enemy.b_isChase = false;
+        enemy.GetAnimator().SetBool("isChase", false);
+        enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position);
     }
 }

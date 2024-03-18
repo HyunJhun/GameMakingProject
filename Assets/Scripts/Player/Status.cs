@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 public class Status : MonoBehaviour
 {
     [Header("Stats")]
@@ -15,13 +13,19 @@ public class Status : MonoBehaviour
     [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
     [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
     [SerializeField] private Player player;
-    
+
+    [Header("Enemy")]
+    [SerializeField] private Enemy enemy;
+    [SerializeField] private Boss boss;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Player>();
+        enemy = GetComponent<Enemy>();
+        boss = GetComponent<Boss>();
     }
 
     // Update is called once per frame
@@ -31,7 +35,7 @@ public class Status : MonoBehaviour
     // 스태미너 관련
     private void staminaDown_Sprint()
     {
-        if(this.stamina > 0)
+        if (this.stamina > 0)
             this.stamina -= 1f;
         if (this.stamina <= 0)
         {
@@ -40,7 +44,7 @@ public class Status : MonoBehaviour
     }
     public void staminaDown_Dodge(float value)
     {
-        if(this.stamina > 0)
+        if (this.stamina > 0)
             this.stamina -= value;
         if (this.stamina <= 0)
         {
@@ -59,7 +63,7 @@ public class Status : MonoBehaviour
     private void staminaUp()
     {
         if (this.stamina >= maxStamina)
-            this.stamina = maxStamina;   
+            this.stamina = maxStamina;
         this.stamina += 0.5f;
     }
     public void InvokeCancel(string name)
@@ -69,7 +73,7 @@ public class Status : MonoBehaviour
     // 체력 관련
     public void hpDown(float hp)
     {
-        if(this.hp > 0)
+        if (this.hp > 0)
             this.hp -= hp;
         if (this.hp <= 0)
             this.hp = 0;
@@ -77,18 +81,27 @@ public class Status : MonoBehaviour
     // 데미지 관련
     public void ToDamage(int indexOfAttackMotion)
     {
-        player.GetPlayerStatus().staminaDown(player.GetPlayerStatus().GetAttackStamina(indexOfAttackMotion)); // 공격 스태미너 감소
-        if (player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
-        else // 적이 있다면
+        if(enemy != null) // 몬스터의 공격
         {
-            if (player.GetBossComponent().isDie == false)
-            {
-                Status statusOfInRangeObject = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats();
-                statusOfInRangeObject.hpDown(player.GetPlayerStatus().GetAttackDamage(indexOfAttackMotion));
-                // 보스 맞는 애니메이션 추가.
-            }
-        }
+            if (enemy.GetAttackRangeBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
 
+            enemy.GetPlayer().b_IsHit = true;
+            Status statusOfInRangeObject = enemy.GetAttackRangeBox().GetComponent<AttackRangeCheck>().getStats();
+            statusOfInRangeObject.hpDown(enemy.GetEnemyStatus().GetAttackDamage(indexOfAttackMotion));
+        }
+        else // 플레이어의 공격
+        {
+            player.GetPlayerStatus().staminaDown(player.GetPlayerStatus().GetAttackStamina(indexOfAttackMotion)); // 공격 스태미너 감소
+            if (player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
+
+            Status statusOfInRangeObject = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats();
+            Boss bossObj = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetBoss();
+            Enemy enemyObj = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetEnemy();
+            if (enemyObj != null) enemyObj.b_isGetHit = true;
+            if (bossObj != null) bossObj.isGetHit = true;
+            statusOfInRangeObject.hpDown(player.GetPlayerStatus().GetAttackDamage(indexOfAttackMotion));
+            
+        }
     }
 
     public float GetDamag()
@@ -129,7 +142,7 @@ public class Status : MonoBehaviour
 
     public void StaminaIncrease()
     {
-        InvokeRepeating("staminaUp", 1f,0.1f);
+        InvokeRepeating("staminaUp", 1f, 0.1f);
     }
     private void StaminaCheck()
     {

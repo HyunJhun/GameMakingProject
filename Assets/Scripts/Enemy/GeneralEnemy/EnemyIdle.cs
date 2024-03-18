@@ -1,43 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyIdle : EnemyState
 {
-    public EnemyIdle(Enemy enemy,Status stats,EnemyStateMachine enemyStateMachine) : base(enemy,stats,enemyStateMachine)
+    public EnemyIdle(Enemy enemy, Status stats, EnemyStateMachine enemyStateMachine) : base(enemy, stats, enemyStateMachine)
     { }
 
     // Local Var
-    private float f_timer;
+    private float timer;
+    private float waitingTime; 
 
     public override void Enter()
     {
-        enemy.b_isIdle = true;
-        f_timer = 0f;
+        enemy.GetAnimator().SetBool("isIdle", true);
+        timer = 0f;
+        selectWaitingTime();
     }
 
     public override void StateActionUpdate()
     {
-
-        if(f_timer < 2f)
-        {      
-            if (enemy.GetDetectPlayerRange().isDetectPlayer)
-            {
-                enemyStateMachine.ChangeState(enemy.detectState);
-                return;
-            }
-            f_timer += Time.deltaTime;
-        }
-        else
+        if (timer > waitingTime)
         {
             enemyStateMachine.ChangeState(enemy.patrolState);
             return;
         }
 
+        timer += Time.deltaTime;
+
+
     }
 
     public override void Exit()
     {
-        enemy.b_isIdle = false;
+        enemy.GetAnimator().SetBool("isIdle", false);
     }
+
+    private void selectWaitingTime()
+    {
+        waitingTime = Random.Range(0, 2f);
+
+    }
+    
 }

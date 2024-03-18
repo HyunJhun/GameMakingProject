@@ -85,7 +85,6 @@ public class PlayerOffense : PlayerState
         }
         // Reset Timer
         player.f_PlayerLastAttackTime = 0f;
-        Debug.Log("Last Attack is : " + player.f_PlayerLastAttackTime);
 
     }
 

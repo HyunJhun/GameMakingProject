@@ -18,6 +18,6 @@ public class EnemyState
     public virtual void StateActionUpdate() { }
 
     public virtual void StateActionFixedUpdate() { }
-    public virtual void Enter() { Debug.Log("State Enter"); }
+    public virtual void Enter() {}
     public virtual void Exit() { }
 }

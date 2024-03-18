@@ -18,6 +18,7 @@ public class BossAnimationHandler : MonoBehaviour
         {
             bossAnimator.SetTrigger("DetectPlayer");
         }
+        
 
 
     }

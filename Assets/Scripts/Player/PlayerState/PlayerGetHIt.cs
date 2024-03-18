@@ -9,7 +9,7 @@ public class PlayerGetHIt : PlayerState
 
     public override void Enter()
     {
-        player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("isHit");
+        player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("GetHit");
         player.b_IsHit = false;
     }
     public override void StateActionUpdate()

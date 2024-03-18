@@ -6,10 +6,12 @@ public class EnemyDie : EnemyState
 {
     public EnemyDie(Enemy enemy, Status stats, EnemyStateMachine enemyStateMachine) : base(enemy, stats, enemyStateMachine)
     { }
-
     public override void Enter()
     {
-        base.Enter();
+        enemy.GetEnemyNavMeshAgent().enabled = false;
+        enemy.enabled = false;
+        enemy.GetAnimator().SetTrigger("Die");
+        GameObject.Destroy(enemy.gameObject,5f);
     }
 
     public override void StateActionUpdate()

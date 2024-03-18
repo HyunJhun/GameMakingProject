@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     private CharacterController playerControllerBody;
     private PlayerAnimationManager playerAnimationManager;
     private GroundChecker playerGroundChecker;
+    [SerializeField] private AttackRangeCheck attackRangeBox;
     // Reference of Others
     [Header("Other References")]
     public Transform cam;
@@ -124,7 +125,7 @@ public class Player : MonoBehaviour
         stats = GetComponent<Status>();
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerGroundChecker = GetComponent<GroundChecker>();
-        playerStateMachine.Initialize(idleState);
+        
         // About Player
         f_PlayerWalkSpeed = 5.0f;
         f_PlayerSprintSpeed = 8.0f;
@@ -145,6 +146,9 @@ public class Player : MonoBehaviour
         b_IsDie = false;
         b_IsHit = false;
         b_IsKnockback = false;
+
+        playerStateMachine.Initialize(idleState);
+        attackRangeBox.SetType(0);
     }
 
     private void OnCollisionEnter(Collision collision)

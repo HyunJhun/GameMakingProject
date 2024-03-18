@@ -29,6 +29,7 @@ public class Boss : MonoBehaviour
     public bool isDie { get; set; } = false;
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
+    public bool isGetHit { get; set; }
     // Raycast
 
     public NavMeshAgent agent { get; set; }
@@ -75,6 +76,7 @@ public class Boss : MonoBehaviour
         // 기본 값 처리
         isBack = false;
         isCollision = false;
+        isGetHit = false;
         bossStateMachine.Initialize(idleState);
 
         //
@@ -93,6 +95,12 @@ public class Boss : MonoBehaviour
             bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
         }
         else agent.isStopped = true;
+        if(isGetHit)
+        {
+            bossAnimationHandler.GetBossAnimator().SetTrigger("GetHit");
+            isGetHit = false;
+
+        }
 
         if (stats.getHp() <= 0)
         {
