@@ -1,12 +1,29 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackRangeCheck : MonoBehaviour
 {
     private Status triggerObjStatus;
     private Boss bossTriggered;
-    private Enemy enemyTriggered;
+    [SerializeField]private List<Enemy> enemyTriggeredList = new List<Enemy>();
+
     private enum Type { Player,Monster}
     private Type type;
+
+    private void Update()
+    {
+        // 죽은 적은 리스트에서 삭제
+        foreach(Enemy monster in enemyTriggeredList)
+        {
+            if (monster == null)
+            {
+                enemyTriggeredList.Remove(monster);
+                break;
+            }
+            
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other == null) { return; }// 컬리젼 되는게 있다면
@@ -16,37 +33,56 @@ public class AttackRangeCheck : MonoBehaviour
             case Type.Player:
                 if (other.CompareTag("Enemy"))
                 {
-                    triggerObjStatus = other.GetComponent<Status>();
                     bossTriggered = other.GetComponent<Boss>();
-                    enemyTriggered = other.GetComponent<Enemy>();
-                    Debug.Log("name is : " + triggerObjStatus.name);
+                    preventDuplicateAdd(other.GetComponent<Enemy>());
                 }
                 break;
             case Type.Monster:
                 if (other.CompareTag("Player"))
                 {
                     triggerObjStatus = other.GetComponent<Status>();
-                    Debug.Log("name is : " + triggerObjStatus.name);
                 }
                 break;
 
             default:
                 triggerObjStatus = null;
                 bossTriggered = null;
-                enemyTriggered = null;
                 break;
         }
 
 
     }
 
+    // 몬스터 리스트를 Trigger를 통해 추가할 때, 동일한 몬스터가 추가되는 것을 방지.
+    private void preventDuplicateAdd(Enemy inRangeEnemy) 
+    {
+        bool isDuplicated = false;
+
+        if (enemyTriggeredList.Count == 0)
+        {
+            enemyTriggeredList.Add(inRangeEnemy);
+            return;
+        }
+
+        for (int i = 0; i < enemyTriggeredList.Count; i++)
+        {
+            if (enemyTriggeredList[i].name == inRangeEnemy.name)
+            {
+                isDuplicated = true;
+                break;
+            }
+        }
+        if (!isDuplicated) enemyTriggeredList.Add(inRangeEnemy);
+    }
+
+
     private void OnTriggerExit(Collider other)
     {
         if (triggerObjStatus == null) return;
         
-
         triggerObjStatus = null;
     }
+
     // Get
     public Status getStats()
     {
@@ -56,11 +92,11 @@ public class AttackRangeCheck : MonoBehaviour
             return null;
     }
 
-    public Enemy GetEnemy()
+    public List<Enemy> GetTriggeredEnemyList()
     {
-        if (enemyTriggered == null) return null;
+        if (enemyTriggeredList == null) return null;
 
-        return enemyTriggered;
+        return enemyTriggeredList;
     }
 
     public Boss GetBoss()

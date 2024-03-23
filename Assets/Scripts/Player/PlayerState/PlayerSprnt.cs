@@ -33,6 +33,11 @@ public class PlayerSprnt : PlayerState
             playerStateMachine.ChangeState(player.dodgeState);
             return;
         }
+        if (player.GetKeyInputManager().CheckSkillKeyInput())
+        {
+            playerStateMachine.ChangeState(player.spellCastingState);
+            return;
+        }
         if (Input.GetButtonUp("Sprint"))
         {
             playerStateMachine.ChangeState(player.idleState);

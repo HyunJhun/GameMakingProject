@@ -9,6 +9,7 @@ TagManager:
   - BackPoint
   - Obstacle
   - Attackable
+  - AttackBox
   layers:
   - Default
   - TransparentFX

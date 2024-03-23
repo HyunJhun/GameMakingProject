@@ -43,7 +43,6 @@ public class PlayerDodge : PlayerState
         // Init
         timer = 0f;
         moveDir = player.movingState.GetLastPlayerMoveDirection();
-        Debug.Log(moveDir.magnitude);
         // Content
         player.GetPlayerStatus().staminaDown_Dodge(player.f_StaminaUsageForDodge);
 

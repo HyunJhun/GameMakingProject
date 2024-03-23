@@ -31,6 +31,11 @@ public class PlayerOffense : PlayerState
                 playerStateMachine.ChangeState(player.movingState);
                 return;
             }
+            if(player.GetKeyInputManager().CheckSkillKeyInput())
+            {
+                playerStateMachine.ChangeState(player.spellCastingState);
+                return;
+            }
         }
         if(player.f_PlayerLastAttackTime > 1.0f)
         {
@@ -54,6 +59,7 @@ public class PlayerOffense : PlayerState
 
     public override void Exit()
     {
+        player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetTriggeredEnemyList().Clear();
         player.GetPlayerAttackCollisionBox().SetActive(false);
         player.b_IsAttack = false;
         for(int i = 1; i < 4; i++)
@@ -88,6 +94,10 @@ public class PlayerOffense : PlayerState
 
     }
 
+    public void Skill_SwordJudgment()
+    {
+
+    }
     // Get Function
     public int GetCurrentAttack() { return currentAttack; }
     public void SetAttackCooltime(float time) { attackCooltime = time; }

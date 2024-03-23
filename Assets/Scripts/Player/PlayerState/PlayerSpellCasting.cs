@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerSpellCasting : PlayerState
+{
+    public PlayerSpellCasting(Player player,Status stats,PlayerStateMachine playerStateMachine) : base(player,stats,playerStateMachine)
+    {
+
+    }
+    // 1. z,x,c 중 어떤 키가 입력되었는지 체크
+    // 2. 각 키를 기반으로 어떤 스킬이 재생될 것인지 체크
+    // 3. 스킬
+    public override void Enter()
+    {
+        SelectSkillByKeyInput();
+    }
+
+    public override void StateActionUpdate()
+    {
+        checkSKillExecute();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    private void checkSKillExecute()
+    {
+        if(player.GetPlayerAnimationManager().CheckCurrentAnimationName("S_SwordJudgment"))
+        {
+            if(player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
+            {
+                playerStateMachine.ChangeState(player.idleState);
+                return;
+            }
+        }
+    }
+
+    public void SelectSkillByKeyInput()
+    {
+        string currentKey = player.GetKeyInputManager().GetCurrentInputKey().ToString();
+        Debug.Log(currentKey);
+
+        switch(currentKey)
+        {
+            case "Z":
+                swordJudgment();
+                break;
+            case "X":
+                break;
+            case "C":
+                break;
+
+        }
+    }
+
+    private void swordJudgment()
+    {
+        stats.MpDown(stats.GetSkillMpUsage(0));
+
+
+        player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("SwordJudgment");
+        player.GetComponent<ParticleManager>().SkillAttackParticleInstance(0);
+    }
+}

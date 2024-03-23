@@ -60,21 +60,21 @@ ModelImporter:
       - time: 0.19297275
         functionName: ToDamage
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: dfa1483ce4cea7e43b1dc41f7690a37c, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.35384616
         functionName: ToDamage
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: dfa1483ce4cea7e43b1dc41f7690a37c, type: 3}
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
       - time: 0.6
         functionName: ToDamage
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: a4ff226272b54464e99e459ff7e8c644, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: dfa1483ce4cea7e43b1dc41f7690a37c, type: 3}
         floatParameter: 0
         intParameter: 2
         messageOptions: 0

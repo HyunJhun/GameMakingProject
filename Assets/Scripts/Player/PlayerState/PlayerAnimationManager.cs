@@ -92,7 +92,7 @@ public class PlayerAnimationManager : MonoBehaviour
         return player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).IsName(currentAnimationName);
     }
 
-    // Get Function
+    
     public void ResetAttackParameter(int numOfAttack)
     {
         if (numOfAttack == 3)
@@ -102,5 +102,7 @@ public class PlayerAnimationManager : MonoBehaviour
         }
         animator.SetBool("Attack" + numOfAttack, false);
     }
+    // Get Function
+
     public Animator GetPlayerAnimator() { return animator; }
 }

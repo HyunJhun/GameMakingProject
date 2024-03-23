@@ -7,11 +7,15 @@ public class Status : MonoBehaviour
     [SerializeField] private float maxHp;
     [SerializeField] private float stamina;
     [SerializeField] private float maxStamina;
+    [SerializeField] private float mp;
+    [SerializeField] private float maxMp;
     [SerializeField] private float damage;
 
     [Header("Player")]
-    [SerializeField] private List<float> attackStamina; // 0~2 : OneHanded , 3~5 : TwoHanded
-    [SerializeField] private List<float> attackDamage; // 0~2 : OneHanded , 3~5 : TwoHanded
+    [SerializeField] private List<float> attackStamina = new List<float>(); // 0~2 : OneHanded , 3~5 : TwoHanded
+    [SerializeField] private List<float> attackDamage = new List<float>(); // 0~2 : OneHanded , 3~5 : TwoHanded
+    [SerializeField] private List<float> skillDamage = new List<float>(); // 0 : SwordJudgment
+    [SerializeField] private List<float> skillMpUsage = new List<float>(); // 0: SwordJudgment
     [SerializeField] private Player player;
 
     [Header("Enemy")]
@@ -71,38 +75,22 @@ public class Status : MonoBehaviour
         CancelInvoke(name);
     }
     // 체력 관련
-    public void hpDown(float hp)
+    public void hpDown(float hpDeclineRate)
     {
         if (this.hp > 0)
-            this.hp -= hp;
+            this.hp -= hpDeclineRate;
         if (this.hp <= 0)
             this.hp = 0;
     }
-    // 데미지 관련
-    public void ToDamage(int indexOfAttackMotion)
+
+    // 마나 관련
+
+    public void MpDown(float mpDeclineRate)
     {
-        if(enemy != null) // 몬스터의 공격
-        {
-            if (enemy.GetAttackRangeBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
-
-            enemy.GetPlayer().b_IsHit = true;
-            Status statusOfInRangeObject = enemy.GetAttackRangeBox().GetComponent<AttackRangeCheck>().getStats();
-            statusOfInRangeObject.hpDown(enemy.GetEnemyStatus().GetAttackDamage(indexOfAttackMotion));
-        }
-        else // 플레이어의 공격
-        {
-            player.GetPlayerStatus().staminaDown(player.GetPlayerStatus().GetAttackStamina(indexOfAttackMotion)); // 공격 스태미너 감소
-            if (player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats() == null) return;// 공격 범위 안에 적이 존재하지 않는다면
-
-            Status statusOfInRangeObject = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().getStats();
-            Boss bossObj = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetBoss();
-            Enemy enemyObj = player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetEnemy();
-            if (enemyObj != null) enemyObj.b_isGetHit = true;
-            if (bossObj != null) bossObj.isGetHit = true;
-            statusOfInRangeObject.hpDown(player.GetPlayerStatus().GetAttackDamage(indexOfAttackMotion));
-            
-        }
+        if (this.mp <= 0) this.mp = 0;
+        else this.mp -= mpDeclineRate; 
     }
+    // 데미지 관련
 
     public float GetDamag()
     {
@@ -116,6 +104,8 @@ public class Status : MonoBehaviour
     {
         return attackStamina[idx];
     }
+    public float GetSkillAttackDamage(int idx) { return skillDamage[idx]; }
+    public float GetSkillMpUsage(int idx) { return skillMpUsage[idx]; }
     public float getStamina()
     {
         return stamina;
@@ -131,6 +121,19 @@ public class Status : MonoBehaviour
         return maxHp;
     }
 
+    public float GetCurrentMp() { return mp; }
+    public float GetMaxMp() { return maxMp; }
+
+    public Boss GetBoss()
+    {
+        if (boss == null) return null;
+        return boss;
+    }
+    public Enemy GetEnemy()
+    {
+        if (enemy == null) return null;
+        return enemy;
+    }
     public void SetBossHpToMaxHp()
     {
         hp = maxHp;

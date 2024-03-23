@@ -27,6 +27,11 @@ public class PlayerIdle : PlayerState
             playerStateMachine.ChangeState(player.dodgeState);
             return;
         }
+        if (player.GetKeyInputManager().CheckSkillKeyInput())
+        {
+            playerStateMachine.ChangeState(player.spellCastingState);
+            return;
+        }
     }
     public override void Exit()
     {

@@ -38,6 +38,7 @@ public class Enemy : MonoBehaviour
     public bool b_isAttack { get; set; }
     public bool b_isGetHit { get; set; }
 
+    public bool bApaa = false;
     public float f_patrolLength { get; set; }
     public float f_patrolStopingDistance { get; set; }
     public float f_chaseStopingDistacne { get; set; }
@@ -129,9 +130,19 @@ public class Enemy : MonoBehaviour
         attackRangeBox.GetComponent<AttackRangeCheck>().SetType(1);
     }
 
-    private void getHit()
+    public void ToDamage(int indexOfAttackMotion)
     {
+        if (attackRangeBox.GetComponent<AttackRangeCheck>().getStats() == null) return;
+
+        // 1. 보스는 애니메이션만 취하고 체력만 깎이면 됨
+        // 2. 일반몹은 플레이어가 공격시 GetHit 상태로 진입해야 하며 이 때, 공격을 하던 도중이여도 진입을 하게 되므로 강제로 애니메이션을 멈춰주어야 한다.
+        // 3. 플레이어는 공격시 스태미너가 소모되야하는 추가적인 작업이 필요하다. 또한 플레이어는 피격시 공격을 할 수 없게 된다.
+
+        player.b_IsHit = true;
+        attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion));
+     
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")

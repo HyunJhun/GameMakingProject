@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public PlayerSprnt sprintState { get; set; }
     public PlayerDodge dodgeState { get; set; }
     public PlayerOffense offenseState { get; set; }
+    public PlayerSpellCasting spellCastingState { get; set; }
     public PlayerDefense defenseState { get; set; }
     public PlayerGetHIt getHitState { get; set; }
     public PlayerFloating floatingState { get; set; }
@@ -29,10 +30,11 @@ public class Player : MonoBehaviour
     [Header("Other References")]
     public Transform cam;
     [SerializeField] private Boss bossComponent;
+    private KeyInputManager keyInputManager;
     // Status
     [Header("Status")]
     private Status stats;
-
+    [SerializeField] private float f_attackMoveSpeed = 0.004f;
     public float f_StaminaUsageForDodge { get; set; }
     public float f_PlayerWalkSpeed { get; set; }
     public float f_PlayerSprintSpeed { get; set; }
@@ -41,6 +43,7 @@ public class Player : MonoBehaviour
     public float f_PlayerLastAttackTime { get; set; }
     public float f_PlayerKnockbackPower { get; set; }
     public float f_PlayerMaxHeight { get; set; }
+    
 
     // Environment
     [SerializeField] private float f_Graivty { get; set; }
@@ -80,11 +83,13 @@ public class Player : MonoBehaviour
             playerStateMachine.ChangeState(floatingState);
             return;
         }
-        playerStateMachine.currentState.StateActionUpdate();    
+        playerStateMachine.currentState.StateActionUpdate();
+        attackMoving();
     }
     private void FixedUpdate()
     {
         playerStateMachine.currentState.StateActionFixedUpdate();
+        
     }
     // Function of Environment
 
@@ -110,21 +115,24 @@ public class Player : MonoBehaviour
         // Init stateMachine
         playerStateMachine = new PlayerStateMachine();
 
+        // Init References
+        playerControllerBody = GetComponent<CharacterController>();
+        stats = GetComponent<Status>();
+        playerAnimationManager = GetComponent<PlayerAnimationManager>();
+        playerGroundChecker = GetComponent<GroundChecker>();
+        keyInputManager = GetComponent<KeyInputManager>();
+
         // Init state
         idleState = new PlayerIdle(this, stats, playerStateMachine);
         movingState = new PlayerMoving(this, stats, playerStateMachine);
         sprintState = new PlayerSprnt(this, stats, playerStateMachine);
         dodgeState = new PlayerDodge(this, stats, playerStateMachine);
         offenseState = new PlayerOffense(this, stats, playerStateMachine);
+        spellCastingState = new PlayerSpellCasting(this, stats, playerStateMachine);
         defenseState = new PlayerDefense(this, stats, playerStateMachine);
         getHitState = new PlayerGetHIt(this, stats, playerStateMachine);
         floatingState = new PlayerFloating(this, stats, playerStateMachine);
         dieState = new PlayerDie(this, stats, playerStateMachine);
-        // Init References
-        playerControllerBody = GetComponent<CharacterController>();
-        stats = GetComponent<Status>();
-        playerAnimationManager = GetComponent<PlayerAnimationManager>();
-        playerGroundChecker = GetComponent<GroundChecker>();
         
         // About Player
         f_PlayerWalkSpeed = 5.0f;
@@ -164,6 +172,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    
+    public void ToDamage(int indexOfAttackMotion)
+    {
+        stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
+        if (attackRangeBox.GetTriggeredEnemyList().Count == 0) return;
+
+        foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
+        {
+            enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+            enemy.b_isGetHit = true;
+        }
+        if (attackRangeBox.GetBoss() != null) attackRangeBox.GetBoss().isGetHit = true;
+
+    }
+    private void attackMoving()
+    {
+        if (playerAnimationManager.CheckCurrentAnimationName("Attack1") ||
+            playerAnimationManager.CheckCurrentAnimationName("Attack2") ||
+            playerAnimationManager.CheckCurrentAnimationName("Attack3"))
+        {
+            Debug.Log("±×¾Æ¾Ç");
+            transform.position += transform.forward * f_attackMoveSpeed * Time.fixedDeltaTime;
+        }
+    }
     // Set Functions
 
 
@@ -176,4 +208,5 @@ public class Player : MonoBehaviour
     public Boss GetBossComponent() { return bossComponent; }
     public PlayerAnimationManager GetPlayerAnimationManager() { return playerAnimationManager; }
     public GroundChecker GetPlayerGroundChecker() { return playerGroundChecker; }
+    public KeyInputManager GetKeyInputManager() { return keyInputManager; }
 }

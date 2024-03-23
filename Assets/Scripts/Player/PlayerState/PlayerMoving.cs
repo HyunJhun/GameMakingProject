@@ -34,6 +34,11 @@ public class PlayerMoving : PlayerState
             playerStateMachine.ChangeState(player.offenseState);
             return;
         }
+        if (player.GetKeyInputManager().CheckSkillKeyInput())
+        {
+            playerStateMachine.ChangeState(player.spellCastingState);
+            return;
+        }
     }
     public override void StateActionFixedUpdate()
     {

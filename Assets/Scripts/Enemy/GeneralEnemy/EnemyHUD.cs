@@ -27,13 +27,12 @@ public class EnemyHUD : MonoBehaviour
 
     private void calculateHpByWidth()
     {
-        float hpByWidth = Mathf.Clamp(enemyStats.getHp() * hpBar.rect.width / enemyStats.GetMaxHP(), enemyStats.getHp() * hpBar.rect.width / enemyStats.GetMaxHP(), maxHpBarWidth);
+        float hpByWidth = enemyStats.getHp() * maxHpBarWidth / enemyStats.GetMaxHP();
 
         // 왜 sizeDelta를 좀 더 알아봐야할거같음.
 
         hpBar.sizeDelta = new Vector2(hpByWidth, hpBar.rect.height);
 
-        Debug.Log("New Width is : " + hpByWidth + " and sizeDelta is : " + hpBar.sizeDelta);
     }
 
 
