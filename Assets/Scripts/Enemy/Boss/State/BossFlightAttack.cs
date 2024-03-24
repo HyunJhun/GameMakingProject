@@ -13,9 +13,9 @@ public class BossFlightAttack : BossState
     public int patternSelectNumber { get; set; } = -1; // 0 : 파이어볼 , 1 : 활강 돌진 , 2 : 폭탄 투하
     private bool isFlightAttack;
     // damage
-    private float pattern_Zero_Damage = 13f;
+    //private float pattern_Zero_Damage = 13f;
     private float pattern_One_Damage = 15f;
-    private float pattern_Two_Damage = 16f;
+    //private float pattern_Two_Damage = 16f;
 
 
     // DropBomb Property

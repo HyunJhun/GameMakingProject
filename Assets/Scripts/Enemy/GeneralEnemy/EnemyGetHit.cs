@@ -15,7 +15,7 @@ public class EnemyGetHit : EnemyState
 
     public override void StateActionUpdate()
     {
-        if(enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
+        if(enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
         {
             enemyStateMachine.ChangeState(enemy.patrolState);
             return;
@@ -29,6 +29,7 @@ public class EnemyGetHit : EnemyState
 
     public override void Exit()
     {
+        
         enemy.GetEnemyNavMeshAgent().enabled = true;
         enemy.b_isGetHit = false;
     }

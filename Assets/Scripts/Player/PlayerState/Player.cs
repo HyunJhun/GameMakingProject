@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-
     // State
     public PlayerStateMachine playerStateMachine { get; set; }
     public PlayerIdle idleState { get; set; }
@@ -26,6 +24,7 @@ public class Player : MonoBehaviour
     private PlayerAnimationManager playerAnimationManager;
     private GroundChecker playerGroundChecker;
     [SerializeField] private AttackRangeCheck attackRangeBox;
+    private SkillAttackManager skillManger;
     // Reference of Others
     [Header("Other References")]
     public Transform cam;
@@ -121,6 +120,7 @@ public class Player : MonoBehaviour
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerGroundChecker = GetComponent<GroundChecker>();
         keyInputManager = GetComponent<KeyInputManager>();
+        skillManger = GetComponent<SkillAttackManager>();
 
         // Init state
         idleState = new PlayerIdle(this, stats, playerStateMachine);
@@ -172,18 +172,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    
     public void ToDamage(int indexOfAttackMotion)
     {
         stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
-        if (attackRangeBox.GetTriggeredEnemyList().Count == 0) return;
-
-        foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
+        if (attackRangeBox.GetTriggeredEnemyList().Count > 0)
         {
-            enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
-            enemy.b_isGetHit = true;
+            foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
+            {
+                enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+                enemy.b_isGetHit = true;
+            }
         }
-        if (attackRangeBox.GetBoss() != null) attackRangeBox.GetBoss().isGetHit = true;
+        if (attackRangeBox.GetBoss() != null)
+        {
+            attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+            attackRangeBox.GetBoss().isGetHit = true;
+            Debug.Log("??");
+        }
 
     }
     private void attackMoving()
@@ -192,7 +197,6 @@ public class Player : MonoBehaviour
             playerAnimationManager.CheckCurrentAnimationName("Attack2") ||
             playerAnimationManager.CheckCurrentAnimationName("Attack3"))
         {
-            Debug.Log("±×¾Æ¾Ç");
             transform.position += transform.forward * f_attackMoveSpeed * Time.fixedDeltaTime;
         }
     }
@@ -209,4 +213,5 @@ public class Player : MonoBehaviour
     public PlayerAnimationManager GetPlayerAnimationManager() { return playerAnimationManager; }
     public GroundChecker GetPlayerGroundChecker() { return playerGroundChecker; }
     public KeyInputManager GetKeyInputManager() { return keyInputManager; }
+    public SkillAttackManager GetSkillManger() { return skillManger; }
 }

@@ -83,6 +83,11 @@ public class Status : MonoBehaviour
             this.hp = 0;
     }
 
+    public void hpIncrease(float hpInClineRate)
+    {
+        hp += hpInClineRate;
+        if (hp > maxHp) hp = maxHp;
+    }
     // 마나 관련
 
     public void MpDown(float mpDeclineRate)

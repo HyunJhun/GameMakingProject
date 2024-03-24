@@ -20225,7 +20225,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 0
-    type: 4
+    type: 5
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -58706,7 +58706,7 @@ GameObject:
   - component: {fileID: 5893550470567966238}
   m_Layer: 0
   m_Name: S_SwordJudgment
-  m_TagString: Untagged
+  m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62573,21 +62573,18 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
     colliderQueryMode: 0
     radiusScale: 1
     primitives:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 3094101230861379654, guid: 23d94bbfd2a121d47a26f1703a547a7f, type: 3}
+    - {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
+    - {fileID: 1186464330249201199, guid: 1edb0558254c3614d9649cd36134fc5e, type: 3}
   SubModule:
     serializedVersion: 2
     enabled: 0

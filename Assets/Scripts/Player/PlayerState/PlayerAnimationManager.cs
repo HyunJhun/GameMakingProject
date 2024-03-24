@@ -10,7 +10,6 @@ public class PlayerAnimationManager : MonoBehaviour
     [SerializeField] private Player player;
 
     private int attackCount = 0;
-    private bool b_IsCompleteAttackAnimation = false;
     void Start()
     {
         player = GetComponent<Player>();

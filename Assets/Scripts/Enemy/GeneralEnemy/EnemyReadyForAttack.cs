@@ -10,16 +10,13 @@ public class EnemyReadyForAttack : EnemyState
     private float roundMovingTime = 0.0f;
     private float radius;
     private float theta = 0f;
+    private float sign;
     private Vector3 playerPostion;
 
     public override void Enter()
     {
-        enemy.GetEnemyNavMeshAgent().enabled = false;
-        radius = Vector3.Distance(enemy.transform.position, enemy.GetPlayer().transform.position);
-        playerPostion = enemy.GetPlayer().transform.position;
-        theta = calculateInitTheta();
-        roundMovingTime = getRoundMovingTimeRandomly();
-        timer = 0f;
+        onInitialize();
+        selectCircularMoveDirection();
     }
 
     public override void StateActionUpdate()
@@ -44,6 +41,22 @@ public class EnemyReadyForAttack : EnemyState
         base.Exit();
     }
 
+    private void onInitialize()
+    {
+        enemy.GetEnemyNavMeshAgent().enabled = false;
+        radius = Vector3.Distance(enemy.transform.position, enemy.GetPlayer().transform.position);
+        playerPostion = enemy.GetPlayer().transform.position;
+        theta = calculateInitTheta();
+        roundMovingTime = getRoundMovingTimeRandomly();
+        timer = 0f;
+    }
+
+    private void selectCircularMoveDirection()
+    {
+        int randomNumber = Random.Range(1, 2);
+        if (randomNumber == 1) sign = -1f;
+        else sign = 1f;
+    }
     private void onCircularMove()
     {
         float x = playerPostion.x + Mathf.Cos(theta * Mathf.Deg2Rad) * radius;
@@ -54,13 +67,8 @@ public class EnemyReadyForAttack : EnemyState
 
         enemy.transform.position = Vector3.Lerp(enemy.transform.position, enemyNewPosition, Time.deltaTime);
         enemy.transform.LookAt(enemy.GetPlayer().transform);
-        theta += enemy.f_attackRoundSpeed * Time.deltaTime;
-        // 360도를 넘어가면 다시 0으로 초기화
-        if (theta >= 360.0f)
-        {
-            theta = 0;
-        }
-
+        theta += enemy.f_attackRoundSpeed * Time.deltaTime * sign;
+        if (theta > 360) theta = 0f;
     }
     private float calculateInitTheta()
     {
@@ -73,6 +81,6 @@ public class EnemyReadyForAttack : EnemyState
 
     private float getRoundMovingTimeRandomly()
     {
-        return Random.Range(1, 3);
+        return Random.Range(4, 7);
     }
 }

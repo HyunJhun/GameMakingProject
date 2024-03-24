@@ -6,7 +6,7 @@ public class PlayerDefense : PlayerState
 {
     public PlayerDefense(Player player, Status stats, PlayerStateMachine playerStateMachine) : base(player, stats, playerStateMachine)
     { }
-    float distanceBetweenCurrentToAfter = 3f;
+    //float distanceBetweenCurrentToAfter = 3f;
     public override void Enter()
     {
         player.b_IsBlock = true;

@@ -8,11 +8,12 @@ public class ParticleManager : MonoBehaviour
     [Header("Particles")]
     [SerializeField] private List<GameObject> basicAttackParticles = new List<GameObject>();
     [SerializeField] private List<GameObject> bossAttackParticles = new List<GameObject>();
-    [SerializeField] private List<GameObject> skillAttackParticles = new List<GameObject>();
+    [SerializeField] private List<GameObject> skillParticles = new List<GameObject>();
     [Header("Preference")]
     [SerializeField] private GameObject swordHolder;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject boss;
+    [SerializeField] private GameObject PlayerObj;
     [SerializeField] private float xVal;
     [SerializeField] private float yVal;
     void Start()
@@ -47,12 +48,22 @@ public class ParticleManager : MonoBehaviour
 
     public void SkillAttackParticleInstance(int indexOfParticle)
     {
-        GameObject skillParticle = Instantiate(skillAttackParticles[indexOfParticle],
-            swordHolder.transform.position + swordHolder.transform.forward * xVal + Vector3.down * yVal,
+        GameObject skillParticle = Instantiate(skillParticles[indexOfParticle],
+            swordHolder.transform.position + swordHolder.transform.forward * 6.5f + Vector3.down,
             player.transform.rotation);
 
         skillParticle.GetComponentInChildren<ParticleSystem>().Play();
-        Destroy(skillParticle.gameObject, 2f);
+        Destroy(skillParticle.gameObject, 1.5f);
+    }
+
+    public void SkillBuffParticleInstance(int indexOfParticle)
+    {
+        GameObject skillParticle = Instantiate(skillParticles[indexOfParticle],
+            player.transform.position,
+            player.transform.rotation);
+
+        skillParticle.GetComponentInChildren<ParticleSystem>().Play();
+        Destroy(skillParticle.gameObject, 1f);
     }
 
 }
