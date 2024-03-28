@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a520f3081e92f734ab55ea5d0c34f310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyTriggeredList: []
 --- !u!1 &3090315694198723964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,12 +1004,16 @@ MonoBehaviour:
   maxHp: 50
   stamina: 0
   maxStamina: 0
+  mp: 0
+  maxMp: 0
   damage: 7
   attackStamina: []
   attackDamage:
   - 4
   - 5
   - 6
+  skillDamage: []
+  skillMpUsage: []
   player: {fileID: 0}
   enemy: {fileID: 0}
   boss: {fileID: 0}
@@ -1026,6 +1031,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   f_enemyPatrolSpeed: 2
   f_enemyChasingSpeed: 3
+  col: 0
   player: {fileID: 0}
   rangeOfDetectPlayer: {fileID: 6688010849045160650}
   rangeOfAttack: {fileID: 159216129599221270}
@@ -1033,6 +1039,7 @@ MonoBehaviour:
   WallLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  bApaa: 0
 --- !u!114 &5175418706529338834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1045,6 +1052,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc171ad1411eb34bb1bec0bfebd1e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpBar: {fileID: 5011893871106986840}
 --- !u!1 &3090687981295325266
 GameObject:
   m_ObjectHideFlags: 0

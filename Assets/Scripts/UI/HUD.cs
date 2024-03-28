@@ -39,6 +39,6 @@ public class HUD : MonoBehaviour
         playerMpBar.value = player.GetCurrentMp();
         bossHpBar.value = boss.getHp();
 
-        playerStateText.text = playerP.enemyStateMachine.currentState.ToString();
+        //playerStateText.text = playerP.enemyStateMachine.currentState.ToString();
     }
 }

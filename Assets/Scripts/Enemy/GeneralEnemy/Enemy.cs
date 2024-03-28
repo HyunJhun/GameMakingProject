@@ -161,14 +161,6 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
-    private void OnAnimatorMove()
-    {
-        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            transform.position += animator.deltaPosition + transform.forward * f_attackMoveSpeed;
-        }
-    }
     private void OnParticleCollision(GameObject other)
     {
         if (other.CompareTag("Skill"))
@@ -179,6 +171,9 @@ public class Enemy : MonoBehaviour
             status.hpDown(player.GetPlayerStatus().GetSkillAttackDamage(0));
         }
     }
+
+
+
     // Get Function
     public Player GetPlayer() { return player; }
     public Status GetEnemyStatus() { return status; }
