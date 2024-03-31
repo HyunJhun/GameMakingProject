@@ -75,6 +75,12 @@ public class Player : MonoBehaviour
         }
         if(b_IsHit)
         {
+            if(playerStateMachine.currentState == defenseState)
+            {
+                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("BlockHit");
+                b_IsHit = false;
+                return;
+            }
             playerStateMachine.ChangeState(getHitState);
             return;
         }

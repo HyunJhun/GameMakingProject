@@ -22,6 +22,11 @@ public class PlayerIdle : PlayerState
             playerStateMachine.ChangeState(player.offenseState);
             return;
         }
+        if(Input.GetButtonDown("Block"))
+        {
+            playerStateMachine.ChangeState(player.defenseState);
+            return; 
+        }
         if (Input.GetButtonDown("Dodge"))
         {
             playerStateMachine.ChangeState(player.dodgeState);
