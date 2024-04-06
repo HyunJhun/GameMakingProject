@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyIdle : EnemyState
@@ -14,6 +16,7 @@ public class EnemyIdle : EnemyState
         enemy.GetAnimator().SetBool("isIdle", true);
         timer = 0f;
         selectWaitingTime();
+
     }
 
     public override void StateActionUpdate()
@@ -25,8 +28,6 @@ public class EnemyIdle : EnemyState
         }
 
         timer += Time.deltaTime;
-
-
     }
 
     public override void Exit()

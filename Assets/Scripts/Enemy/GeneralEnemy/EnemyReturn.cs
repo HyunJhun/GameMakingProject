@@ -20,11 +20,6 @@ public class EnemyReturn : EnemyState
             return;
         }
     }
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
         base.Exit();

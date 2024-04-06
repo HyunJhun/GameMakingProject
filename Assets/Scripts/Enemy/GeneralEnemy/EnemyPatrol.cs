@@ -67,11 +67,6 @@ public class EnemyPatrol : EnemyState
         }
 
     }
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
         enemy.GetAnimator().SetBool("isPatrol", false);

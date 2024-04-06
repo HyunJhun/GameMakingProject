@@ -941,6 +941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a520f3081e92f734ab55ea5d0c34f310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyTriggeredList: []
 --- !u!1 &6118984539850311009
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,8 +2210,8 @@ GameObject:
   - component: {fileID: 6118984539048797269}
   - component: {fileID: 6118984539048797256}
   - component: {fileID: 6118984539048797266}
+  - component: {fileID: 1611923661611875676}
   - component: {fileID: 6118984539048797267}
-  - component: {fileID: 6118984539048797268}
   - component: {fileID: 7969968403985818694}
   m_Layer: 0
   m_Name: Enemy_Skeleton
@@ -2313,6 +2314,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1611923661611875676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6120333684075442197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1484b482ba139d48a49879747825602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  f_enemyPatrolSpeed: 2
+  f_enemyChasingSpeed: 3
+  player: {fileID: 0}
+  rangeOfDetectPlayer: {fileID: 6118984539850311014}
+  rangeOfAttack: {fileID: 6118984538298005217}
+  attackRangeBox: {fileID: 6118984538708524308}
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &6118984539048797267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2329,36 +2351,19 @@ MonoBehaviour:
   maxHp: 50
   stamina: 0
   maxStamina: 0
+  mp: 0
+  maxMp: 0
   damage: 7
   attackStamina: []
   attackDamage:
   - 4
   - 5
   - 6
+  skillDamage: []
+  skillMpUsage: []
   player: {fileID: 0}
   enemy: {fileID: 0}
   boss: {fileID: 0}
---- !u!114 &6118984539048797268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6120333684075442197}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfa1483ce4cea7e43b1dc41f7690a37c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  f_enemyPatrolSpeed: 2
-  f_enemyChasingSpeed: 3
-  player: {fileID: 0}
-  rangeOfDetectPlayer: {fileID: 6118984539850311014}
-  rangeOfAttack: {fileID: 6118984538298005217}
-  attackRangeBox: {fileID: 6118984538708524308}
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &7969968403985818694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2480,6 +2485,7 @@ GameObject:
   - component: {fileID: 5757484391723516175}
   - component: {fileID: 7351716687264122127}
   - component: {fileID: 4260465051442059574}
+  - component: {fileID: 1105056565207144657}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2570,6 +2576,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1105056565207144657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6934834835847330294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92591ca21e6ad0446907a6a6d00decb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7179945036089995390
 GameObject:
   m_ObjectHideFlags: 0

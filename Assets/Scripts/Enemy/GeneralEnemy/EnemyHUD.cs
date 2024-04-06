@@ -9,7 +9,6 @@ public class EnemyHUD : MonoBehaviour
     private Enemy enemy;
     private Status enemyStats;
     [SerializeField] private RectTransform hpBar;
-
     private float maxHpBarWidth;
     // Start is called before the first frame update
     void Start()

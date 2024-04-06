@@ -21,12 +21,6 @@ public class EnemyGetHit : EnemyState
             return;
         }
     }
-
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
         

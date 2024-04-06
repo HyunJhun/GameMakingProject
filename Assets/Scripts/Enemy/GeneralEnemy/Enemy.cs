@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
-    public EnemyStateMachine enemyStateMachine { get; set; }
     public EnemyIdle idleState { get; set; }
     public EnemyPatrol patrolState { get; set; }
     public EnemyChase chaseState { get; set; }
@@ -17,23 +16,21 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Information")]
     public float f_enemyPatrolSpeed;
     public float f_enemyChasingSpeed;
-    private float f_timerForPatrol;
-    private Status status;
-    private NavMeshAgent enemyAgent;
-    private Animator animator;
-    private Vector3 initPosition;
-    [SerializeField] private bool col;
+    
+    protected Status status;
+    protected NavMeshAgent enemyAgent;
+    protected Animator animator;
+    protected Vector3 initPosition;
     [Header("Reference")]
-    [SerializeField] private Player player;
-    [SerializeField] private DetectPlayer rangeOfDetectPlayer;
-    [SerializeField] private DetectPlayer_AttackRange rangeOfAttack;
-    [SerializeField] private GameObject attackRangeBox;
+    [SerializeField] protected Player player;
+    [SerializeField] protected DetectPlayer rangeOfDetectPlayer;
+    [SerializeField] protected DetectPlayer_AttackRange rangeOfAttack;
+    [SerializeField] protected GameObject attackRangeBox;
     [Header("LayerMask")]
     [SerializeField] private LayerMask WallLayerMask;
     public bool b_isAttack { get; set; }
     public bool b_isGetHit { get; set; }
     public bool b_isCollide { get; set; }
-    public bool bApaa = false;
     public float f_patrolLength { get; set; }
     public float f_patrolStopingDistance { get; set; }
     public float f_chaseStopingDistacne { get; set; }
@@ -41,6 +38,8 @@ public class Enemy : MonoBehaviour
     public float f_chaseMaxDistance { get; set; }
     public float f_patrolMaxDistance { get; set; }
     public float f_attackMoveSpeed { get; set; }
+    public float f_patrolMaxTimeForCantMove { get; set; }
+    public float f_timerForPatrol { get; set; }
     public List<float> AttackDamageList { get; set; } = new List<float>();
 
     // Start is called before the first frame update
@@ -48,80 +47,36 @@ public class Enemy : MonoBehaviour
     {
         OnInitialize();
     }
-
-    // Update is called once per frame
-    void Update()
+    // Function
+    protected virtual void OnBaseUpdate(EnemyStateMachine enemyStateMachine,NavMeshAgent enemyAgent)
     {
         if (player.GetComponent<Player>().b_IsDie)
         {
             enemyAgent.isStopped = true;
             return;
         }
-        enemyStateMachine.currentState.StateActionUpdate();
-
-        if(b_isGetHit)
+        if (b_isGetHit)
         {
             enemyStateMachine.ChangeState(getHitState);
             return;
         }
-        if(status.getHp() <= 0 && enemyStateMachine.currentState != dieState)
+        if (status.getHp() <= 0 && enemyStateMachine.currentState != dieState)
         {
             enemyStateMachine.ChangeState(dieState);
             return;
         }
-        col = b_isCollide;
     }
 
-    private void FixedUpdate()
+    protected virtual void OnInitialize()
     {
-        if (!player.GetComponent<Player>().b_IsDie)
-        {
-            enemyStateMachine.currentState.StateActionFixedUpdate();
-        }
-        else enemyAgent.isStopped = true;
-    }
-    // Function
+        player = GameObject.Find("Player").GetComponent<Player>();
 
-    private void OnInitialize()
-    {
-        status = GetComponent<Status>();
-        enemyAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-
-        enemyStateMachine = new EnemyStateMachine();
-
-        idleState = new EnemyIdle(this, status, enemyStateMachine);
-        patrolState = new EnemyPatrol(this, status, enemyStateMachine);
-        chaseState = new EnemyChase(this, status, enemyStateMachine);
-        returnState = new EnemyReturn(this, status, enemyStateMachine);
-        attackState = new EnemyAttack(this, status, enemyStateMachine);
-        readyForAttackState = new EnemyReadyForAttack(this, status, enemyStateMachine);
-        getHitState = new EnemyGetHit(this, status, enemyStateMachine);
-        dieState = new EnemyDie(this, status, enemyStateMachine);
-
-        initPosition = transform.position;
-
-        //f_enemyTurnSpeed = 360f;
+        // Fixed
         f_patrolLength = 10f;
-        f_patrolStopingDistance = 1f;
-        f_chaseStopingDistacne = 5f;
-        f_attackRoundSpeed = 25f;
         f_timerForPatrol = 0f;
-        f_patrolMaxDistance = 20f;
-        f_chaseMaxDistance = 22f;
-        f_attackMoveSpeed = 0.004f;
-
-        AttackDamageList.Add(5f);
-        AttackDamageList.Add(7f);
-        AttackDamageList.Add(8f);
-
-        b_isAttack = false;
-        b_isCollide = false;
-
-        SetAgentSpeed(f_enemyPatrolSpeed);
-        enemyStateMachine.Initialize(idleState);
-        attackRangeBox.GetComponent<AttackRangeCheck>().SetType(1);
+        f_patrolStopingDistance = 1f;
     }
+
 
     public void ToDamage(int indexOfAttackMotion)
     {
@@ -144,22 +99,6 @@ public class Enemy : MonoBehaviour
             f_timerForPatrol = 0f;
             
         } 
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-        if(!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")
-            && !collision.gameObject.CompareTag("Ground")) // 만약 플레이어나 몬스터가 아닌 대상, 즉 각종 맵 오브젝트들과 부딪힐 시
-        {
-            f_timerForPatrol += Time.deltaTime;
-            if(f_timerForPatrol >= 5f)
-            {
-                if(enemyStateMachine.currentState == patrolState)
-                {
-                    enemyStateMachine.ChangeState(idleState);
-                    return;
-                }
-            }
-        }
     }
     private void OnParticleCollision(GameObject other)
     {

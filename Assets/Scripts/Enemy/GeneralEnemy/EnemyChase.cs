@@ -32,14 +32,11 @@ public class EnemyChase : EnemyState
         
         
     }
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
         enemy.GetAnimator().SetBool("isChase", false);
         enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position);
     }
+
+
 }

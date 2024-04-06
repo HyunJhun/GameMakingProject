@@ -18,11 +18,6 @@ public class EnemyDie : EnemyState
     {
         base.StateActionUpdate();
     }
-    public override void StateActionFixedUpdate()
-    {
-        base.StateActionFixedUpdate();
-    }
-
     public override void Exit()
     {
         base.Exit();
