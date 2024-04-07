@@ -9,7 +9,6 @@ public class EnemyAttack : EnemyState
     public override void Enter()
     {
     }
-
     public override void StateActionUpdate()
     {
         if (animationPlayingCheck("Attack"))

@@ -8,7 +8,6 @@ public class ArcherReadyForAttackState : EnemyReadyForAttack
     {
 
     }
-
     float maxStraightMovingTime;
     float moveSpeed;
     Vector3 moveDirection;

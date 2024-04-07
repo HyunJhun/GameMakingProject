@@ -208,6 +208,14 @@ public class Player : MonoBehaviour
         }
 
     }
+    //public void OnKnockBackDuringBlocking()
+    //{
+    //    Vector3 directionVectorBetweenPlayerToBoss = Vector3.forward * -1f; // Direction of Boss To Player for KnockBack direction.
+
+    //    Vector3 afterKnockBackPosition = directionVectorBetweenPlayerToBoss * 1.5f;
+
+    //    GetPlayerController().Move(Vector3.Lerp(transform.position,transform.position - afterKnockBackPosition,Time.deltaTime/10f));
+    //}
     private void attackMoving()
     {
         if (playerAnimationManager.CheckCurrentAnimationName("Attack1") ||

@@ -7,10 +7,6 @@ public class ArcherAttackState : EnemyAttack
     public ArcherAttackState(Archer archer, Status status, EnemyStateMachine archerStateMachine) : base(archer, status, archerStateMachine)
     {
     }
-
-
-    float arrowSpeed = 2f;
-
     public override void Enter()
     {
         base.Enter();

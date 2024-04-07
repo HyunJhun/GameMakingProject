@@ -25,11 +25,6 @@ public class Skeleton : Enemy
     protected override void OnInitialize()
     {
         base.OnInitialize();
-
-        status = GetComponent<Status>();
-        enemyAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-
         skeletonStateMachine = new EnemyStateMachine();
 
         idleState = new EnemyIdle(this, status, skeletonStateMachine);

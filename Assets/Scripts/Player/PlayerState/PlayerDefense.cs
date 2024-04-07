@@ -19,22 +19,12 @@ public class PlayerDefense : PlayerState
         {
             playerStateMachine.ChangeState(player.idleState);
             return;
-        }
-        
+        }   
     }
-
     public override void Exit()
     {
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("isBlock", false);
         stats.SetArmor(player.f_PlayerGeneralArmor);
     }
 
-    public void OnKnockBackDuringBlocking()
-    {
-        Vector3 directionVectorBetweenPlayerToBoss = (player.transform.position - player.GetBossComponent().transform.position).normalized; // Direction of Boss To Player for KnockBack direction.
-
-        Vector3 afterKnockBackPosition = directionVectorBetweenPlayerToBoss * 3f;
-
-        player.GetPlayerController().Move(Vector3.Lerp(player.transform.position, afterKnockBackPosition, 2f));
-    }
 }

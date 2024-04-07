@@ -70,7 +70,9 @@ public class Enemy : MonoBehaviour
     protected virtual void OnInitialize()
     {
         player = GameObject.Find("Player").GetComponent<Player>();
-
+        status = GetComponent<Status>();
+        enemyAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         // Fixed
         f_patrolLength = 10f;
         f_timerForPatrol = 0f;
