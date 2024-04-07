@@ -48,7 +48,6 @@ public class PlayerSpellCasting : PlayerState
     public void SelectSkillByKeyInput()
     {       
         string currentKey = player.GetKeyInputManager().GetCurrentInputKey().ToString();
-        Debug.Log(currentKey);
 
         switch(currentKey)
         {

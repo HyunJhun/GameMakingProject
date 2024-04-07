@@ -11,6 +11,7 @@ public class PlayerDefense : PlayerState
     {
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("Block");
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("isBlock", true);
+        stats.SetArmor(player.f_PlayerDefenseArmor);
     }
     public override void StateActionUpdate()
     {
@@ -25,6 +26,7 @@ public class PlayerDefense : PlayerState
     public override void Exit()
     {
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetBool("isBlock", false);
+        stats.SetArmor(player.f_PlayerGeneralArmor);
     }
 
     public void OnKnockBackDuringBlocking()
@@ -33,7 +35,6 @@ public class PlayerDefense : PlayerState
 
         Vector3 afterKnockBackPosition = directionVectorBetweenPlayerToBoss * 3f;
 
-        player.GetPlayerController().Move(
-            Vector3.Lerp(player.transform.position, afterKnockBackPosition, 2f));
+        player.GetPlayerController().Move(Vector3.Lerp(player.transform.position, afterKnockBackPosition, 2f));
     }
 }

@@ -63,11 +63,6 @@ public class Archer : Enemy
         f_chaseStopingDistacne = 13f;
         f_attackRoundSpeed = 25f;
 
-
-        AttackDamageList.Add(5f);
-        AttackDamageList.Add(7f);
-        AttackDamageList.Add(8f);
-
         b_isAttack = false;
         b_isCollide = false;
 
@@ -82,7 +77,10 @@ public class Archer : Enemy
     {
         GameObject arrowClone = GameObject.Instantiate(arrowPrefab,arrowShootingPoint.transform.position, 
             Quaternion.Euler(new Vector3(90,0,0)));
-        arrowParticle.Play();
+
+        ParticleSystem skillParticle = Instantiate(arrowParticle, arrowShootingPoint.transform.position, transform.rotation);
+        skillParticle.GetComponent<ParticleSystem>().Play();
+        Destroy(skillParticle.gameObject, 0.5f);
     }
 
     private void OnCollisionStay(Collision collision)

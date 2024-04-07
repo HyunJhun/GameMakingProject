@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
         // 3. 플레이어는 공격시 스태미너가 소모되야하는 추가적인 작업이 필요하다. 또한 플레이어는 피격시 공격을 할 수 없게 된다.
 
         player.b_IsHit = true;
-        attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion));
+        attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion) - player.GetPlayerStatus().GetArmor());
      
     }
 

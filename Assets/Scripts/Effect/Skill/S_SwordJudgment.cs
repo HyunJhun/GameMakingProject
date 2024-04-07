@@ -57,5 +57,7 @@ public class S_SwordJudgment : MonoBehaviour
         {
             enemy.b_isCollide = false;
         }
+        if (collisionBoss == null) return;
+        collisionBoss.isParticleCollision = false;
     }
 }

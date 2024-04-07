@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttackRangeCheck : MonoBehaviour
 {
     private Status triggerObjStatus;
     private Boss bossTriggered;
-    [SerializeField]private List<Enemy> enemyTriggeredList = new List<Enemy>();
+    private int maxAttackEnemyCount = 3;
+    [SerializeField] private List<Enemy> enemyTriggeredList = new List<Enemy>();
 
     private enum Type { Player,Monster}
     private Type type;
@@ -57,13 +59,11 @@ public class AttackRangeCheck : MonoBehaviour
     private void preventDuplicateAdd(Enemy inRangeEnemy) 
     {
         bool isDuplicated = false;
-
         if (enemyTriggeredList.Count == 0)
         {
             enemyTriggeredList.Add(inRangeEnemy);
             return;
         }
-
         for (int i = 0; i < enemyTriggeredList.Count; i++)
         {
             if (enemyTriggeredList[i].name == inRangeEnemy.name)
@@ -71,11 +71,33 @@ public class AttackRangeCheck : MonoBehaviour
                 isDuplicated = true;
                 break;
             }
+
         }
-        if (!isDuplicated) enemyTriggeredList.Add(inRangeEnemy);
+        if (!isDuplicated)
+        {
+            enemyTriggeredList.Add(inRangeEnemy);
+        }
     }
+    public void selectEnemyByMaxAttackCount()
+    {
+        List<float> distanceList = new List<float>();
+        Dictionary<float, Enemy> enemyDictionary = new Dictionary<float, Enemy>();
+        Transform playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        foreach(Enemy enemy in enemyTriggeredList)
+        {
+            float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
+            distanceList.Add(distance);
+            enemyDictionary.Add(distance, enemy);
+        }
 
+        distanceList.Sort();
+        enemyTriggeredList.Clear();
+        for(int i = 0; i < maxAttackEnemyCount; i++)
+        {
+            enemyTriggeredList.Add(enemyDictionary[distanceList[i]]);
+        }
 
+    }
     private void OnTriggerExit(Collider other)
     {
         if (triggerObjStatus == null) return;

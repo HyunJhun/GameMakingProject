@@ -19,8 +19,7 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(transform.position, direction * 5f, Color.red);
-        transform.position += direction * 0.04f;
+        transform.position += direction * 0.06f;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -28,7 +27,7 @@ public class Arrow : MonoBehaviour
         {
             Debug.Log("Trigger");
             other.GetComponent<Player>().b_IsHit = true;
-            attackRangeCheck.GetComponent<AttackRangeCheck>().getStats().hpDown(arrowAttackDamage);
+            attackRangeCheck.GetComponent<AttackRangeCheck>().getStats().hpDown(arrowAttackDamage - other.GetComponent<Status>().GetArmor());
             Destroy(gameObject, 0.3f);
         }
         else if(other.CompareTag("Obstacle") || other.CompareTag("Ground"))

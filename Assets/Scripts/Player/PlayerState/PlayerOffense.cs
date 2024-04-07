@@ -9,14 +9,22 @@ public class PlayerOffense : PlayerState
 
     int currentAttack = 0;
     float attackCooltime = 0.0f;
+    bool isSorted = false;
     public override void Enter()
     {
         player.GetPlayerAttackCollisionBox().SetActive(true);
         player.b_IsAttack = true;
+
         OnAttack();
     }
     public override void StateActionUpdate()
     {
+        //if (!isSorted)
+        //{
+        //    player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().sortDictionary();
+        //    isSorted = true;
+        //    return;
+        //}
         if (attackCooltime <= 1) attackCooltime -= Time.deltaTime;
 
         if (Input.GetButtonDown("Dodge"))

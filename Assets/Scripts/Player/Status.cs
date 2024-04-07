@@ -10,6 +10,7 @@ public class Status : MonoBehaviour
     [SerializeField] private float mp;
     [SerializeField] private float maxMp;
     [SerializeField] private float damage;
+    [SerializeField] private float armor; 
 
     [Header("Player")]
     [SerializeField] private List<float> attackStamina = new List<float>(); // 0~2 : OneHanded , 3~5 : TwoHanded
@@ -129,6 +130,8 @@ public class Status : MonoBehaviour
     public float GetCurrentMp() { return mp; }
     public float GetMaxMp() { return maxMp; }
 
+    public float GetArmor() { return armor; }
+
     public Boss GetBoss()
     {
         if (boss == null) return null;
@@ -147,7 +150,10 @@ public class Status : MonoBehaviour
     {
         stamina = maxStamina;
     }
-
+    public void SetArmor(float armor)
+    {
+        this.armor = armor;
+    }
     public void StaminaIncrease()
     {
         InvokeRepeating("staminaUp", 1f, 0.1f);

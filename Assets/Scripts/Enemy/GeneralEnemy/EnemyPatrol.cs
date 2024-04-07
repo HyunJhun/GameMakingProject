@@ -121,6 +121,7 @@ public class EnemyPatrol : EnemyState
         ve = MoveToDirection;
         enemy.GetEnemyNavMeshAgent().SetDestination(enemy.transform.position + (MoveToDirection * enemy.f_patrolLength));
     }
+    // For Debugging
     private void ShotRayEightDirection()
     {
         Debug.DrawRay(enemy.transform.position, enemy.transform.forward * 7, Color.blue);

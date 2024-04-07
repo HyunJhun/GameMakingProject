@@ -79,7 +79,8 @@ public class BossChase : BossState
             {
                 boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
                 bossStateMachine.ChangeState(boss.attackState);
-                Debug.Log("러쉬");
+                Debug.Log("Boss Attack : Rush");
+                return;
             }
             coolTime_RushAttack = 0f;
         }
@@ -87,7 +88,7 @@ public class BossChase : BossState
         {
             boss.attackState.patternSelectNumber = 0;
             bossStateMachine.ChangeState(boss.attackState);
-            Debug.Log("베이직");
+            Debug.Log("Boss Attack : Basic");
             return;
         }
     }

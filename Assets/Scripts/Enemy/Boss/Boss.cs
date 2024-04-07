@@ -30,6 +30,7 @@ public class Boss : MonoBehaviour
     public bool isBack { get; set; }
     public bool isCollision { get; set; }
     public bool isGetHit { get; set; }
+    public bool isParticleCollision { get; set; }
     // Raycast
 
     public NavMeshAgent agent { get; set; }
@@ -174,7 +175,16 @@ public class Boss : MonoBehaviour
             isBack = false;
         }
     }
-
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.CompareTag("Skill"))
+        {
+            if (isParticleCollision) return;
+            isParticleCollision = true;
+            isGetHit = true;
+            stats.hpDown(player.GetComponent<Player>().GetPlayerStatus().GetSkillAttackDamage(0));
+        }
+    }
     public void BossCollisionBoxActive(bool active)
     {
         bossCollisionBox.gameObject.SetActive(active);
@@ -185,7 +195,7 @@ public class Boss : MonoBehaviour
         {
             StartCoroutine(player.GetComponent<Player>().floatingState.KnockBack(attackerTransform));
             player.GetComponent<Player>().b_IsHit = true;
-            player.GetComponent<Player>().GetPlayerStatus().hpDown(valueOfPlayerHpDown);
+            player.GetComponent<Player>().GetPlayerStatus().hpDown(valueOfPlayerHpDown - player.GetComponent<Player>().GetPlayerStatus().GetArmor());
         }
     }
     public bool CheckPlayerCollisionToBoss(float valueOfHpDown)

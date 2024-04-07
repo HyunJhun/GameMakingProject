@@ -42,7 +42,11 @@ public class Player : MonoBehaviour
     public float f_PlayerLastAttackTime { get; set; }
     public float f_PlayerKnockbackPower { get; set; }
     public float f_PlayerMaxHeight { get; set; }
-    
+    public float f_PlayerGeneralArmor { get; set; }
+    public float f_PlayerDefenseArmor { get; set; }
+
+
+    public int i_PlayerMaxAttackEnemyCount { get; set; }
 
     // Environment
     [SerializeField] private float f_Graivty { get; set; }
@@ -68,7 +72,7 @@ public class Player : MonoBehaviour
     {
         Environment();
 
-        if (stats.getHp() <= 0)
+        if (stats.getHp() <= 0 && !b_IsDie)
         {
             playerStateMachine.ChangeState(dieState);
             return;
@@ -148,6 +152,9 @@ public class Player : MonoBehaviour
         f_StaminaUsageForDodge = 10f;
         f_PlayerKnockbackPower = 10f;
         f_PlayerMaxHeight = 4f;
+        f_PlayerDefenseArmor = 5f;
+        f_PlayerGeneralArmor = 1f;
+        i_PlayerMaxAttackEnemyCount = 3;
         // About Environment
         f_Graivty = -5f;
 
@@ -162,6 +169,7 @@ public class Player : MonoBehaviour
         b_IsKnockback = false;
 
         playerStateMachine.Initialize(idleState);
+        stats.SetArmor(f_PlayerGeneralArmor);
         attackRangeBox.SetType(0);
     }
 
@@ -171,7 +179,7 @@ public class Player : MonoBehaviour
         {
             if (!b_IsHit)
             {
-                stats.hpDown(15);
+                stats.hpDown(15 - stats.GetArmor());
                 GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("isHit");
                 b_IsKnockback = true;
             }
@@ -183,6 +191,10 @@ public class Player : MonoBehaviour
         stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
         if (attackRangeBox.GetTriggeredEnemyList().Count > 0)
         {
+            if(attackRangeBox.GetTriggeredEnemyList().Count > 3)
+            {
+                attackRangeBox.selectEnemyByMaxAttackCount();
+            }
             foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
             {
                 enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));

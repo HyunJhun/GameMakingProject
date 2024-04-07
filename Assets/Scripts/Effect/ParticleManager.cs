@@ -8,6 +8,7 @@ public class ParticleManager : MonoBehaviour
     [Header("Particles")]
     [SerializeField] private List<GameObject> basicAttackParticles = new List<GameObject>();
     [SerializeField] private List<GameObject> bossAttackParticles = new List<GameObject>();
+    [SerializeField] private List<GameObject> bossAttackEnterParticles = new List<GameObject>();
     [SerializeField] private List<GameObject> skillParticles = new List<GameObject>();
     [Header("Preference")]
     [SerializeField] private GameObject swordHolder;
@@ -45,7 +46,14 @@ public class ParticleManager : MonoBehaviour
         bossAttackPartice.GetComponent<ParticleSystem>().Play();
         Destroy(bossAttackPartice.gameObject, 0.3f);
     }
-
+    public GameObject BossAttackEnterParticleInstance(int indexOfParticle)
+    {
+        GameObject bossAttackPartice = Instantiate(bossAttackEnterParticles[indexOfParticle],
+            boss.transform.position,
+            boss.transform.rotation);
+        bossAttackPartice.GetComponent<ParticleSystem>().Play();
+        return bossAttackPartice;
+    }
     public void SkillAttackParticleInstance(int indexOfParticle)
     {
         GameObject skillParticle = Instantiate(skillParticles[indexOfParticle],

@@ -3893,10 +3893,10 @@ GameObject:
   - component: {fileID: 2650027439251169210}
   - component: {fileID: 2650027439251169201}
   - component: {fileID: 2650027439251169200}
+  - component: {fileID: 2650027439251169214}
   - component: {fileID: 2650027439251169213}
   - component: {fileID: 2650027439251169212}
   - component: {fileID: 2650027439251169215}
-  - component: {fileID: 2650027439251169214}
   m_Layer: 0
   m_Name: Enemy_Archer
   m_TagString: Enemy
@@ -3976,6 +3976,32 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &2650027439251169214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8749708554351878010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1347fa57b289654a95685c464d7c0a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  f_enemyPatrolSpeed: 2
+  f_enemyChasingSpeed: 3
+  player: {fileID: 0}
+  rangeOfDetectPlayer: {fileID: 0}
+  rangeOfAttack: {fileID: 0}
+  attackRangeBox: {fileID: 2017840711817653683}
+  WallLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  arrowPrefab: {fileID: 5474028189791793097, guid: d8e11e840595616488f62c719b791ca6, type: 3}
+  arrowShootingPoint: {fileID: 4227306134411808878}
+  arrowSpeed: 30
+  arrowParticle: {fileID: 7502663394802255986, guid: ce614ff6f5639fb4ab201b6b5b437127, type: 3}
+  stateText: {fileID: 0}
 --- !u!114 &2650027439251169213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4040,32 +4066,6 @@ MonoBehaviour:
   player: {fileID: 0}
   enemy: {fileID: 0}
   boss: {fileID: 0}
---- !u!114 &2650027439251169214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8749708554351878010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1347fa57b289654a95685c464d7c0a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  f_enemyPatrolSpeed: 2
-  f_enemyChasingSpeed: 3
-  player: {fileID: 0}
-  rangeOfDetectPlayer: {fileID: 0}
-  rangeOfAttack: {fileID: 0}
-  attackRangeBox: {fileID: 2017840711817653683}
-  WallLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  arrowPrefab: {fileID: 5616787509360162814, guid: b5a85d4b159a7a246b4ba5a3a1bb0e01, type: 3}
-  arrowShootingPoint: {fileID: 0}
-  arrowSpeed: 30
-  arrowParticle: {fileID: 7502663394802255986, guid: ce614ff6f5639fb4ab201b6b5b437127, type: 3}
-  stateText: {fileID: 0}
 --- !u!1 &8838697857112800289
 GameObject:
   m_ObjectHideFlags: 0

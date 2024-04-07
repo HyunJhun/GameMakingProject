@@ -147,7 +147,6 @@ public class BossFlightAttack : BossState
         for(int i = 1; i <= 8; i++)
         {
             dropBombPoint.Add(GameObject.Find($"point{i}"));
-            Debug.Log(dropBombPoint[i-1]);
         }
     }
 

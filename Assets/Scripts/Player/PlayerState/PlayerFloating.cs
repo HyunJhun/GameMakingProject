@@ -36,7 +36,6 @@ public class PlayerFloating : PlayerState
             new Vector3(player.f_PlayerKnockbackPower * getNormalVectorBetweenPlayerToBoss.x, 45 * Mathf.Deg2Rad + player.f_PlayerKnockbackPower, getNormalVectorBetweenPlayerToBoss.z * player.f_PlayerKnockbackPower);
 
         // Content
-        Debug.Log("PLAYER FLOATING IS : " + player.b_IsFloating);
         while (player.b_IsFloating)
         {
             timer += Time.deltaTime;
