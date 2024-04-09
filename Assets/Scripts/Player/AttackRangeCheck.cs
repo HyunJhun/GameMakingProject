@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class AttackRangeCheck : MonoBehaviour
 {
-    private Status triggerObjStatus;
-    private Boss bossTriggered;
+    [SerializeField]private Status triggerObjStatus;
+    [SerializeField]private Boss bossTriggered;
     private int maxAttackEnemyCount = 3;
     [SerializeField] private List<Enemy> enemyTriggeredList = new List<Enemy>();
 
@@ -28,7 +28,7 @@ public class AttackRangeCheck : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other == null) { return; }// 컬리젼 되는게 있다면
+        if (other == null) { return; }// 컬리젼 되는게 없다면
         
         switch(type)
         {
@@ -100,11 +100,16 @@ public class AttackRangeCheck : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (triggerObjStatus == null) return;
+        if (bossTriggered == null) return;
         
-        triggerObjStatus = null;
+        bossTriggered = null;
     }
 
+    public void ResetBossTriggered()
+    {
+        if (bossTriggered != null)
+            bossTriggered = null;
+    }
     // Get
     public Status getStats()
     {
@@ -127,6 +132,8 @@ public class AttackRangeCheck : MonoBehaviour
 
         return bossTriggered;
     }
+
+    
     public void SetType(int numOfType)
     {
         switch(numOfType)

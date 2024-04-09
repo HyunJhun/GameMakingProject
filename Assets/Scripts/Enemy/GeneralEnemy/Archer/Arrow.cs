@@ -25,9 +25,11 @@ public class Arrow : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("Trigger");
-            other.GetComponent<Player>().b_IsHit = true;
-            attackRangeCheck.GetComponent<AttackRangeCheck>().getStats().hpDown(arrowAttackDamage - other.GetComponent<Status>().GetArmor());
+            if (!other.GetComponent<Player>().b_IsDodege)
+            {
+                other.GetComponent<Player>().b_IsHit = true;
+                attackRangeCheck.GetComponent<AttackRangeCheck>().getStats().hpDown(arrowAttackDamage - other.GetComponent<Status>().GetArmor());
+            }
             Destroy(gameObject, 0.3f);
         }
         else if(other.CompareTag("Obstacle") || other.CompareTag("Ground"))
