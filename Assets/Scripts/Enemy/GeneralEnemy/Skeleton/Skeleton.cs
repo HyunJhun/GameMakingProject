@@ -58,8 +58,6 @@ public class Skeleton : Enemy
         skeletonStateMachine.Initialize(idleState);
         attackRangeBox.GetComponent<AttackRangeCheck>().SetType(1);
 
-        Debug.Log(base.GetEnemyStatus().getHp());
-
     }
     private void OnCollisionStay(Collision collision)
     {

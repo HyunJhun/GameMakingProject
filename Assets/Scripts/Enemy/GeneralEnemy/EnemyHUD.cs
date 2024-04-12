@@ -8,6 +8,7 @@ public class EnemyHUD : MonoBehaviour
     [Header("Reference")]
     private Enemy enemy;
     private Status enemyStats;
+    [SerializeField] private GameObject hpUIObject;
     [SerializeField] private RectTransform hpBar;
     private float maxHpBarWidth;
     // Start is called before the first frame update
@@ -16,12 +17,14 @@ public class EnemyHUD : MonoBehaviour
         enemy = GetComponent<Enemy>();
         enemyStats = GetComponent<Status>();
         maxHpBarWidth = hpBar.rect.width;
+        hpUIObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        calculateHpByWidth();
+        if(hpUIObject.activeSelf)
+            calculateHpByWidth();
     }
 
     private void calculateHpByWidth()
@@ -34,5 +37,6 @@ public class EnemyHUD : MonoBehaviour
 
     }
 
+    public GameObject GetHpUIObject() { return hpUIObject; }
 
 }

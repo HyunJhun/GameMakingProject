@@ -83,6 +83,7 @@ public class AttackRangeCheck : MonoBehaviour
         List<float> distanceList = new List<float>();
         Dictionary<float, Enemy> enemyDictionary = new Dictionary<float, Enemy>();
         Transform playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+
         foreach(Enemy enemy in enemyTriggeredList)
         {
             float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
@@ -92,9 +93,12 @@ public class AttackRangeCheck : MonoBehaviour
 
         distanceList.Sort();
         enemyTriggeredList.Clear();
-        for(int i = 0; i < maxAttackEnemyCount; i++)
+        for (int i = 0; i < enemyDictionary.Count; i++)
         {
-            enemyTriggeredList.Add(enemyDictionary[distanceList[i]]);
+            if (!enemyDictionary[distanceList[i]].b_isDie && enemyTriggeredList.Count < maxAttackEnemyCount)
+            {
+                enemyTriggeredList.Add(enemyDictionary[distanceList[i]]);
+            }
         }
 
     }

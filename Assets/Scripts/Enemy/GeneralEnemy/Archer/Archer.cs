@@ -57,8 +57,6 @@ public class Archer : Enemy
 
         SetAgentSpeed(f_enemyPatrolSpeed);
         archerStateMachine.Initialize(idleState);
-
-        Debug.Log(base.GetEnemyStatus().getHp());
         
     }
 

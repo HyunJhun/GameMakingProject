@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     public bool b_isAttack { get; set; }
     public bool b_isGetHit { get; set; }
     public bool b_isCollide { get; set; }
+    public bool b_isDie { get; set; }
     public float f_patrolLength { get; set; }
     public float f_patrolStopingDistance { get; set; }
     public float f_chaseStopingDistacne { get; set; }
@@ -77,6 +78,7 @@ public class Enemy : MonoBehaviour
         f_patrolLength = 10f;
         f_timerForPatrol = 0f;
         f_patrolStopingDistance = 1f;
+        b_isDie = false;
     }
 
 

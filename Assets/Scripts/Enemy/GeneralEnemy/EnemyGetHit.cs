@@ -11,6 +11,7 @@ public class EnemyGetHit : EnemyState
     {
         enemy.GetAnimator().SetTrigger("GetHit");
         enemy.GetEnemyNavMeshAgent().enabled = false;
+        enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
     }
 
     public override void StateActionUpdate()
@@ -23,7 +24,7 @@ public class EnemyGetHit : EnemyState
     }
     public override void Exit()
     {
-        
+        enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(false);
         enemy.GetEnemyNavMeshAgent().enabled = true;
         enemy.b_isGetHit = false;
     }
