@@ -35,7 +35,7 @@ public class AttackRangeCheck : MonoBehaviour
             case Type.Player:
                 if (other.CompareTag("Enemy"))
                 {
-                    bossTriggered = other.GetComponent<Boss>();
+                    if(other.GetComponent<Boss>() != null) bossTriggered = other.GetComponent<Boss>();
                     preventDuplicateAdd(other.GetComponent<Enemy>());
                 }
                 break;

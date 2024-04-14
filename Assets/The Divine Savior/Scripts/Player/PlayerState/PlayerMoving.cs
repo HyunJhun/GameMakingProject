@@ -29,6 +29,11 @@ public class PlayerMoving : PlayerState
             playerStateMachine.ChangeState(player.sprintState);
             return;
         }
+        if (Input.GetButtonDown("Block"))
+        {
+            playerStateMachine.ChangeState(player.defenseState);
+            return;
+        }
         if (Input.GetButtonDown("Attack"))
         {
             playerStateMachine.ChangeState(player.offenseState);
