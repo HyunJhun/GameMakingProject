@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
         {
             attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
             attackRangeBox.GetBoss().isGetHit = true;
-            attackRangeBox.ResetBossTriggered();
+            //attackRangeBox.ResetBossTriggered();
         }
 
     }

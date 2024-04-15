@@ -11,21 +11,31 @@ public class EnemyGetHit : EnemyState
     {
         enemy.GetAnimator().SetTrigger("GetHit");
         enemy.GetEnemyNavMeshAgent().enabled = false;
-        enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
+        if (!enemy.GetComponent<EnemyHUD>().GetHpUIObject().activeSelf)
+        { 
+            enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
+            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
+        }
+        else
+        {
+            enemy.CancelInvoke("HpUIFadeOut");
+            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
+        }
+
     }
 
     public override void StateActionUpdate()
     {
-        if(enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
-        {
-            enemyStateMachine.ChangeState(enemy.patrolState);
-            return;
-        }
+        //if(enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
+        //{
+        //    enemyStateMachine.ChangeState(enemy.patrolState);
+        //    return;
+        //}
     }
     public override void Exit()
     {
-        enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(false);
         enemy.GetEnemyNavMeshAgent().enabled = true;
         enemy.b_isGetHit = false;
     }
+
 }

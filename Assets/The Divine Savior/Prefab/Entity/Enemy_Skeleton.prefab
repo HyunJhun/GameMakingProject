@@ -2156,6 +2156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpUIObject: {fileID: 7418744750033327901}
   hpBar: {fileID: 3638347586749073020}
+  backgroundImage: {fileID: 1841238273042646085}
+  hpImage: {fileID: 5723844590161458723}
 --- !u!1 &6120343471972596683
 GameObject:
   m_ObjectHideFlags: 0

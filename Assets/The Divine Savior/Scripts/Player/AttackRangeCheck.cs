@@ -16,6 +16,7 @@ public class AttackRangeCheck : MonoBehaviour
     private void Update()
     {
         // 죽은 적은 리스트에서 삭제
+        if (enemyTriggeredList.Count == 0) return;
         foreach(Enemy monster in enemyTriggeredList)
         {
             if (monster == null)
@@ -36,7 +37,7 @@ public class AttackRangeCheck : MonoBehaviour
                 if (other.CompareTag("Enemy"))
                 {
                     if(other.GetComponent<Boss>() != null) bossTriggered = other.GetComponent<Boss>();
-                    preventDuplicateAdd(other.GetComponent<Enemy>());
+                    if(other.GetComponent<Enemy>() != null) preventDuplicateAdd(other.GetComponent<Enemy>());
                 }
                 break;
             case Type.Monster:
@@ -46,15 +47,20 @@ public class AttackRangeCheck : MonoBehaviour
                 }
                 break;
 
-            default:
-                triggerObjStatus = null;
-                bossTriggered = null;
-                break;
+            //default:
+            //    triggerObjStatus = null;
+            //    bossTriggered = null;
+            //    break;
         }
 
 
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (bossTriggered == null) return;
 
+        bossTriggered = null;
+    }
     // 몬스터 리스트를 Trigger를 통해 추가할 때, 동일한 몬스터가 추가되는 것을 방지.
     private void preventDuplicateAdd(Enemy inRangeEnemy) 
     {
@@ -71,7 +77,6 @@ public class AttackRangeCheck : MonoBehaviour
                 isDuplicated = true;
                 break;
             }
-
         }
         if (!isDuplicated)
         {
@@ -101,12 +106,6 @@ public class AttackRangeCheck : MonoBehaviour
             }
         }
 
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (bossTriggered == null) return;
-        
-        bossTriggered = null;
     }
 
     public void ResetBossTriggered()

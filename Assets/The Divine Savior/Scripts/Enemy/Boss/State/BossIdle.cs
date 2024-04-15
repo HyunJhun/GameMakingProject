@@ -18,12 +18,12 @@ public class BossIdle : BossState
     }
     public override void StateActionUpdate()
     {
-        
+
         if (boss.detectPlayer.isDetectPlayer)
         {
             bossStateMachine.ChangeState(boss.detectState);
             return;
         }
-        
+
     }
 }

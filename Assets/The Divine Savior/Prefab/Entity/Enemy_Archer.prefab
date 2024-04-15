@@ -3701,6 +3701,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpUIObject: {fileID: 4898981415747709231}
   hpBar: {fileID: 123360750328798095}
+  backgroundImage: {fileID: 1103095456536724178}
+  hpImage: {fileID: 426614185824578253}
 --- !u!195 &2650027439251169212
 NavMeshAgent:
   m_ObjectHideFlags: 0
