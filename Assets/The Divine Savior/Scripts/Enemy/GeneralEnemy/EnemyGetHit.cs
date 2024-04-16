@@ -9,18 +9,10 @@ public class EnemyGetHit : EnemyState
 
     public override void Enter()
     {
+        enemy.b_isGetHit = false;
         enemy.GetAnimator().SetTrigger("GetHit");
         enemy.GetEnemyNavMeshAgent().enabled = false;
-        if (!enemy.GetComponent<EnemyHUD>().GetHpUIObject().activeSelf)
-        { 
-            enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
-            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
-        }
-        else
-        {
-            enemy.CancelInvoke("HpUIFadeOut");
-            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
-        }
+        updateEnemyHpUI();
 
     }
 
@@ -35,7 +27,21 @@ public class EnemyGetHit : EnemyState
     public override void Exit()
     {
         enemy.GetEnemyNavMeshAgent().enabled = true;
-        enemy.b_isGetHit = false;
     }
 
+    private void updateEnemyHpUI()
+    {
+        if (!enemy.GetComponent<EnemyHUD>().GetHpUIObject().activeSelf)
+        {
+            enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
+            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
+        }
+        else
+        {
+            enemy.GetComponent<EnemyHUD>().CancelInvoke("FadeOut");
+            enemy.GetComponent<EnemyHUD>().StopCoroutine("AlphaFadeOut");
+            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
+            enemy.GetComponent<EnemyHUD>().isFadeOut = false;
+        }
+    }
 }

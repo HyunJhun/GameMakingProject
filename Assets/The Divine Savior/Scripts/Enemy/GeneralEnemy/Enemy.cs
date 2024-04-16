@@ -59,6 +59,7 @@ public class Enemy : MonoBehaviour
         if (b_isGetHit)
         {
             enemyStateMachine.ChangeState(getHitState);
+            Debug.Log("n ¹ø");
             return;
         }
         if (status.getHp() <= 0 && enemyStateMachine.currentState != dieState)

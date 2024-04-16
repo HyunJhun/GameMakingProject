@@ -13,6 +13,7 @@ public class EnemyHUD : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image hpImage;
     private float maxHpBarWidth;
+    private float targetAlphaVar = 0f;
     public bool isFadeOut { get; set; }
     // Start is called before the first frame update
     void Start()
@@ -29,15 +30,16 @@ public class EnemyHUD : MonoBehaviour
     {
         if (hpUIObject.activeSelf)
         {
-            if (checkHpUIAlphaReachToZero()) { hpUIObject.SetActive(false); return; }
+            
             calculateHpByWidth();
             if (!isFadeOut)
             {
                 isFadeOut = true;
-                Invoke("HpUIFadeOut", 1f);
+                Invoke("FadeOut", 0.5f);
                 Debug.Log($"NAme : {transform.name} and Count");
                 return;
             }
+
         }
     }
 
@@ -50,6 +52,28 @@ public class EnemyHUD : MonoBehaviour
         hpBar.sizeDelta = new Vector2(hpByWidth, hpBar.rect.height);
 
     }
+    IEnumerator AlphaFadeOut()
+    {
+        Color backgroundColor = backgroundImage.color;
+        Color hpImageColor = hpImage.color;
+
+        if (isFadeOut)
+        {
+            Debug.Log("코루틴 시작");
+            while (backgroundColor.a > 0.01f && hpImageColor.a > 0.01f)
+            {
+                Debug.Log("코루틴 하는중");
+                backgroundColor.a = Mathf.Lerp(backgroundColor.a, targetAlphaVar, Time.deltaTime);
+                hpImageColor.a = Mathf.Lerp(hpImageColor.a, targetAlphaVar, Time.deltaTime);
+                backgroundImage.color = backgroundColor;
+                hpImage.color = hpImageColor;
+                yield return null;
+            }
+            Debug.Log("코루틴 끝");
+            isFadeOut = false;
+            hpUIObject.SetActive(false);
+        }
+    }
     public void HpUIFadeOut()
     {
         backgroundImage.CrossFadeAlpha(0,1f,false); // 실질적인 값이 변하는게 아니야 !! 
@@ -57,14 +81,16 @@ public class EnemyHUD : MonoBehaviour
     }
     public void ResetHpUIAlphaValue()
     {
-        hpImage.color += new Color(0f, 0f, 0f, 1f);
-        backgroundImage.color += new Color(0f, 0f, 0f, 1f);
+        hpImage.color = new Color(hpImage.color.r, hpImage.color.b, hpImage.color.g, 1f);
+        backgroundImage.color = new Color(backgroundImage.color.r, backgroundImage.color.b, backgroundImage.color.g, 1f);
 
     }
-    private bool checkHpUIAlphaReachToZero()
+    private void FadeOut()
     {
-        return hpImage.color.a < 0.3f && backgroundImage.color.a < 0.3f;
+        StartCoroutine("AlphaFadeOut");
     }
+
+    
     public GameObject GetHpUIObject() { return hpUIObject; }
 
 }
