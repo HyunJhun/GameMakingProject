@@ -3920,6 +3920,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 682496950, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: m_Size.y
+      value: 1.7470852
+      objectReference: {fileID: 0}
+    - target: {fileID: 682496950, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: m_Center.x
+      value: -0.0039477595
+      objectReference: {fileID: 0}
+    - target: {fileID: 682496950, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: m_Center.y
+      value: 1.0730795
+      objectReference: {fileID: 0}
+    - target: {fileID: 682496950, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: m_Center.z
+      value: 0.03709971
+      objectReference: {fileID: 0}
     - target: {fileID: 3244217364423093248, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: cam
       value: 
@@ -3931,7 +3947,7 @@ PrefabInstance:
     - target: {fileID: 3244217364423093248, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: attackRangeBox
       value: 
-      objectReference: {fileID: 1055122741}
+      objectReference: {fileID: 1046835381}
     - target: {fileID: 3244217364423093248, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: f_tempDistance
       value: 1
@@ -3939,7 +3955,7 @@ PrefabInstance:
     - target: {fileID: 3244217364423093248, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: attackCollisionBox
       value: 
-      objectReference: {fileID: 1055122739}
+      objectReference: {fileID: 1046835379}
     - target: {fileID: 3244217364423093249, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: m_Name
       value: Player
@@ -5195,6 +5211,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d441eae947be4b48aa570f65c8d68a1, type: 3}
+--- !u!1 &1046835379 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 682496947, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+  m_PrefabInstance: {fileID: 884479774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1046835381 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 682496949, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+  m_PrefabInstance: {fileID: 884479774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046835379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a520f3081e92f734ab55ea5d0c34f310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1053576764
 GameObject:
   m_ObjectHideFlags: 0
@@ -5641,7 +5673,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1096953412
 Transform:
   m_ObjectHideFlags: 0
@@ -6896,7 +6928,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432976831}
-  m_LocalRotation: {x: 0.092521004, y: 0.000000019154802, z: -0.000000001779856, w: 0.99571073}
+  m_LocalRotation: {x: 0.092521004, y: -0.000000019154799, z: 0.0000000017798556, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8460,7 +8492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1741158680
 Transform:
   m_ObjectHideFlags: 0
