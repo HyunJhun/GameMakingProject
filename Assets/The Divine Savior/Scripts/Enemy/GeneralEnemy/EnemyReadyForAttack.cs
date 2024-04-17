@@ -13,7 +13,7 @@ public class EnemyReadyForAttack : EnemyState
     {
         currentMovingTime = 0f;
         direction = selectMoveDirection();
-        enemy.GetEnemyNavMeshAgent().enabled = false;
+        //enemy.GetEnemyNavMeshAgent().enabled = false;
     }
 
     public override void StateActionUpdate()

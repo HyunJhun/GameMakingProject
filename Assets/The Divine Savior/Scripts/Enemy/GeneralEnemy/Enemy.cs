@@ -59,7 +59,6 @@ public class Enemy : MonoBehaviour
         if (b_isGetHit)
         {
             enemyStateMachine.ChangeState(getHitState);
-            Debug.Log("n ¹ø");
             return;
         }
         if (status.getHp() <= 0 && enemyStateMachine.currentState != dieState)
@@ -93,7 +92,8 @@ public class Enemy : MonoBehaviour
 
         player.b_IsHit = true;
         attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion) - player.GetPlayerStatus().GetArmor());
-     
+        attackRangeBox.GetComponent<AttackRangeCheck>().ResetTriggerObj();
+
     }
 
     private void OnCollisionEnter(Collision collision)

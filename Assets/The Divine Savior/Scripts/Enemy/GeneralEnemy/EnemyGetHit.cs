@@ -18,11 +18,11 @@ public class EnemyGetHit : EnemyState
 
     public override void StateActionUpdate()
     {
-        //if(enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
-        //{
-        //    enemyStateMachine.ChangeState(enemy.patrolState);
-        //    return;
-        //}
+        if (enemy.GetAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f)
+        {
+            enemyStateMachine.ChangeState(enemy.patrolState);
+            return;
+        }
     }
     public override void Exit()
     {

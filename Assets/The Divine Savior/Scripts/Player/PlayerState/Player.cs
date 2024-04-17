@@ -39,13 +39,12 @@ public class Player : MonoBehaviour
     public float f_PlayerSprintSpeed { get; set; }
     public float f_PlayerRotationSpeed { get; set; }
     public float f_PlayerDodgeSpeed { get; set; }
+    public float f_PlayerDodgeDistance { get; set; }
     public float f_PlayerLastAttackTime { get; set; }
     public float f_PlayerKnockbackPower { get; set; }
     public float f_PlayerMaxHeight { get; set; }
     public float f_PlayerGeneralArmor { get; set; }
     public float f_PlayerDefenseArmor { get; set; }
-
-
     public int i_PlayerMaxAttackEnemyCount { get; set; }
 
     // Environment
@@ -149,6 +148,7 @@ public class Player : MonoBehaviour
         f_PlayerSprintSpeed = 8.0f;
         f_PlayerRotationSpeed = 360f;
         f_PlayerDodgeSpeed = 0.8f;
+        f_PlayerDodgeDistance = 7f;
         f_StaminaUsageForDodge = 10f;
         f_PlayerKnockbackPower = 10f;
         f_PlayerMaxHeight = 4f;

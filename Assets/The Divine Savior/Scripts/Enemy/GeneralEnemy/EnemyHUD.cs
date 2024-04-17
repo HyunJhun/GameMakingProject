@@ -36,7 +36,6 @@ public class EnemyHUD : MonoBehaviour
             {
                 isFadeOut = true;
                 Invoke("FadeOut", 0.5f);
-                Debug.Log($"NAme : {transform.name} and Count");
                 return;
             }
 
@@ -59,17 +58,14 @@ public class EnemyHUD : MonoBehaviour
 
         if (isFadeOut)
         {
-            Debug.Log("코루틴 시작");
             while (backgroundColor.a > 0.01f && hpImageColor.a > 0.01f)
             {
-                Debug.Log("코루틴 하는중");
                 backgroundColor.a = Mathf.Lerp(backgroundColor.a, targetAlphaVar, Time.deltaTime);
                 hpImageColor.a = Mathf.Lerp(hpImageColor.a, targetAlphaVar, Time.deltaTime);
                 backgroundImage.color = backgroundColor;
                 hpImage.color = hpImageColor;
                 yield return null;
             }
-            Debug.Log("코루틴 끝");
             isFadeOut = false;
             hpUIObject.SetActive(false);
         }

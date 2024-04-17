@@ -21,13 +21,13 @@ public class EnemyIdle : EnemyState
 
     public override void StateActionUpdate()
     {
-        //if (timer > waitingTime)
-        //{
-        //    enemyStateMachine.ChangeState(enemy.patrolState);
-        //    return;
-        //}
+        if (timer > waitingTime)
+        {
+            enemyStateMachine.ChangeState(enemy.patrolState);
+            return;
+        }
 
-        //timer += Time.deltaTime;
+        timer += Time.deltaTime;
     }
 
     public override void Exit()

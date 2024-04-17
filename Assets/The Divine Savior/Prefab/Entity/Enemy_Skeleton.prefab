@@ -558,8 +558,8 @@ GameObject:
   - component: {fileID: 6118984538298005229}
   - component: {fileID: 6118984538298005216}
   - component: {fileID: 6118984538298005231}
-  - component: {fileID: 6118984538298005230}
   - component: {fileID: 6118984538298005217}
+  - component: {fileID: 2778379597776017854}
   m_Layer: 0
   m_Name: AttackRange
   m_TagString: Untagged
@@ -575,8 +575,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6118984538298005228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.8, y: 2.17, z: 0}
-  m_LocalScale: {x: 23, y: 3, z: 23}
+  m_LocalPosition: {x: -0.13, y: 2.17, z: 0}
+  m_LocalScale: {x: 23, y: 20, z: 23}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6123639677209854377}
@@ -589,7 +589,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6118984538298005228}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &6118984538298005231
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -632,20 +632,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6118984538298005230
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6118984538298005228}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &6118984538298005217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,6 +644,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73b77442f50ba34095bb42389ffa551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &2778379597776017854
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6118984538298005228}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6118984538708524308
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,8 +729,8 @@ GameObject:
   - component: {fileID: 6118984539850311010}
   - component: {fileID: 6118984539850311013}
   - component: {fileID: 6118984539850311012}
-  - component: {fileID: 6118984539850311011}
   - component: {fileID: 6118984539850311014}
+  - component: {fileID: 1545727393214032330}
   m_Layer: 0
   m_Name: DetectAndChaseRange
   m_TagString: Untagged
@@ -804,20 +803,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6118984539850311011
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6118984539850311009}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &6118984539850311014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -830,6 +815,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0e7f2a9331ebd45935d9e30c555ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1545727393214032330
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6118984539850311009}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0000001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6119285307383343623
 GameObject:
   m_ObjectHideFlags: 0

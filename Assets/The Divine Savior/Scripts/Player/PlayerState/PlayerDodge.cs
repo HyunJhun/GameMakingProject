@@ -50,7 +50,7 @@ public class PlayerDodge : PlayerState
         {
             while (timer < 0.5f)
             {
-                player.GetPlayerController().Move(player.transform.forward * player.f_PlayerDodgeSpeed * Time.fixedDeltaTime);
+                player.GetPlayerController().Move(player.transform.forward * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
                 timer += Time.deltaTime;
                 yield return null;
             }
@@ -60,7 +60,7 @@ public class PlayerDodge : PlayerState
             player.transform.LookAt(player.transform.position + moveDir);
             while (timer < 0.5f)
             {
-                player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.fixedDeltaTime);
+                player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
                 timer += Time.deltaTime;
                 yield return null;
             }

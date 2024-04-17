@@ -15,17 +15,38 @@ public class AttackRangeCheck : MonoBehaviour
 
     private void Update()
     {
-        // 죽은 적은 리스트에서 삭제
-        if (enemyTriggeredList.Count == 0) return;
-        foreach(Enemy monster in enemyTriggeredList)
+        switch (type)
         {
-            if (monster == null)
-            {
-                enemyTriggeredList.Remove(monster);
+            case Type.Player:
+                if (enemyTriggeredList.Count == 0) break;
+                foreach (Enemy monster in enemyTriggeredList)
+                {
+                    if (monster == null)
+                    {
+                        enemyTriggeredList.Remove(monster);
+                        break;
+                    }
+                }
                 break;
-            }
-            
+            case Type.Monster:  
+                break;
+
+                //default:
+                //    triggerObjStatus = null;
+                //    bossTriggered = null;
+                //    break;
         }
+        //// 죽은 적은 리스트에서 삭제
+        //if (enemyTriggeredList.Count == 0) return;
+        //foreach(Enemy monster in enemyTriggeredList)
+        //{
+        //    if (monster == null)
+        //    {
+        //        enemyTriggeredList.Remove(monster);
+        //        break;
+        //    }
+            
+        //}
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -112,6 +133,11 @@ public class AttackRangeCheck : MonoBehaviour
     {
         if (bossTriggered != null)
             bossTriggered = null;
+    }
+    public void ResetTriggerObj()
+    {
+        if (triggerObjStatus == null) return;
+        triggerObjStatus = null;
     }
     // Get
     public Status getStats()
