@@ -165,7 +165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &34171686
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1888,6 +1888,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 1186464330805276386, guid: 1edb0558254c3614d9649cd36134fc5e, type: 3}
+      propertyPath: bossHpUI
+      value: 
+      objectReference: {fileID: 34171685}
     - target: {fileID: 1186464331071355553, guid: 1edb0558254c3614d9649cd36134fc5e, type: 3}
       propertyPath: bossAttackParticles.Array.data[1]
       value: 
@@ -6707,7 +6711,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

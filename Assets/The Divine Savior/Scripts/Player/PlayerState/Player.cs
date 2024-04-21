@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     public bool b_IsHit { get; set; }
     public bool b_IsKnockback { get; set; }
     public bool b_IsDie { get; set; }
+    public bool b_isParticleCollision { get; set; }
     void Start()
     {
         // Init Player Var
@@ -172,6 +173,7 @@ public class Player : MonoBehaviour
         b_IsDie = false;
         b_IsHit = false;
         b_IsKnockback = false;
+        b_isParticleCollision = false;
 
         playerStateMachine.Initialize(idleState);
         stats.SetArmor(f_PlayerGeneralArmor);
@@ -215,6 +217,20 @@ public class Player : MonoBehaviour
             //attackRangeBox.ResetBossTriggered();
         }
 
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        Debug.Log("¸Â´Â´Ù");
+        if(other.CompareTag("Breath"))
+        {
+            if (b_IsDodege) return;
+            if (b_isParticleCollision) return;
+            b_isParticleCollision = true;
+            stats.hpDown(bossComponent.GetStatus().GetAttackDamage(0) - stats.GetArmor());
+            b_IsHit = true;
+            
+        }
     }
     //public void OnKnockBackDuringBlocking()
     //{

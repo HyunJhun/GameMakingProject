@@ -16,9 +16,6 @@ public class BossChase : BossState
     private float basicAttackRange;
 
     // Value
-    private int gatcha;
-    private float coolTime_BasicAttack;
-    public float coolTime_RushAttack;
     public override void Enter()
     {
         // 만약 버그등으로 인해 상태가 잘못 들어왔을시를 방지
@@ -40,7 +37,6 @@ public class BossChase : BossState
     }
     public override void StateActionUpdate()
     {
-        
         if (checkBossHpForFlightPhase()) // 만약 hp가 50% 미만이라면 페이즈 2로 넘어갈 수 있는지 확인한다
         {
             Debug.Log("피 50 미만");
@@ -48,7 +44,8 @@ public class BossChase : BossState
         }
         else
         {
-            if (coolTime_RushAttack <= 3f) coolTime_RushAttack += Time.deltaTime;
+            if (boss.coolTime_RushAttack <= 3f) boss.coolTime_RushAttack += Time.deltaTime;
+            if (boss.coolTime_BreathAttack <= 10f) boss.coolTime_BreathAttack += Time.deltaTime;
             checkDistanceBetweenBossToPlayer();
         }
         
@@ -73,16 +70,35 @@ public class BossChase : BossState
     }
     private void bossAttackPatternSelectByDistance(float distance)
     {
-        if (distance < rushAttackRange && coolTime_RushAttack >= 3f) // 공격 사정 거리
+        if(distance < rushAttackRange + 2f && boss.coolTime_BreathAttack >= 10f)
         {
-            if (Random.Range(0, 100) <= 45)
-            {
-                boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
-                bossStateMachine.ChangeState(boss.attackState);
-                Debug.Log("Boss Attack : Rush");
-                return;
-            }
-            coolTime_RushAttack = 0f;
+            //if (Random.Range(0, 100) <= 70)
+            //{
+            //    boss.attackState.patternSelectNumber = 2;
+            //    bossStateMachine.ChangeState(boss.attackState);
+            //    Debug.Log("Boss Attack : Breath");
+            //    return;
+            //}
+            boss.attackState.patternSelectNumber = 2;
+            bossStateMachine.ChangeState(boss.attackState);
+            Debug.Log("Boss Attack : Breath");
+            boss.coolTime_BreathAttack = 0f;
+            return;
+        }
+        if (distance < rushAttackRange && boss.coolTime_RushAttack >= 3f) // 공격 사정 거리
+        {
+            //if (Random.Range(0, 100) <= 60)
+            //{
+            //    boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
+            //    bossStateMachine.ChangeState(boss.attackState);
+            //    Debug.Log("Boss Attack : Rush");
+            //    return;
+            //}
+            boss.attackState.patternSelectNumber = 1; // 패턴 번호를 이용해 공격 패턴을 가져감
+            bossStateMachine.ChangeState(boss.attackState);
+            Debug.Log("Boss Attack : Rush");
+            boss.coolTime_RushAttack = 0f;
+            return;
         }
         if (distance < basicAttackRange)
         {

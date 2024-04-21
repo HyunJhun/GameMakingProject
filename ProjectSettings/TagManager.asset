@@ -12,6 +12,7 @@ TagManager:
   - AttackBox
   - Skill
   - Weapon
+  - Breath
   layers:
   - Default
   - TransparentFX

@@ -64,6 +64,7 @@ Transform:
   - {fileID: 1186464330171101543}
   - {fileID: 1186464331067280206}
   - {fileID: 1186464331551515448}
+  - {fileID: 1537453447321607106}
   m_Father: {fileID: 1186464330635742818}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -976,10 +977,13 @@ MonoBehaviour:
   backPoint: {fileID: 0}
   bossCollisionBox: {fileID: 1186464330415991230}
   flightPoint: []
+  bossHeadObj: {fileID: 1186464329531957436}
   fireballPrefab: {fileID: 1866478428980314727, guid: a65ff3b2656ac4447a4602e58edb93bc, type: 3}
   fireballShotingPoint: {fileID: 1186464329863007812}
   firebombPrefab: {fileID: 2156332828818173728, guid: 10d525d1be371e24b8db5fd2904468c9, type: 3}
   firebombDropPoint: {fileID: 1186464330278345461}
+  fireBreathPoint: {fileID: 2169035627691978620}
+  fireBreathParticle: {fileID: 1634767862067424, guid: 007c57e2df8e9b144b99f471b84f3d56, type: 3}
   bossParticleManager: {fileID: 1186464331071355553}
 --- !u!114 &1186464331071355577
 MonoBehaviour:
@@ -1002,7 +1006,8 @@ MonoBehaviour:
   damage: 0
   armor: 0
   attackStamina: []
-  attackDamage: []
+  attackDamage:
+  - 4
   skillDamage: []
   skillMpUsage: []
   player: {fileID: 0}
@@ -1039,6 +1044,7 @@ MonoBehaviour:
   - {fileID: 0}
   bossAttackEnterParticles: []
   skillParticles: []
+  hitParticle: {fileID: 0}
   swordHolder: {fileID: 0}
   player: {fileID: 0}
   boss: {fileID: 1186464330249201201}
@@ -2799,4 +2805,35 @@ Transform:
   - {fileID: 1186464331315878470}
   m_Father: {fileID: 1186464330210157180}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2169035627691978620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1537453447321607106}
+  m_Layer: 0
+  m_Name: FireBreathPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1537453447321607106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169035627691978620}
+  m_LocalRotation: {x: 0.040904254, y: -0.7059227, z: 0.040904254, w: 0.7059227}
+  m_LocalPosition: {x: -205.3, y: -42.3, z: -0}
+  m_LocalScale: {x: 100, y: 100, z: 99.999985}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1186464329531957435}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

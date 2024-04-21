@@ -32,6 +32,6 @@ public class PlayerGetHIt : PlayerState
 
     public override void Exit()
     {
-        base.Exit();
+        player.b_isParticleCollision = false;
     }
 }

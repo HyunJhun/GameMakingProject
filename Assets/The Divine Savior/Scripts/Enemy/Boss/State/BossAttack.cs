@@ -7,8 +7,7 @@ public class BossAttack : BossState
     public BossAttack(Boss boss,Status stats,BossStateMachine bossStateMachine) : base(boss,stats,bossStateMachine)
     {
     }
-
-    private bool isAttack { get; set; } = false;
+    private bool _isAttack = false;
     private float timeToArrive = 17f;
     public int distanceOfDestination { get; set; } = 17;
     private float timer;
@@ -23,22 +22,28 @@ public class BossAttack : BossState
     public override void Enter()
     {
         initConditions();
+        boss.isAttack = true;
         Debug.Log("PATTERN : " + patternSelectNumber);
     }
     public override void Exit()
     {
         //boss.agent.SetDestination(boss.transform.position);
+        boss.isAttack = false;
         patternSelectNumber = -1;
     }
     public override void StateActionUpdate()
     {
-        if (isAttack)
+        if (boss.coolTime_RushAttack <= 3f) boss.coolTime_RushAttack += Time.deltaTime;
+        if (boss.coolTime_BreathAttack <= 10f) boss.coolTime_BreathAttack += Time.deltaTime;
+        if (_isAttack)
         {
             if(patternSelectNumber == 0)
                 boss.StartCoroutine(BossAttackPattern_BasicAttack());
             if (patternSelectNumber == 1)
                 boss.StartCoroutine(BossAttackPattern_Rush());
-            isAttack = false;
+            if(patternSelectNumber == 2)
+                boss.StartCoroutine(BossAttackPattern_FireBreath());
+            _isAttack = false;
         }
         // attack 이 연속적으로 일어나면 일시적으로 attack 상태에서 상태변환이 안일어남
         // 그러면 일단 만약 몇초동안 움직임이 없다면 다시 추격 상태로 강제로 돌려야 하는 방법이 있을수도 있음.
@@ -57,7 +62,7 @@ public class BossAttack : BossState
         // 보스가 플레이어가 있는 방향으로 길이를 distanceOfDestination 만큼 "대쉬 공격" 진행. 
         Vector3 destinationOfAttack = new Vector3(attackDirection.x * distanceOfDestination, 0f, attackDirection.z * distanceOfDestination) + boss.transform.position;
         boss.transform.LookAt(destinationOfAttack);
-        isAttack = false;
+        _isAttack = false;
         boss.bossParticleManager.BossAttackParticleInstance(1);
         while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.2f)
         {
@@ -77,7 +82,33 @@ public class BossAttack : BossState
         CheckIsPlayerInRangeOfAttackRangeForBasicAttackPattern(); // 공격범위 안에 플레이어가 존재하는지 체크.
         bossStateMachine.ChangeState(boss.stiffnessState);
     }
+    IEnumerator BossAttackPattern_FireBreath()
+    {
+        yield return boss.StartCoroutine(delayBeforeAttack());
+        float sign = Random.Range(0, 1) == 0 ? 1f : -1f;
+        Quaternion initRotation = boss.transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(boss.transform.rotation.eulerAngles.x, boss.transform.rotation.eulerAngles.y + 120f * sign, boss.transform.rotation.eulerAngles.z);
+        GameObject breathParticle;
 
+        float angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
+
+        boss.transform.LookAt(boss.player.transform);
+
+        boss.bossAnimationHandler.GetBossAnimator().SetTrigger("BreathStart");
+        breathParticle = boss.InstanceFireBraath();
+
+        while (angleDifference > 5f) 
+        {
+            boss.bossAnimationHandler.GetBossAnimator().SetTrigger("Breathing");
+            boss.transform.rotation = Quaternion.Lerp(boss.transform.rotation, targetRotation, Time.deltaTime / 2f);
+            angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
+            yield return null;
+        }
+        boss.bossAnimationHandler.GetBossAnimator().SetTrigger("BreathEnd");
+        GameObject.Destroy(breathParticle, 0.2f);
+        bossStateMachine.ChangeState(boss.stiffnessState);
+
+    }
     IEnumerator delayBeforeAttack()
     {
         if (patternSelectNumber == 0)
@@ -98,7 +129,7 @@ public class BossAttack : BossState
 
     private void initConditions()
     {
-        isAttack = true;
+        _isAttack = true;
         timer = 0f;
         boss.agent.SetDestination(boss.transform.position);
         boss.bossCollisionBox.isCollisionWithPlayer = false;

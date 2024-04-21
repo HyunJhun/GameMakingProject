@@ -31,6 +31,12 @@ public class Boss : MonoBehaviour
     public bool isCollision { get; set; }
     public bool isGetHit { get; set; }
     public bool isParticleCollision { get; set; }
+    public bool isAttack { get; set; }
+
+    // Attack
+    public float coolTime_BreathAttack;
+    public float coolTime_RushAttack;
+
     // Raycast
 
     public NavMeshAgent agent { get; set; }
@@ -48,10 +54,13 @@ public class Boss : MonoBehaviour
     // State 확인용 텍스트 - 후에 지워야함
     public DetectBossCollision bossCollisionBox;
     public List<GameObject> flightPoint;
+    [SerializeField] private GameObject bossHeadObj;
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private GameObject fireballShotingPoint;
     [SerializeField] private GameObject firebombPrefab;
     [SerializeField] private GameObject firebombDropPoint;
+    [SerializeField] private GameObject fireBreathPoint;
+    [SerializeField] private GameObject fireBreathParticle;
 
     public ParticleManager bossParticleManager;
 
@@ -79,6 +88,7 @@ public class Boss : MonoBehaviour
         isBack = false;
         isCollision = false;
         isGetHit = false;
+        isAttack = false;
         bossStateMachine.Initialize(idleState);
 
         //
@@ -91,6 +101,7 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.yellow);
         if (!isDie)
         {
             if (!player.GetComponent<Player>().b_IsDie)
@@ -99,13 +110,15 @@ public class Boss : MonoBehaviour
                 bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
             }
             else agent.isStopped = true;
-            if (isGetHit)
+            if (!isAttack)
             {
-                bossAnimationHandler.GetBossAnimator().SetTrigger("GetHit");
-                isGetHit = false;
+                if (isGetHit)
+                {
+                    bossAnimationHandler.GetBossAnimator().SetTrigger("GetHit");
+                    isGetHit = false;
 
+                }
             }
-
             if (stats.getHp() <= 0)
             {
                 bossStateMachine.ChangeState(deadState);
@@ -148,6 +161,15 @@ public class Boss : MonoBehaviour
             GameObject fireballClone = GameObject.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection * fireballSpeed);
         }
+    }
+    public GameObject InstanceFireBraath()
+    {
+        GameObject fireBreathClone = GameObject.Instantiate(fireBreathParticle, fireBreathPoint.transform.position, 
+            Quaternion.Euler(fireBreathParticle.transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,
+            fireBreathParticle.transform.rotation.eulerAngles.z));
+        fireBreathClone.transform.SetParent(transform);
+        fireBreathClone.GetComponent<ParticleSystem>().Play();
+        return fireBreathClone;
     }
 
     private void FixedUpdate()
@@ -226,4 +248,5 @@ public class Boss : MonoBehaviour
     {
         return stats;
     }
+    public GameObject GetBossHeadObj() { return bossHeadObj; }
 }
