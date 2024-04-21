@@ -70,7 +70,7 @@ public class BossChase : BossState
     }
     private void bossAttackPatternSelectByDistance(float distance)
     {
-        if(distance < rushAttackRange + 2f && boss.coolTime_BreathAttack >= 10f)
+        if(distance < rushAttackRange + 2f && boss.coolTime_BreathAttack >= 2f)
         {
             //if (Random.Range(0, 100) <= 70)
             //{

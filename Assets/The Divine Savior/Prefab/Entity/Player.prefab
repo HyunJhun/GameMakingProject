@@ -741,6 +741,10 @@ PrefabInstance:
       value: DwarfHammerPaladin
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f792b3c06ef9e2a428068362d7811255, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f792b3c06ef9e2a428068362d7811255, type: 3}
       propertyPath: m_TagString
       value: Weapon
       objectReference: {fileID: 0}
@@ -817,6 +821,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1c74948a82022be4e9d6e248c06f6533, type: 3}
       propertyPath: m_Name
       value: TowerShieldPaladin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1c74948a82022be4e9d6e248c06f6533, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1c74948a82022be4e9d6e248c06f6533, type: 3}
@@ -1484,6 +1492,10 @@ PrefabInstance:
     - target: {fileID: 6592218297608061252, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6592218297608061252, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7464796253901886555, guid: 8526fc62d267e704aabe14dd3ca9d7ed, type: 3}
       propertyPath: m_Mesh

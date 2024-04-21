@@ -21,7 +21,7 @@ public class AttackRangeCheck : MonoBehaviour
                 if (enemyTriggeredList.Count == 0) break;
                 foreach (Enemy monster in enemyTriggeredList)
                 {
-                    if (monster == null)
+                    if (monster == null || monster.b_isDie)
                     {
                         enemyTriggeredList.Remove(monster);
                         break;

@@ -100,7 +100,7 @@ public class BossAttack : BossState
         while (angleDifference > 5f) 
         {
             boss.bossAnimationHandler.GetBossAnimator().SetTrigger("Breathing");
-            boss.transform.rotation = Quaternion.Lerp(boss.transform.rotation, targetRotation, Time.deltaTime / 2f);
+            boss.transform.rotation = Quaternion.Lerp(boss.transform.rotation, targetRotation, Time.deltaTime / 3f);
             angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
             yield return null;
         }
