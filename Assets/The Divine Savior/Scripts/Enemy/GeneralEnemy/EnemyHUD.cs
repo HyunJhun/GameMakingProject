@@ -70,11 +70,6 @@ public class EnemyHUD : MonoBehaviour
             hpUIObject.SetActive(false);
         }
     }
-    public void HpUIFadeOut()
-    {
-        backgroundImage.CrossFadeAlpha(0,1f,false); // 실질적인 값이 변하는게 아니야 !! 
-        hpImage.CrossFadeAlpha(0,1f,false);
-    }
     public void ResetHpUIAlphaValue()
     {
         hpImage.color = new Color(hpImage.color.r, hpImage.color.b, hpImage.color.g, 1f);

@@ -86,7 +86,6 @@ public class BossAttack : BossState
     {
         yield return boss.StartCoroutine(delayBeforeAttack());
         float sign = Random.Range(0, 1) == 0 ? 1f : -1f;
-        Quaternion initRotation = boss.transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(boss.transform.rotation.eulerAngles.x, boss.transform.rotation.eulerAngles.y + 120f * sign, boss.transform.rotation.eulerAngles.z);
         GameObject breathParticle;
 
@@ -95,6 +94,7 @@ public class BossAttack : BossState
         boss.transform.LookAt(boss.player.transform);
 
         boss.bossAnimationHandler.GetBossAnimator().SetTrigger("BreathStart");
+
         breathParticle = boss.InstanceFireBraath();
 
         while (angleDifference > 5f) 
