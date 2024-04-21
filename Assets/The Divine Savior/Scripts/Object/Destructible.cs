@@ -16,11 +16,6 @@ public class Destructible : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("g"))
-            BreakFracturedObject();
-
-        if (boss.GetStatus().getHp() <= triggerHp)
-            BreakFracturedObject();
     }
 
     public void BreakFracturedObject()

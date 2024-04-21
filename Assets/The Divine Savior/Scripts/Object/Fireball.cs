@@ -15,7 +15,7 @@ public class Fireball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Player")) // 만약 지형지물 충돌했을 경우
+        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ground")) // 만약 지형지물 충돌했을 경우
         {
             explodeArea.SetActive(true);
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);

@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected GameObject attackRangeBox;
     [Header("LayerMask")]
     [SerializeField] private LayerMask WallLayerMask;
+    public Vector3 triggeredPoint { get; set; }
     public bool b_isAttack { get; set; }
     public bool b_isGetHit { get; set; }
     public bool b_isCollide { get; set; }
@@ -101,9 +102,15 @@ public class Enemy : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")
             && !collision.gameObject.CompareTag("Ground")) // 만약 플레이어나 몬스터가 아닌 대상, 즉 각종 맵 오브젝트들과 부딪힐 시
         {
-            f_timerForPatrol = 0f;
-            
-        } 
+            f_timerForPatrol = 0f;     
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Weapon")) // 만약 플레이어의 무기에 부딪혔을 시
+        {
+            triggeredPoint = other.ClosestPoint(transform.position);
+        }
     }
     private void OnParticleCollision(GameObject other)
     {

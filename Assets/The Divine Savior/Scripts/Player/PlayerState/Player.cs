@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private GroundChecker playerGroundChecker;
     [SerializeField] private AttackRangeCheck attackRangeBox;
     private SkillAttackManager skillManger;
+    private ParticleManager particleManager;
     // Reference of Others
     [Header("Other References")]
     public Transform cam;
@@ -70,26 +71,29 @@ public class Player : MonoBehaviour
     void Update()
     {
         Environment();
-
-        if (stats.getHp() <= 0 && !b_IsDie)
+        if (!b_IsDie)
         {
-            playerStateMachine.ChangeState(dieState);
-            return;
-        }
-        if(b_IsHit)
-        {
-            if(playerStateMachine.currentState == defenseState)
+            if (stats.getHp() <= 0)
             {
-                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("BlockHit");
-                b_IsHit = false;
+                playerStateMachine.ChangeState(dieState);
                 return;
             }
-            playerStateMachine.ChangeState(getHitState);
-            return;
-        }
-        if (!playerControllerBody.isGrounded && b_IsKnockback){
-            playerStateMachine.ChangeState(floatingState);
-            return;
+            if (b_IsHit)
+            {
+                if (playerStateMachine.currentState == defenseState)
+                {
+                    GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("BlockHit");
+                    b_IsHit = false;
+                    return;
+                }
+                playerStateMachine.ChangeState(getHitState);
+                return;
+            }
+            if (!playerControllerBody.isGrounded && b_IsKnockback)
+            {
+                playerStateMachine.ChangeState(floatingState);
+                return;
+            }
         }
         playerStateMachine.currentState.StateActionUpdate();
         attackMoving();
@@ -130,6 +134,7 @@ public class Player : MonoBehaviour
         playerGroundChecker = GetComponent<GroundChecker>();
         keyInputManager = GetComponent<KeyInputManager>();
         skillManger = GetComponent<SkillAttackManager>();
+        particleManager = GetComponent<ParticleManager>();
 
         // Init state
         idleState = new PlayerIdle(this, stats, playerStateMachine);
@@ -180,7 +185,7 @@ public class Player : MonoBehaviour
             if (!b_IsHit)
             {
                 stats.hpDown(15 - stats.GetArmor());
-                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("isHit");
+                GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("GetHit");
                 b_IsKnockback = true;
             }
         }
@@ -198,12 +203,14 @@ public class Player : MonoBehaviour
             foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
             {
                 enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+                particleManager.InstanceHitParticle(enemy.triggeredPoint);
                 enemy.b_isGetHit = true;
             }
         }
         if (attackRangeBox.GetBoss() != null)
         {
             attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+            particleManager.InstanceHitParticle(attackRangeBox.GetBoss().triggeredPoint);
             attackRangeBox.GetBoss().isGetHit = true;
             //attackRangeBox.ResetBossTriggered();
         }
@@ -240,4 +247,5 @@ public class Player : MonoBehaviour
     public GroundChecker GetPlayerGroundChecker() { return playerGroundChecker; }
     public KeyInputManager GetKeyInputManager() { return keyInputManager; }
     public SkillAttackManager GetSkillManger() { return skillManger; }
+    public ParticleManager GetParticleManager() { return particleManager; }
 }

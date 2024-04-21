@@ -12,7 +12,7 @@ public class BossFlyAround : BossState
     public List<GameObject> moveToPoints;
     public int count { get; set; }
     private float timer;
-    private float timerToArrive = 500f;
+    private float timerToArrive = 300f; // ¼öÁ¤
     private bool isMoving;
     private bool isFly = false;
 

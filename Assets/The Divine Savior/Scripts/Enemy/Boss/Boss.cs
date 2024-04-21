@@ -37,6 +37,7 @@ public class Boss : MonoBehaviour
     public bool isEnterPhaseTwo { get; set; } = false; // 조건을 만족해도 페이즈가 한 번 넘어갔으면 더이상 넘어가지는 않도록 하는 장치.
                                                        // true 가 되면 페이즈가 한 번 바뀌었던 적이 있다는 소리.
 
+    public Vector3 triggeredPoint { get; set; }
     [Header("References")]
     [SerializeField] private Status stats;
     public DetectPlayer detectPlayer;
@@ -90,23 +91,26 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        if (!player.GetComponent<Player>().b_IsDie)
+        if (!isDie)
         {
-            bossStateMachine.currentState.StateActionUpdate();
-            bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
-        }
-        else agent.isStopped = true;
-        if(isGetHit)
-        {
-            bossAnimationHandler.GetBossAnimator().SetTrigger("GetHit");
-            isGetHit = false;
+            if (!player.GetComponent<Player>().b_IsDie)
+            {
+                bossStateMachine.currentState.StateActionUpdate();
+                bossAnimationHandler.animationUpdate(agent.velocity.magnitude, detectPlayer.isDetectPlayer);
+            }
+            else agent.isStopped = true;
+            if (isGetHit)
+            {
+                bossAnimationHandler.GetBossAnimator().SetTrigger("GetHit");
+                isGetHit = false;
 
-        }
+            }
 
-        if (stats.getHp() <= 0)
-        {
-            bossStateMachine.ChangeState(deadState);
-            return;
+            if (stats.getHp() <= 0)
+            {
+                bossStateMachine.ChangeState(deadState);
+                return;
+            }
         }
     }
 
@@ -166,6 +170,10 @@ public class Boss : MonoBehaviour
         if (other.CompareTag("BackPoint"))
         {
             isBack = true;
+        }
+        if(other.CompareTag("Weapon"))
+        {
+            triggeredPoint = other.ClosestPoint(transform.position);
         }
     }
     private void OnTriggerExit(Collider other)

@@ -18,23 +18,10 @@ public class Explode : MonoBehaviour
             {
                 if (!boss.CheckPlayerDodge())
                 {
+                    Debug.Log($"Æø¹ß µ¥¹ÌÁö : {explodeDamage}");
                     boss.DamagingToPlayer(boss.transform, explodeDamage);
                 }
             }
-        }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (!boss.player.GetComponent<Player>().b_IsHit)
-            {
-                if (!boss.CheckPlayerDodge())
-                {
-                    boss.DamagingToPlayer(boss.transform, explodeDamage);
-                }
-            }
-
         }
     }
 }

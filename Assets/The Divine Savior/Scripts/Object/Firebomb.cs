@@ -11,11 +11,13 @@ public class Firebomb : MonoBehaviour
     private Destructible fractured;
     public float timer { get; set; }
     private bool collisionObstacle;
+    private bool isBoom;
 
     private void Start()
     {
         timer = 7f;
         collisionObstacle = false;
+        isBoom = false;
         fractured = GetComponent<Destructible>();
     }
 
@@ -26,8 +28,9 @@ public class Firebomb : MonoBehaviour
         {
             timer -= Time.deltaTime;
             if (timer <= 0.1f) explodeArea.SetActive(true);
-            if (timer <= 0f)
+            if (timer <= 0f&& !isBoom)
             {
+                isBoom = true;
                 ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
                 bombEffect.Play();
                 Destroy(bombEffect.gameObject, 1f);
@@ -42,7 +45,7 @@ public class Firebomb : MonoBehaviour
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
             bombEffect.Play();
             Destroy(bombEffect.gameObject, 1f);
-            Destroy(gameObject, 0.3f);
+            Destroy(gameObject, 0.1f);
         }
         else
         {

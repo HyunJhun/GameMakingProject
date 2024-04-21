@@ -19,7 +19,7 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += direction * 0.06f;
+        transform.position += direction * 0.15f;
     }
     private void OnTriggerEnter(Collider other)
     {

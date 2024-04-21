@@ -25,7 +25,7 @@ public class SkillAttackManager : MonoBehaviour
 
 
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("SwordJudgment");
-        player.GetComponent<ParticleManager>().SkillAttackParticleInstance(0);
+        player.GetParticleManager().SkillAttackParticleInstance(0);
     }
 
     public void Heal()
@@ -34,6 +34,6 @@ public class SkillAttackManager : MonoBehaviour
 
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("Heal");
         playerStatus.hpIncrease(playerStatus.GetSkillAttackDamage(1));
-        player.GetComponent<ParticleManager>().SkillBuffParticleInstance(1);
+        player.GetParticleManager().SkillBuffParticleInstance(1);
     }
 }

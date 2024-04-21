@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 682496949}
   m_Layer: 7
   m_Name: AttackBox
-  m_TagString: AttackBox
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -389,6 +389,7 @@ MonoBehaviour:
   skillParticles:
   - {fileID: 1166320503606963493, guid: a008d93515e8caf418d48b48f635d20d, type: 3}
   - {fileID: 9017484664307500583, guid: 714dd26d636f14e4fabb3f21716b9c97, type: 3}
+  hitParticle: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
   swordHolder: {fileID: 3244217365141199741}
   player: {fileID: 3244217364423093249}
   boss: {fileID: 0}
@@ -738,6 +739,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f792b3c06ef9e2a428068362d7811255, type: 3}
       propertyPath: m_Name
       value: DwarfHammerPaladin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f792b3c06ef9e2a428068362d7811255, type: 3}
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f792b3c06ef9e2a428068362d7811255, type: 3}

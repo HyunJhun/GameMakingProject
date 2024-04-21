@@ -11,6 +11,7 @@ TagManager:
   - Attackable
   - AttackBox
   - Skill
+  - Weapon
   layers:
   - Default
   - TransparentFX

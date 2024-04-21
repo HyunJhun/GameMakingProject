@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 59547873}
   m_Layer: 3
   m_Name: Terrain_(-100.0, 0.0, 26.9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1418,7 +1418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.71
+      value: 73.6
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1592,7 +1592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.7800007
+      value: 64.54
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1710,7 +1710,7 @@ GameObject:
   - component: {fileID: 348962309}
   m_Layer: 3
   m_Name: Terrain_(-100.0, 0.0, -73.1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -2718,7 +2718,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -2998,7 +2998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.71
+      value: 73.59999
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3513,7 +3513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.27
+      value: 63.05
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3881,7 +3881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.459999
+      value: 83.78
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3960,6 +3960,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3244217364423093255, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: hp
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244217364423093255, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: mp
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244217364423093255, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: maxHp
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3244217364423093255, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
+      propertyPath: maxMp
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 3244217364423093257, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
       propertyPath: boss
       value: 
@@ -4008,7 +4024,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 424631113509322517, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3093e8c2941aa9c408bbf2d8f3849623, type: 3}
 --- !u!1001 &893249470
 PrefabInstance:
@@ -4167,7 +4184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.65
+      value: 81.53999
       objectReference: {fileID: 0}
     - target: {fileID: 8225513827729884608, guid: c004b86dc34bea9419e6fca18e70828f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4724,7 +4741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.02
+      value: 63.3
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4785,7 +4802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.380001
+      value: 13.36
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4793,7 +4810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5699997
+      value: 71.89
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4951,7 +4968,7 @@ GameObject:
   - component: {fileID: 1011112320}
   m_Layer: 3
   m_Name: Terrain_(0.0, 0.0, 126.9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -5262,7 +5279,7 @@ MonoBehaviour:
   obj_StatusList: []
   player: {fileID: 383062094}
   boss: {fileID: 555682352}
-  playerP: {fileID: 0}
+  playerP: {fileID: 383062092}
   playerStateText: {fileID: 170183355}
   playerHpBar: {fileID: 691434969}
   playerStaminaBar: {fileID: 486706111}
@@ -5719,7 +5736,7 @@ GameObject:
   - component: {fileID: 1143006924}
   m_Layer: 3
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -7750,7 +7767,7 @@ GameObject:
   - component: {fileID: 1626380780}
   m_Layer: 3
   m_Name: Terrain_(100.0, 0.0, 26.9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -7863,7 +7880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.93
+      value: 83.25
       objectReference: {fileID: 0}
     - target: {fileID: 6123639677209854377, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8306,7 +8323,7 @@ GameObject:
   - component: {fileID: 1697539110}
   m_Layer: 3
   m_Name: Terrain_(0.0, 0.0, -73.1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -8384,7 +8401,7 @@ GameObject:
   - component: {fileID: 1699032204}
   m_Layer: 3
   m_Name: Terrain_(-100.0, 0.0, 126.9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -8492,7 +8509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1741158680
 Transform:
   m_ObjectHideFlags: 0
@@ -9785,7 +9802,7 @@ GameObject:
   - component: {fileID: 2092571623}
   m_Layer: 3
   m_Name: Terrain_(100.0, 0.0, 126.9)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -9943,7 +9960,7 @@ GameObject:
   - component: {fileID: 2129354787}
   m_Layer: 3
   m_Name: Terrain_(100.0, 0.0, -73.1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
