@@ -97,13 +97,8 @@ public class BossAttack : BossState
 
         breathParticle = boss.InstanceFireBraath();
 
-        while (angleDifference > 5f) 
-        {
-            boss.bossAnimationHandler.GetBossAnimator().SetTrigger("Breathing");
-            boss.transform.rotation = Quaternion.Lerp(boss.transform.rotation, targetRotation, Time.deltaTime / 3f);
-            angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
-            yield return null;
-        }
+        boss.bossAnimationHandler.GetBossAnimator().SetTrigger("Breathing");
+        yield return new WaitForSeconds(5f);
         boss.bossAnimationHandler.GetBossAnimator().SetTrigger("BreathEnd");
         GameObject.Destroy(breathParticle, 0.2f);
         bossStateMachine.ChangeState(boss.stiffnessState);

@@ -167,7 +167,8 @@ public class Boss : MonoBehaviour
         GameObject fireBreathClone = GameObject.Instantiate(fireBreathParticle, fireBreathPoint.transform.position, 
             Quaternion.Euler(fireBreathParticle.transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,
             fireBreathParticle.transform.rotation.eulerAngles.z));
-        fireBreathClone.transform.SetParent(transform);
+        fireBreathClone.transform.SetParent(bossHeadObj.transform);
+        fireBreathClone.transform.localScale = fireBreathParticle.transform.localScale;
         fireBreathClone.GetComponent<ParticleSystem>().Play();
         return fireBreathClone;
     }

@@ -97,7 +97,8 @@ public class Player : MonoBehaviour
             }
         }
         playerStateMachine.currentState.StateActionUpdate();
-        attackMoving();
+
+        Debug.Log($"player collision object name is : {playerControllerBody.collisionFlags}");
     }
     private void FixedUpdate()
     {
@@ -240,15 +241,6 @@ public class Player : MonoBehaviour
 
     //    GetPlayerController().Move(Vector3.Lerp(transform.position,transform.position - afterKnockBackPosition,Time.deltaTime/10f));
     //}
-    private void attackMoving()
-    {
-        if (playerAnimationManager.CheckCurrentAnimationName("Attack1") ||
-            playerAnimationManager.CheckCurrentAnimationName("Attack2") ||
-            playerAnimationManager.CheckCurrentAnimationName("Attack3"))
-        {
-            transform.position += transform.forward * f_attackMoveSpeed * Time.fixedDeltaTime;
-        }
-    }
     // Set Functions
 
 
