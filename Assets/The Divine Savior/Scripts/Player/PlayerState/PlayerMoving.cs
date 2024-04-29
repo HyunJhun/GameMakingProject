@@ -15,12 +15,12 @@ public class PlayerMoving : PlayerState
     public override void Enter()
     {
         OnInitialize();
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Walk,true);
     }
     public override void StateActionUpdate()
     {
         if (Input.GetButtonDown("Dodge"))
-        {
-            
+        {           
             playerStateMachine.ChangeState(player.dodgeState);
             return;
         }
@@ -51,7 +51,7 @@ public class PlayerMoving : PlayerState
     }
     public override void Exit()
     {
-        base.Exit();
+        SoundManager.soundManagerInstacne.StopSfx(SoundManager.SFX_Player.Walk);
     }
 
     private Vector3 GetMoveToDirection()

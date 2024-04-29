@@ -19,6 +19,7 @@ public class PlayerSprnt : PlayerState
 
         player.b_IsSprint = true;
         player.GetPlayerStatus().InvokeRepeating("staminaDown_Sprint", 1f, 1f);
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Sprint, true);
 
     }
     public override void StateActionUpdate()
@@ -61,5 +62,6 @@ public class PlayerSprnt : PlayerState
     {
         player.b_IsSprint = false;
         player.GetPlayerStatus().CancelInvoke("staminaDown_Sprint");
+        SoundManager.soundManagerInstacne.StopSfx(SoundManager.SFX_Player.Sprint);
     }
 }

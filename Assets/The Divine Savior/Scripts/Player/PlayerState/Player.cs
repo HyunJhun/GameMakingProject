@@ -217,6 +217,7 @@ public class Player : MonoBehaviour
             attackRangeBox.GetBoss().isGetHit = true;
             //attackRangeBox.ResetBossTriggered();
         }
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Attack, false);
 
     }
 
