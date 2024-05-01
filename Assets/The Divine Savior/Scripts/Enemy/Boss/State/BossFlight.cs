@@ -16,6 +16,7 @@ public class BossFlight : BossState
     public override void Enter()
     {
         phaseTwoInitialize();
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp, false, boss);
     }
     public override void Exit()
     {

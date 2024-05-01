@@ -28,6 +28,7 @@ public class BossFlyAround : BossState
     }
     public override void Exit()
     {
+        SoundManager.soundManagerInstacne.StopSfx(boss);
         if (isMoving) isMoving = false;   
     }
 
@@ -48,6 +49,7 @@ public class BossFlyAround : BossState
         timer = 0f;
         //yield return new WaitForSeconds(1f);
         Vector3 FlyToPosition = moveToPoints[count].transform.position;
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyTo, true, boss);
         while (Vector3.Distance(boss.transform.position,FlyToPosition) > 0.2f)
         {
             timer += Time.deltaTime;

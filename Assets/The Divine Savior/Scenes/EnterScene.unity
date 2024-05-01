@@ -477,18 +477,21 @@ MonoBehaviour:
   bgmVolume: 0.1
   enemySounds:
   - {fileID: 8300000, guid: 5018fb0e93a57be449f2818194bad56c, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 742e8bb228e698d4db050102a0bfd061, type: 3}
+  - {fileID: 8300000, guid: 038237b4188f0cf48a503e286bca4aa4, type: 3}
   - {fileID: 0}
   bossSounds:
+  - {fileID: 8300000, guid: 8d222dffe0dea5a46a22817c43f06c9a, type: 3}
   - {fileID: 8300000, guid: 9f575c6f40142b3478a8c1bb1c45c3a6, type: 3}
   - {fileID: 8300000, guid: 5018fb0e93a57be449f2818194bad56c, type: 3}
-  - {fileID: 0}
   - {fileID: 8300000, guid: ec509f8eee02acb43ab24bd01210b5e9, type: 3}
   - {fileID: 8300000, guid: 52ae9dc207f43f4478b6421121dd4092, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 9481c1d73d10b594192724a94d9e47cf, type: 3}
+  - {fileID: 8300000, guid: 2b137679ad80cf3489de122bcf35a75a, type: 3}
+  - {fileID: 8300000, guid: cff43b718d5daa443b0099850c29549a, type: 3}
+  - {fileID: 8300000, guid: 4e626301b28822c4084a60db288a6981, type: 3}
+  - {fileID: 8300000, guid: c727eb4c66c87c7408dbd53bee10af8d, type: 3}
+  - {fileID: 8300000, guid: 66a9ec7da77d3a948875fa1bf65e756d, type: 3}
   - {fileID: 8300000, guid: 66a9ec7da77d3a948875fa1bf65e756d, type: 3}
   playerSounds:
   - {fileID: 8300000, guid: c89ee1061963e0344a06ef6f3103183d, type: 3}
@@ -498,8 +501,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a2471d02c95808449b4c184a8ffbd8f5, type: 3}
   - {fileID: 8300000, guid: 95c6699220c4da74bbbfe84eb5eb342f, type: 3}
   - {fileID: 8300000, guid: 7b6eacd7ba18902489ea3b9fa8297c57, type: 3}
-  - {fileID: 8300000, guid: 7b6eacd7ba18902489ea3b9fa8297c57, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 6ebb3b8fbf9da234da5daa9134680948, type: 3}
+  - {fileID: 8300000, guid: cd35f39e58171bc4da84a50a5ff419e9, type: 3}
   otherSounds: []
   channels: 16
   sfxVolume: 1

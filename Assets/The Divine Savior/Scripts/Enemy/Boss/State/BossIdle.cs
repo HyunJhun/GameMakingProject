@@ -12,9 +12,11 @@ public class BossIdle : BossState
     public override void Enter() 
     {
         //boss.agent.SetDestination(boss.transform.position);
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Idle, true, boss);
     }
     public override void Exit()
     {
+        SoundManager.soundManagerInstacne.StopSfx(boss);
     }
     public override void StateActionUpdate()
     {

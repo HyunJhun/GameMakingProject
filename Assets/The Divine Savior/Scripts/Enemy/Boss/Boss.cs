@@ -144,6 +144,8 @@ public class Boss : MonoBehaviour
     public void InstanceAndShootFireball()
     {
         Vector3 directionBetweenBossToPlayer = (player.transform.position - transform.position).normalized;
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FireBallAttack, false, this);
+
         GameObject fireballClone = GameObject.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
         fireballClone.GetComponent<Rigidbody>().AddForce(directionBetweenBossToPlayer * fireballSpeed);
     }
@@ -153,11 +155,13 @@ public class Boss : MonoBehaviour
         int rand = Random.Range(0, 2);
         if (rand == 0)
         {
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FireBallAttack, false, this);
             GameObject fireballClone = GameObject.Instantiate(firebombPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection);
         }
         else
         {
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FireBallAttack, false, this);
             GameObject fireballClone = GameObject.Instantiate(fireballPrefab, fireballShotingPoint.transform.position, Quaternion.identity);
             fireballClone.GetComponent<Rigidbody>().AddForce(dropDirection * fireballSpeed);
         }

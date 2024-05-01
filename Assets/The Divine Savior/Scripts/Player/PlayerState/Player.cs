@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
                 if (playerStateMachine.currentState == defenseState)
                 {
                     GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("BlockHit");
+                    SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Defense,false);
                     b_IsHit = false;
                     return;
                 }
@@ -213,6 +214,7 @@ public class Player : MonoBehaviour
         if (attackRangeBox.GetBoss() != null)
         {
             attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Hit, false);
             particleManager.InstanceHitParticle(attackRangeBox.GetBoss().triggeredPoint);
             attackRangeBox.GetBoss().isGetHit = true;
             //attackRangeBox.ResetBossTriggered();

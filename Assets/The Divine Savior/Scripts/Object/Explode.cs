@@ -10,6 +10,10 @@ public class Explode : MonoBehaviour
     {
         boss = GameObject.FindWithTag("Enemy").GetComponent<Boss>();
     }
+    private void Start()
+    {
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2311925644611836766}
   - component: {fileID: 1709757669461153019}
   - component: {fileID: 3485417514373718065}
-  - component: {fileID: -4646812216097457713}
+  - component: {fileID: 3273983669715961305}
   m_Layer: 0
   m_Name: PT_Pine_Tree_03_stump
   m_TagString: Untagged
@@ -84,7 +84,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &-4646812216097457713
+--- !u!136 &3273983669715961305
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,7 +94,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.36354327
-  m_Height: 1.1504762
+  m_Radius: 0.22656609
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0.020702675, y: 0.05083403, z: 0.04029517}
+  m_Center: {x: 0, y: 0, z: 0}

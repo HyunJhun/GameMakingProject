@@ -42,6 +42,7 @@ public class Firebomb : MonoBehaviour
     {     
         if (collision.gameObject.CompareTag("Player")) // 플레이어와 충돌했을 경우
         {
+            //SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
             bombEffect.Play();
             Destroy(bombEffect.gameObject, 1f);

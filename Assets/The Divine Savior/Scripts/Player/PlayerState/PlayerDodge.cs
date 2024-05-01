@@ -15,6 +15,7 @@ public class PlayerDodge : PlayerState
         if (player.GetPlayerStatus().getStamina() >= 10)
         {
             player.b_IsDodege = true;
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Dodge, false);
             player.StartCoroutine(Dodge());
         }
         else

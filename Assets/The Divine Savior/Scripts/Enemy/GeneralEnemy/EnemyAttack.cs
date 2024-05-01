@@ -8,6 +8,11 @@ public class EnemyAttack : EnemyState
     { }
     public override void Enter()
     {
+        if (!enemy.GetAttackRange().b_isPlayerInRangeOfAttack)
+        {
+            enemyStateMachine.ChangeState(enemy.chaseState);
+            return;
+        }
     }
     public override void StateActionUpdate()
     {

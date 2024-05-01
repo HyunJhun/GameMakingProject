@@ -11,6 +11,7 @@ public class EnemyGetHit : EnemyState
     {
         enemy.b_isGetHit = false;
         enemy.GetAnimator().SetTrigger("GetHit");
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Enemy.Hit);
         enemy.GetEnemyNavMeshAgent().enabled = false;
         updateEnemyHpUI();
 
@@ -31,17 +32,17 @@ public class EnemyGetHit : EnemyState
 
     private void updateEnemyHpUI()
     {
-        if (!enemy.GetComponent<EnemyHUD>().GetHpUIObject().activeSelf)
+        if (!enemy.enemyHud.GetHpUIObject().activeSelf)
         {
-            enemy.GetComponent<EnemyHUD>().GetHpUIObject().SetActive(true);
-            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
+            enemy.enemyHud.GetHpUIObject().SetActive(true);
+            enemy.enemyHud.ResetHpUIAlphaValue();
         }
         else
         {
-            enemy.GetComponent<EnemyHUD>().CancelInvoke("FadeOut");
-            enemy.GetComponent<EnemyHUD>().StopCoroutine("AlphaFadeOut");
-            enemy.GetComponent<EnemyHUD>().ResetHpUIAlphaValue();
-            enemy.GetComponent<EnemyHUD>().isFadeOut = false;
+            enemy.enemyHud.CancelInvoke("FadeOut");
+            enemy.enemyHud.StopCoroutine("AlphaFadeOut");
+            enemy.enemyHud.ResetHpUIAlphaValue();
+            enemy.enemyHud.isFadeOut = false;
         }
     }
 }

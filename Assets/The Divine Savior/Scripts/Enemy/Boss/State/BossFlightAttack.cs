@@ -83,6 +83,7 @@ public class BossFlightAttack : BossState
         yield return null;
         for (int i = 0; i < 3; i++)
         {
+            boss.transform.LookAt(boss.player.transform);
             boss.bossAnimationHandler.OnFireballAttack();
             yield return new WaitUntil(() => boss.bossAnimationHandler.AnimationPlayingCheck(1, 0.95f, "Fly Fireball Shoot"));
             Debug.Log($"발사 {i} 회차");
@@ -99,6 +100,7 @@ public class BossFlightAttack : BossState
         boss.BossCollisionBoxActive(true); // 콜리전 박스 키기
         Vector3 directionToPlayer = boss.player.transform.position;
         Vector3 directionToMovePoint = boss.flyAroundState.moveToPoints[boss.flyAroundState.count].transform.position;
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.RushAttack, false, boss);
         while (Vector3.Distance(boss.transform.position, directionToPlayer) > 0.2f)
         {
             timer += Time.deltaTime;

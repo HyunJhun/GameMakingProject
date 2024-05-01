@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected DetectPlayer rangeOfDetectPlayer;
     [SerializeField] protected DetectPlayer_AttackRange rangeOfAttack;
     [SerializeField] protected GameObject attackRangeBox;
+    public EnemyHUD enemyHud { get; set; }
     [Header("LayerMask")]
     [SerializeField] private LayerMask WallLayerMask;
     public Vector3 triggeredPoint { get; set; }
@@ -75,6 +76,7 @@ public class Enemy : MonoBehaviour
         status = GetComponent<Status>();
         enemyAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        enemyHud = GetComponent<EnemyHUD>();
         // Fixed
         f_patrolLength = 10f;
         f_timerForPatrol = 0f;
@@ -85,12 +87,12 @@ public class Enemy : MonoBehaviour
 
     public void ToDamage(int indexOfAttackMotion)
     {
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Enemy.SkeletonAttack,this);
         if (attackRangeBox.GetComponent<AttackRangeCheck>().getStats() == null) return;
 
         // 1. 보스는 애니메이션만 취하고 체력만 깎이면 됨
         // 2. 일반몹은 플레이어가 공격시 GetHit 상태로 진입해야 하며 이 때, 공격을 하던 도중이여도 진입을 하게 되므로 강제로 애니메이션을 멈춰주어야 한다.
         // 3. 플레이어는 공격시 스태미너가 소모되야하는 추가적인 작업이 필요하다. 또한 플레이어는 피격시 공격을 할 수 없게 된다.
-
         player.b_IsHit = true;
         attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion) - player.GetPlayerStatus().GetArmor());
         attackRangeBox.GetComponent<AttackRangeCheck>().ResetTriggerObj();

@@ -67,6 +67,7 @@ public class Archer : Enemy
 
         ParticleSystem skillParticle = Instantiate(arrowParticle, arrowShootingPoint.transform.position, transform.rotation);
         skillParticle.GetComponent<ParticleSystem>().Play();
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Enemy.ArcherAttack,this);
         Destroy(skillParticle.gameObject, 0.5f);
     }
 

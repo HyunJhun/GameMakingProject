@@ -18,6 +18,7 @@ public class Fireball : MonoBehaviour
         if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ground")) // 만약 지형지물 충돌했을 경우
         {
             explodeArea.SetActive(true);
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
             bombEffect.Play();
             Destroy(bombEffect.gameObject, 1f);

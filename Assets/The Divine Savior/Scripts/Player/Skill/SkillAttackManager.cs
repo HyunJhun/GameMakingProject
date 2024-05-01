@@ -26,14 +26,16 @@ public class SkillAttackManager : MonoBehaviour
 
         player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("SwordJudgment");
         player.GetParticleManager().SkillAttackParticleInstance(0);
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Judgment, false);
     }
 
     public void Heal()
     {
         playerStatus.MpDown(playerStatus.GetSkillMpUsage(1));
 
-        player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("Heal");
+        player.GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("Heal");    
         playerStatus.hpIncrease(playerStatus.GetSkillAttackDamage(1));
         player.GetParticleManager().SkillBuffParticleInstance(1);
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Heal, false);
     }
 }

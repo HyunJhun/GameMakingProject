@@ -18,7 +18,7 @@ public class ButtonManager : MonoBehaviour
 
     public void StartEvent()
     {
-        SceneManager.LoadScene("TestMap");
+        SceneManager.LoadScene("MainScene");
     }
 
     public void SettingEvent()

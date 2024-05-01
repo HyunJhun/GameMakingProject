@@ -41,8 +41,9 @@ public class BossLanding : BossState
     {
         yield return null;
         float timer = 0f;
-        isLand = true; 
+        isLand = true;
 
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp,boss);
         while (boss.transform.position.y > minHeightToLand)
         {
             timer += Time.deltaTime;

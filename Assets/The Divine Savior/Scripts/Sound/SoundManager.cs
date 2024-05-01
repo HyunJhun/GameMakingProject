@@ -24,9 +24,9 @@ public class SoundManager : MonoBehaviour
     private AudioSource[] sfxPlayers;
     private int channelIndex;
 
-    public enum SFX_Player { Walk, Sprint, Dodge, Attack, Defense ,Hit,Skill,Dead = 8}
-    public enum SFX_Enemy {Hit, Attack, Dead = 3}
-    public enum SFX_Boss { Walk, Hit, Dead, Fly, Attack = 5, Bomb = 9}
+    public enum SFX_Player { Walk, Sprint, Dodge, Attack, Defense ,Hit,Heal,Judgment,Dead}
+    public enum SFX_Enemy {Hit, SkeletonAttack,ArcherAttack, Dead}
+    public enum SFX_Boss { Idle,Walk, Hit, FlyUp,FlyTo, MagicCircle,BasicAttack,RushAttack,BreathAttack,FireBallAttack, Bomb,Dead}
     public enum SFX { Click,Die}
     public enum BGM { Title,Main,Boss}
 
@@ -93,9 +93,15 @@ public class SoundManager : MonoBehaviour
             sfxPlayers[loopIndex].Play();
             break;
         }
-
     }
-    public void PlaySfx(SFX_Boss sfx)
+    public void PlaySfx(SFX_Enemy sfx, Enemy enemy)
+    {
+        AudioSource enemyAudio = enemy.GetComponent<AudioSource>();
+        enemyAudio.clip = enemySounds[(int)sfx];
+        enemyAudio.volume = sfxVolume;
+        enemyAudio.Play();
+    }
+    public void PlaySfx(SFX_Boss sfx,bool loop)
     {
         for (int idx = 0; idx < sfxPlayers.Length; idx++)
         {
@@ -106,10 +112,18 @@ public class SoundManager : MonoBehaviour
 
             channelIndex = loopIndex;
             sfxPlayers[loopIndex].clip = bossSounds[(int)sfx];
+            if (loop) sfxPlayers[loopIndex].loop = true;
             sfxPlayers[loopIndex].Play();
             break;
         }
-
+    }
+    public void PlaySfx(SFX_Boss sfx, bool loop, Boss boss)
+    {
+        AudioSource bossAudio = boss.GetComponent<AudioSource>();
+        bossAudio.clip = bossSounds[(int)sfx];
+        bossAudio.volume = sfxVolume;
+        if (loop) bossAudio.loop = true;
+        bossAudio.Play();  
     }
     public void PlaySfx(SFX_Player sfx,bool loop)
     {
@@ -161,5 +175,28 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
+    public void StopSfx(SFX_Boss sfx)
+    {
+        for (int idx = 0; idx < sfxPlayers.Length; idx++)
+        {
+            int loopIndex = (idx + channelIndex) % sfxPlayers.Length;
 
+            if (!sfxPlayers[loopIndex].isPlaying)
+                continue;
+
+            if (sfxPlayers[loopIndex].clip == playerSounds[(int)sfx])
+            {
+                channelIndex = loopIndex;
+                if (sfxPlayers[loopIndex].loop) sfxPlayers[loopIndex].loop = false;
+                sfxPlayers[loopIndex].Stop();
+                break;
+            }
+        }
+    }
+    public void StopSfx(Boss boss)
+    {
+        AudioSource bossAudio = boss.GetComponent<AudioSource>();
+        bossAudio.Stop();
+        bossAudio.loop = false;
+    }
 }

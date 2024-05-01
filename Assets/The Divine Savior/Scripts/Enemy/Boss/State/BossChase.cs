@@ -16,6 +16,8 @@ public class BossChase : BossState
     private float basicAttackRange;
 
     // Value
+    private float breathCoolTime = 60f;
+    private float rushCoolTime = 10f;
     public override void Enter()
     {
         // 만약 버그등으로 인해 상태가 잘못 들어왔을시를 방지
@@ -29,11 +31,14 @@ public class BossChase : BossState
         chaseRange = boss.detectPlayer.gameObject.transform.lossyScale.x;
         rushAttackRange = boss.detectPlayer_AttackRange.gameObject.transform.lossyScale.x / 2f + 2f;
         basicAttackRange = boss.detectPlayer_AttackRange.gameObject.transform.lossyScale.x / 2f;
+
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Walk, true, boss);
     }
     public override void Exit()
     {
         //boss.agent.SetDestination(boss.transform.position); // chase 상태를 벗어나면 기본적으로 추적을 종료하는 개념이기에 멈추어야함
         boss.agent.stoppingDistance = 2f;
+        SoundManager.soundManagerInstacne.StopSfx(boss);
     }
     public override void StateActionUpdate()
     {
@@ -44,8 +49,8 @@ public class BossChase : BossState
         }
         else
         {
-            if (boss.coolTime_RushAttack <= 3f) boss.coolTime_RushAttack += Time.deltaTime;
-            if (boss.coolTime_BreathAttack <= 10f) boss.coolTime_BreathAttack += Time.deltaTime;
+            if (boss.coolTime_RushAttack <= rushCoolTime) boss.coolTime_RushAttack += Time.deltaTime;
+            if (boss.coolTime_BreathAttack <= breathCoolTime) boss.coolTime_BreathAttack += Time.deltaTime;
             checkDistanceBetweenBossToPlayer();
         }
         
@@ -70,7 +75,7 @@ public class BossChase : BossState
     }
     private void bossAttackPatternSelectByDistance(float distance)
     {
-        if(distance < rushAttackRange + 2f && boss.coolTime_BreathAttack >= 2f)
+        if(distance < rushAttackRange + 2f && boss.coolTime_BreathAttack >= breathCoolTime)
         {
             //if (Random.Range(0, 100) <= 70)
             //{
@@ -85,7 +90,7 @@ public class BossChase : BossState
             boss.coolTime_BreathAttack = 0f;
             return;
         }
-        if (distance < rushAttackRange && boss.coolTime_RushAttack >= 3f) // 공격 사정 거리
+        if (distance < rushAttackRange && boss.coolTime_RushAttack >= rushCoolTime) // 공격 사정 거리
         {
             //if (Random.Range(0, 100) <= 60)
             //{

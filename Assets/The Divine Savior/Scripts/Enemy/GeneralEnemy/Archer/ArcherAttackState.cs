@@ -17,7 +17,11 @@ public class ArcherAttackState : EnemyAttack
         base.StateActionUpdate();
         enemy.transform.LookAt(enemy.GetPlayer().transform);
         if (animationPlayingCheck("Draw")) enemy.GetAnimator().SetTrigger("OverDraw");
-        if (animationPlayingCheck("OverDraw")) enemy.GetAnimator().SetTrigger("Attack");
+        if (animationPlayingCheck("OverDraw"))
+        {
+            enemy.GetAnimator().SetTrigger("Attack");
+            return;
+        }
     }
     public override void Exit()
     {

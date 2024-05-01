@@ -10,10 +10,12 @@ public class BossBack : BossState
 
     public override void Enter()
     {
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Walk, true, boss);
     }
 
     public override void Exit()
     {
+        SoundManager.soundManagerInstacne.StopSfx(boss);
     }
 
     public override void StateActionUpdate()
