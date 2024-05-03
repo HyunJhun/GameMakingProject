@@ -28,42 +28,7 @@ public class ThirdPersonCameraHandler : MonoBehaviour
     }
 
     private void Update()
-    {
-        /*
-        // 회전 방향 설정
-        Vector3 viewDir = new Vector3(transform.position.x, player.position.y, transform.position.z) - player.position ;
-        //orientation.forward = viewDir.normalized;
-
-        // 유저 회전 설정
-        if (currentCam == CameraStyle.Basic)
-        {
-            if (basicCam.activeSelf == false && combatCam.activeSelf == true)
-            {
-                basicCam.SetActive(true);
-                combatCam.SetActive(false);
-            }
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            Vector3 inputDir = orientation.forward * v + orientation.right * h;
-
-            if (inputDir != Vector3.zero)
-            {
-                playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
-            }
-        }
-        else if (currentCam == CameraStyle.LockOn)
-        {
-            if (combatCam.activeSelf == false && basicCam.activeSelf == true)
-            {
-                combatCam.SetActive(true);
-                basicCam.SetActive(false);
-            }
-            Vector3 dirToCombatLookAt = combatLookAt.position - new Vector3(transform.position.x, combatLookAt.position.y, transform.position.z);
-            orientation.forward = dirToCombatLookAt.normalized;
-
-            playerObj.forward = dirToCombatLookAt.normalized;
-        }
-        */
+    {     
         if (currentCam == CameraStyle.Basic)
         {
             if (basicCam.activeSelf == false && combatCam.activeSelf == true)

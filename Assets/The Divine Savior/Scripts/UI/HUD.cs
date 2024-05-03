@@ -11,7 +11,6 @@ public class HUD : MonoBehaviour
     [SerializeField] private Status player;
     [SerializeField] private Status boss;
     [SerializeField] private Player playerP;
-    [SerializeField] private TMP_Text playerStateText;
     [Header("SliderUI")]
     [SerializeField] private Slider playerHpBar;
     [SerializeField] private Slider playerStaminaBar;
@@ -26,9 +25,12 @@ public class HUD : MonoBehaviour
         playerStaminaBar.minValue = 0f;
         playerMpBar.maxValue = player.GetMaxMp();
         playerMpBar.minValue = 0f;
-        bossHpBar.maxValue = boss.GetMaxHP();
-        bossHpBar.minValue = 0f;
-        bossNameText.text = "Boss";
+        if (boss != null)
+        {
+            bossHpBar.maxValue = boss.GetMaxHP();
+            bossHpBar.minValue = 0f;
+            bossNameText.text = "Boss";
+        }
     }
 
     // Update is called once per frame
@@ -37,8 +39,8 @@ public class HUD : MonoBehaviour
         playerHpBar.value = player.getHp();
         playerStaminaBar.value = player.getStamina();
         playerMpBar.value = player.GetCurrentMp();
-        bossHpBar.value = boss.getHp();
+        if(boss != null)
+            bossHpBar.value = boss.getHp();
 
-        playerStateText.text = playerP.playerStateMachine.currentState.ToString();
     }
 }

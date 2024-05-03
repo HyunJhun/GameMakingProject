@@ -10,22 +10,17 @@ public class Archer : Enemy
     [Header("Attack")]
     [SerializeField] private GameObject arrowPrefab;
     [SerializeField] private Transform arrowShootingPoint;
-    [SerializeField] private float arrowSpeed = 30f;
     [Header("Effect")]
     [SerializeField] private ParticleSystem arrowParticle;
-    [Header("UI")]
-    [SerializeField] private TMP_Text stateText;
 
     private void Start()
     {
         OnInitialize();
-        stateText = GameObject.Find("playerState").GetComponent<TMP_Text>();
     }
     private void Update()
     {
         OnBaseUpdate(archerStateMachine,enemyAgent);
         archerStateMachine.currentState.StateActionUpdate();
-        stateText.text = "ArcherState_ " + archerStateMachine.currentState.ToString();
     }
     protected override void OnInitialize()
     {

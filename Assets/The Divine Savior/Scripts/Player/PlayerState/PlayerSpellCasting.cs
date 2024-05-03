@@ -12,7 +12,6 @@ public class PlayerSpellCasting : PlayerState
     // 2. 각 키를 기반으로 어떤 스킬이 재생될 것인지 체크
     // 3. 스킬
     private List<string> skillNameList = new List<string>();
-    private bool b_isSkillExecuting = false;
     public override void Enter()
     {
         SelectSkillByKeyInput();
@@ -24,7 +23,6 @@ public class PlayerSpellCasting : PlayerState
     }
     public override void Exit()
     {
-        b_isSkillExecuting = false;
     }
     private void onInitialize()
     {

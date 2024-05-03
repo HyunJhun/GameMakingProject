@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
     // Status
     [Header("Status")]
     private Status stats;
-    [SerializeField] private float f_attackMoveSpeed = 0.004f;
     public float f_StaminaUsageForDodge { get; set; }
     public float f_PlayerWalkSpeed { get; set; }
     public float f_PlayerSprintSpeed { get; set; }
@@ -98,8 +97,6 @@ public class Player : MonoBehaviour
             }
         }
         playerStateMachine.currentState.StateActionUpdate();
-
-        Debug.Log($"player collision object name is : {playerControllerBody.collisionFlags}");
     }
     private void FixedUpdate()
     {

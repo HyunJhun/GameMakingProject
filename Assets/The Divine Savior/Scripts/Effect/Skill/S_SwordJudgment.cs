@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class S_SwordJudgment : MonoBehaviour
 {
-    private bool isCollide;
     [SerializeField]private List<Enemy> collisionEnemies = new List<Enemy>();
     private Boss collisionBoss;
     // Start is called before the first frame update
     void Start()
     {
-        isCollide = false;
     }
     private void OnParticleCollision(GameObject other)
     {

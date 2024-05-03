@@ -9,7 +9,6 @@ public class PlayerOffense : PlayerState
 
     int currentAttack = 0;
     float attackCooltime = 0.0f;
-    bool isSorted = false;
     public override void Enter()
     {
         player.GetPlayerAttackCollisionBox().SetActive(true);
