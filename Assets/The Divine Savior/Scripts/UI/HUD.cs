@@ -10,7 +10,6 @@ public class HUD : MonoBehaviour
     [SerializeField]private List<Status> obj_StatusList;
     [SerializeField] private Status player;
     [SerializeField] private Status boss;
-    [SerializeField] private Player playerP;
     [Header("SliderUI")]
     [SerializeField] private Slider playerHpBar;
     [SerializeField] private Slider playerStaminaBar;
@@ -19,6 +18,9 @@ public class HUD : MonoBehaviour
     [SerializeField] private TMP_Text bossNameText;
     void Start()
     {
+        player = GameObject.Find("Player").GetComponent<Status>();
+        if (GameObject.Find("Boss") != null) boss = GameObject.Find("Boss").GetComponent<Status>();
+
         playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
         playerStaminaBar.maxValue = player.getMaxStamina();
