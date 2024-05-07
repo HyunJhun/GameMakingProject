@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2040376089537355796}
   - component: {fileID: 4711430047790973191}
   - component: {fileID: 1485438850643707844}
-  - component: {fileID: 731505649344690708}
+  - component: {fileID: 3947960772309740585}
   m_Layer: 0
   m_Name: Pillar Variation 003
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4754649094841436599}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4711430047790973191
 MeshFilter:
@@ -85,27 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &731505649344690708
-BoxCollider:
+--- !u!64 &3947960772309740585
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3214024697175293575}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.3, y: 3, z: 1.3}
-  m_Center: {x: 0, y: 1.5, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5235195558352665489, guid: a59f6548c14dfa84ba2ca07e21ce1543, type: 3}
 --- !u!1 &5997359049423478324
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,5 +129,5 @@ Transform:
   m_Children:
   - {fileID: 2040376089537355796}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

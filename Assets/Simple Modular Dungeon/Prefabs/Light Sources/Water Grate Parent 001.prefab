@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3994842828817003202}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &2621976410052159555
 Light:
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 3994842828817003202}
   - component: {fileID: 7227250914304209759}
   - component: {fileID: 736505233476375932}
-  - component: {fileID: 3758240002786099527}
+  - component: {fileID: 3116367879244767360}
   m_Layer: 0
   m_Name: Water Grate Variation 001
   m_TagString: Untagged
@@ -127,7 +127,7 @@ Transform:
   m_Children:
   - {fileID: 585663192277834568}
   m_Father: {fileID: 8142945493960527291}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7227250914304209759
 MeshFilter:
@@ -181,27 +181,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3758240002786099527
-BoxCollider:
+--- !u!64 &3116367879244767360
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3620597295345458400}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.95, y: 0.3, z: 4.02}
-  m_Center: {x: 0.04, y: 0.15, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1195321554319310544, guid: a59f6548c14dfa84ba2ca07e21ce1543, type: 3}
 --- !u!1 &6703871679423678342
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,5 +225,5 @@ Transform:
   m_Children:
   - {fileID: 3994842828817003202}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -199,4 +199,14 @@ public class SoundManager : MonoBehaviour
         bossAudio.Stop();
         bossAudio.loop = false;
     }
+
+    public void initializeSFX()
+    {
+        for (int idx = 0; idx < sfxPlayers.Length; idx++)
+        {
+            sfxPlayers[idx].clip = null;
+            sfxPlayers[idx].volume = sfxVolume;
+            sfxPlayers[idx].loop = false;
+        }
+    }
 }

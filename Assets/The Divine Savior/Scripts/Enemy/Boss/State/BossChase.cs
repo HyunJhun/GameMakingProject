@@ -16,8 +16,8 @@ public class BossChase : BossState
     private float basicAttackRange;
 
     // Value
-    private float breathCoolTime = 60f;
-    private float rushCoolTime = 10f;
+    private float breathCoolTime = 30f;
+    private float rushCoolTime = 7f;
     public override void Enter()
     {
         // 만약 버그등으로 인해 상태가 잘못 들어왔을시를 방지

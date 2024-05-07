@@ -21,7 +21,8 @@ public class TeleportManager : MonoBehaviour
     {
         if(other.CompareTag("Player") && this.name == MainToDungeonPortal.name)
         {
-            SceneManager.LoadScene("SampleScene");
+            SoundManager.soundManagerInstacne.initializeSFX();
+            SceneManager.LoadScene("Boss Scene");
         }
     }
 }

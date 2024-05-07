@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5403814465448864185}
   - component: {fileID: 283905327357786331}
   - component: {fileID: 2332886801735339579}
-  - component: {fileID: 1140671568163898548}
+  - component: {fileID: 6311093901263587921}
   m_Layer: 0
   m_Name: Metal Grate Variation 001
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4214314982690659652}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &283905327357786331
 MeshFilter:
@@ -84,27 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1140671568163898548
-BoxCollider:
+--- !u!64 &6311093901263587921
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6466863786778143475}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.099998474, y: 1.9885464, z: 1.431282}
-  m_Center: {x: -0.00038909912, y: 0.99672055, z: 0.005788803}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6662467010645279570, guid: a59f6548c14dfa84ba2ca07e21ce1543, type: 3}
 --- !u!1 &8741910233246317594
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,5 +128,5 @@ Transform:
   m_Children:
   - {fileID: 5403814465448864185}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

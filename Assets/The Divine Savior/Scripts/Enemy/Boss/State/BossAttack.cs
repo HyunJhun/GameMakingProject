@@ -89,11 +89,11 @@ public class BossAttack : BossState
     IEnumerator BossAttackPattern_FireBreath()
     {
         yield return boss.StartCoroutine(delayBeforeAttack());
-        float sign = Random.Range(0, 1) == 0 ? 1f : -1f;
-        Quaternion targetRotation = Quaternion.Euler(boss.transform.rotation.eulerAngles.x, boss.transform.rotation.eulerAngles.y + 120f * sign, boss.transform.rotation.eulerAngles.z);
+        //float sign = Random.Range(0, 1) == 0 ? 1f : -1f;
+        //Quaternion targetRotation = Quaternion.Euler(boss.transform.rotation.eulerAngles.x, boss.transform.rotation.eulerAngles.y + 120f * sign, boss.transform.rotation.eulerAngles.z);
         GameObject breathParticle;
 
-        float angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
+        //float angleDifference = Quaternion.Angle(boss.transform.rotation, targetRotation);
 
         boss.transform.LookAt(boss.player.transform);
 
@@ -102,10 +102,12 @@ public class BossAttack : BossState
         breathParticle = boss.InstanceFireBraath();
         SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.BreathAttack,true, boss);
         boss.bossAnimationHandler.GetBossAnimator().SetTrigger("Breathing");
-        yield return new WaitForSeconds(4f);
+
+        yield return new WaitUntil(() => boss.bossAnimationHandler.AnimationPlayingCheck(0,0.9f,"Breathing"));
         boss.bossAnimationHandler.GetBossAnimator().SetTrigger("BreathEnd");
         SoundManager.soundManagerInstacne.StopSfx(boss);
         GameObject.Destroy(breathParticle, 0.2f);
+        yield return new WaitUntil(() => boss.bossAnimationHandler.AnimationPlayingCheck(0, 0.9f, "Breath End"));
         bossStateMachine.ChangeState(boss.stiffnessState);
 
     }

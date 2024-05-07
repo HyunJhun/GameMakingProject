@@ -30,7 +30,7 @@ Transform:
   m_Children:
   - {fileID: 212757755222557187}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &622781715422374453
 GameObject:
@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4473770889212284002}
   - component: {fileID: 2123081355000281319}
+  - component: {fileID: 7280080943912901622}
   m_Layer: 0
   m_Name: Point Light
   m_TagString: Untagged
@@ -62,7 +63,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 212757755222557187}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!108 &2123081355000281319
 Light:
@@ -126,6 +127,26 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &7280080943912901622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622781715422374453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 1
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
 --- !u!1 &2785175211523428769
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +158,7 @@ GameObject:
   - component: {fileID: 212757755222557187}
   - component: {fileID: 434580683063011180}
   - component: {fileID: 3794308875225615197}
-  - component: {fileID: 7461094628979548125}
+  - component: {fileID: 8415990981959671411}
   m_Layer: 0
   m_Name: Lava Grate Variation 001
   m_TagString: Untagged
@@ -159,7 +180,7 @@ Transform:
   m_Children:
   - {fileID: 4473770889212284002}
   m_Father: {fileID: 6332653469905272892}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &434580683063011180
 MeshFilter:
@@ -213,24 +234,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7461094628979548125
-BoxCollider:
+--- !u!64 &8415990981959671411
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2785175211523428769}
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.95, y: 0.3, z: 4.02}
-  m_Center: {x: 0.04, y: 0.15, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1195321554319310544, guid: a59f6548c14dfa84ba2ca07e21ce1543, type: 3}
