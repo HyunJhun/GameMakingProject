@@ -1,43 +1,86 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
+
+[System.Serializable] // 직접 만든 클래스에 접근할 수 있도록 해줌
+public class Dialog
+{
+    [TextArea] // 한 줄 말고 여러 줄 사용가능하게 해주는 거래
+    public string text;
+    public string name;
+
+
+}
 public class Dialogue : MonoBehaviour
 {
-    private List<string> dialogueText = new List<string>();
-    // Start is called before the first frame update
-    void Start()
+    [Header("UI")]
+    [SerializeField] private GameObject dialogueUI;
+    [SerializeField] private TMP_Text objName;
+    [SerializeField] private TMP_Text dialogText;
+    [SerializeField] private Dialog[] dialogs;
+
+    [Header("Volume")]
+    [SerializeField] private Volume volume;
+    int m_countOfDialog = 0;
+    bool isTextPrintComplete = false;
+
+    public void OnOffDialogUI(bool state)
     {
-        textInit();
+        dialogueUI.SetActive(state);
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator ShowTextInOrder()
     {
-        
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log("???");
-        if (other.CompareTag("Player"))
+        //if (objName == null || dialogText == null) yield break;
+        m_countOfDialog = 0;
+        OnOffDialogUI(true);
+
+        Transform npcTransform = GameObject.FindGameObjectWithTag("NPC").transform;
+        Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        CameraManager.cameraManagerInstance.SwitchCameraToSub(npcTransform);
+        Debug.Log("됏나?");
+
+        while(m_countOfDialog < dialogs.Length)
         {
-            Debug.Log("P");
-            if (Input.GetKeyDown(KeyCode.F))
+            if(dialogText.text.Length != dialogs[m_countOfDialog].text.Length)
             {
-                Debug.Log("?");
-                Debug.Log(dialogueText[0]);
+                objName.text = dialogs[m_countOfDialog].name;
+                for (int count = 0; count < dialogs[m_countOfDialog].text.Length; count++)
+                {
+                    dialogText.text += dialogs[m_countOfDialog].text[count];
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        if (!isTextPrintComplete)
+                        {
+                            dialogText.text = dialogs[m_countOfDialog].text;
+                            isTextPrintComplete = true;
+                        }
+                        else
+                        {
+                            dialogText.text = "";
+                            m_countOfDialog++;
+                            isTextPrintComplete = false;
+                        }
+                    }
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }      
+            else if(dialogText.text.Length == dialogs[m_countOfDialog].text.Length)
+            {
+                dialogText.text = "";
+                isTextPrintComplete = false;
+                m_countOfDialog++;
             }
         }
-    }
+        OnOffDialogUI(false);
 
+        CameraManager.cameraManagerInstance.SwitchCameraToMain(playerTransform);
+        volume.isConversationStart = false;
 
-    private void textInit()
-    {
-        dialogueText.Add("오 드디어 도착하셨군요 구원자님!");
-        dialogueText.Add("오시는 동안 몸이 굳으셨을 것 같으니 저 악독한 용을 잡으러 가기 전 몸부터 푸시는게 어떠신지요??");
-        dialogueText.Add("먼저 W,A,S,D 를 통해 움직여보시죠! 마우스를 이리 저리 움직이시면 시야도 바꿀 수 있습니다!");
-        dialogueText.Add("이제 몸이 조금 풀리셨을 테니 다음으론 갑옷을 입은 저 경비 모형한테 다가가 망치와 방패를 다뤄보시죠");
-        dialogueText.Add("좌클릭을 통해 망치를 휘두를 수 있고, 우클릭을 통해 방패로 적의 공격을 막으실 수 있을겁니다!");
-        dialogueText.Add("자 그럼 이제 몸이 다 풀리셨으니 마을 밖으로 나가 몬스터들을 무찌르고 동굴안에 살고 있는 무시무시한 용을 잡아 이 재앙을 끝내주십쇼 구원자님!!");
+        Debug.Log("대화 완료");
     }
 }

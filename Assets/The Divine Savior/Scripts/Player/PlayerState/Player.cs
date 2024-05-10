@@ -96,11 +96,13 @@ public class Player : MonoBehaviour
                 return;
             }
         }
-        playerStateMachine.currentState.StateActionUpdate();
+        if(!CameraManager.cameraManagerInstance.isDialogRunning)
+            playerStateMachine.currentState.StateActionUpdate();
     }
     private void FixedUpdate()
     {
-        playerStateMachine.currentState.StateActionFixedUpdate();
+        if (!CameraManager.cameraManagerInstance.isDialogRunning)
+            playerStateMachine.currentState.StateActionFixedUpdate();
         
     }
     // Function of Environment

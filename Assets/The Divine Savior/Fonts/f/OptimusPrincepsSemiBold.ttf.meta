@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 32592c60007c46743b57407cf560791d
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - OptimusPrincepsSemiBold
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 97b57f5cacf4c7f43b6c5d8731173086, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
