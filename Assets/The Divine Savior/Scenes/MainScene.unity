@@ -2907,7 +2907,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80956536}
-  m_LocalRotation: {x: 0.00001704658, y: 0.9984411, z: 0.055815075, w: -0.00030462816}
+  m_LocalRotation: {x: 0.00001704658, y: 0.99844104, z: 0.055815075, w: -0.00030462813}
   m_LocalPosition: {x: 0.08399607, y: 1.45, z: 2.162998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2932,7 +2932,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 1
+  m_Priority: 0
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 1934184333}
   m_Follow: {fileID: 1934184333}
@@ -7511,8 +7511,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194679333}
   m_LocalRotation: {x: -0, y: -0.08213265, z: -0, w: 0.99662143}
-  m_LocalPosition: {x: -25.457542, y: -6.710207, z: 5.861534}
-  m_LocalScale: {x: 6.034349, y: 9.514895, z: 7.31968}
+  m_LocalPosition: {x: -25.457542, y: -6.44, z: 5.861534}
+  m_LocalScale: {x: 6.034349, y: 12.572032, z: 7.31968}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 483809243}
@@ -18521,6 +18521,50 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed41a6a40091ae14f96a08fbbbda0411, type: 3}
+--- !u!1 &494291250
+GameObject:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 494291251}
+  - component: {fileID: 494291252}
+  m_Layer: 0
+  m_Name: cm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &494291251
+Transform:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494291250}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 51.54869, y: -8.850177, z: -78.16449}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 525668533}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &494291252
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 494291250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &496346995
 GameObject:
   m_ObjectHideFlags: 0
@@ -20269,6 +20313,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4464005412946528, guid: f16024fa2379f1c498acbd0c8d882355, type: 3}
   m_PrefabInstance: {fileID: 524795677}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &525668531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 525668533}
+  - component: {fileID: 525668532}
+  m_Layer: 0
+  m_Name: CaveCam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &525668532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525668531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExcludedPropertiesInInspector:
+  - m_Script
+  m_LockStageInInspector: 
+  m_StreamingVersion: 20170927
+  m_Priority: 0
+  m_StandbyUpdate: 2
+  m_LookAt: {fileID: 0}
+  m_Follow: {fileID: 0}
+  m_Lens:
+    FieldOfView: 80
+    OrthographicSize: 10
+    NearClipPlane: 0.1
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    LensShift: {x: 0, y: 0}
+    GateFit: 2
+    m_SensorSize: {x: 1, y: 1}
+  m_Transitions:
+    m_BlendHint: 0
+    m_InheritPosition: 0
+    m_OnCameraLive:
+      m_PersistentCalls:
+        m_Calls: []
+  m_LegacyBlendHint: 0
+  m_ComponentOwner: {fileID: 494291251}
+--- !u!4 &525668533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525668531}
+  m_LocalRotation: {x: 0.050446253, y: -0.5466054, z: 0.04682856, w: 0.8345567}
+  m_LocalPosition: {x: -47.932, y: 6.83, z: 77.451}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 494291251}
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 7.781, y: -66.356, z: 1.331}
 --- !u!1001 &526169620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52994,7 +53109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1432976831}
-  m_LocalRotation: {x: 0.09252102, y: 0.00000001765986, z: -0.0000000016409466, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: 0.000000017659854, z: -0.0000000016409462, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -73666,6 +73781,10 @@ MonoBehaviour:
   npc: {fileID: 858372043}
   mainCamObj: {fileID: 504319692}
   dialogCamObj: {fileID: 80956536}
+  caveCamObj: {fileID: 525668531}
+  mainCam: {fileID: 0}
+  dialogCam: {fileID: 0}
+  caveCam: {fileID: 0}
 --- !u!114 &2051909977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75966,6 +76085,10 @@ PrefabInstance:
     - target: {fileID: 6118984539048797266, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6118984539048797267, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
+      propertyPath: hp
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6118984539048797268, guid: 740586df1c5f5014eada95e526a8a76d, type: 3}
       propertyPath: player

@@ -12,8 +12,10 @@ public class CameraManager : MonoBehaviour
 
     public GameObject mainCamObj;
     public GameObject dialogCamObj;
-    CinemachineVirtualCameraBase mainCam;
-    CinemachineVirtualCameraBase dialogCam;
+    public GameObject caveCamObj;
+    public CinemachineVirtualCameraBase mainCam;
+    public CinemachineVirtualCameraBase dialogCam;
+    public CinemachineVirtualCameraBase caveCam;
 
     public bool isDialogRunning { get; set; } = false;
 
@@ -40,6 +42,7 @@ public class CameraManager : MonoBehaviour
 
         mainCam = mainCamObj.GetComponent<CinemachineVirtualCameraBase>();
         dialogCam = dialogCamObj.GetComponent<CinemachineVirtualCameraBase>();
+        caveCam = caveCamObj.GetComponent<CinemachineVirtualCameraBase>();
 
         blendList.m_Instructions = new CinemachineBlendListCamera.Instruction[2];
     }
@@ -50,47 +53,42 @@ public class CameraManager : MonoBehaviour
         
     }
 
-    public void SwitchCameraToSub(Transform lookAtTransform)
+    public void SwitchCameraToTarget(Transform lookAtTransform,CinemachineVirtualCameraBase targetCam)
     {
         isDialogRunning = true;
 
+        targetCam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
+
         mainCamObj.transform.SetParent(this.transform);
-        dialogCamObj.transform.SetParent(this.transform);
+        targetCam.transform.SetParent(this.transform);
 
-
-        Debug.Log(blendList.m_Instructions.Length);
-        Debug.Log(blendList.m_Instructions[0]);
         blendList.m_Instructions[0].m_VirtualCamera = mainCam;
-        blendList.m_Instructions[1].m_VirtualCamera = dialogCam;
+        blendList.m_Instructions[1].m_VirtualCamera = targetCam;
 
         blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.Cut;
         blendList.m_Instructions[1].m_Blend.m_Time = 1.0f;
 
-        //blendList.m_Instructions[0].m_Hold = 1.0f;
-
         mainCam.LookAt = lookAtTransform.transform;
-        dialogCam.LookAt = lookAtTransform.transform;
-
+        targetCam.LookAt = lookAtTransform.transform;
     }
-
-    public void SwitchCameraToMain(Transform lookAtTransform)
+    public void SwitchCameraToMain(Transform lookAtTransform, CinemachineVirtualCameraBase fromCam)
     {
-        dialogCamObj.transform.SetParent(this.transform);
+        
+
+        fromCam.transform.SetParent(this.transform);
         mainCamObj.transform.SetParent(this.transform);
 
-        blendList.m_Instructions[0].m_VirtualCamera = dialogCam;
+        blendList.m_Instructions[0].m_VirtualCamera = fromCam;
         blendList.m_Instructions[1].m_VirtualCamera = mainCam;
 
         blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.HardOut;
         blendList.m_Instructions[1].m_Blend.m_Time = 2.0f;
 
-        blendList.m_Instructions[0].m_Hold = 1.0f;
-
         isDialogRunning = false;
 
-        mainCam.LookAt = lookAtTransform.transform;
-        dialogCam.LookAt = lookAtTransform.transform;
+        mainCam.LookAt = player.transform;
+        fromCam.LookAt = lookAtTransform.transform;
 
-        
+        fromCam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
     }
 }

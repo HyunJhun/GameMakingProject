@@ -21,19 +21,29 @@ public class CaveEntrance : MonoBehaviour
         {
             if (aliveEnemies.Length == 0)
             {
-                CameraManager.cameraManagerInstance.SwitchCameraToSub(this.transform);
-                foreach (Destructible rock in destructibleRocks)
-                {
-                    rock.BreakFracturedObject();
-                }
-                CameraManager.cameraManagerInstance.SwitchCameraToMain(GameObject.FindGameObjectWithTag("Player").transform);
                 isAllEnemiesDead = true;
-                
+                CameraManager.cameraManagerInstance.SwitchCameraToTarget(transform,CameraManager.cameraManagerInstance.caveCam);
+                Invoke("breakEntrance", 4f);         
             }
             else
             {
                 aliveEnemies = GameObject.FindObjectsOfType<Enemy>();
             }
         }
+    }
+
+    private void breakEntrance()
+    {
+        Debug.Log("인보크 몇번?");
+        foreach (Destructible rock in destructibleRocks)
+        {
+            rock.BreakFracturedObject();
+        }
+        Invoke("cameBackToMain", 2f);
+    }
+
+    private void cameBackToMain()
+    {
+        CameraManager.cameraManagerInstance.SwitchCameraToMain(GameObject.FindGameObjectWithTag("Player").transform, CameraManager.cameraManagerInstance.caveCam);
     }
 }

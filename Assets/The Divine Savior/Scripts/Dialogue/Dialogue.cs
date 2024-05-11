@@ -41,7 +41,7 @@ public class Dialogue : MonoBehaviour
         Transform npcTransform = GameObject.FindGameObjectWithTag("NPC").transform;
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
-        CameraManager.cameraManagerInstance.SwitchCameraToSub(npcTransform);
+        CameraManager.cameraManagerInstance.SwitchCameraToTarget(npcTransform,CameraManager.cameraManagerInstance.dialogCam);
         Debug.Log("됏나?");
 
         while(m_countOfDialog < dialogs.Length)
@@ -78,7 +78,7 @@ public class Dialogue : MonoBehaviour
         }
         OnOffDialogUI(false);
 
-        CameraManager.cameraManagerInstance.SwitchCameraToMain(playerTransform);
+        CameraManager.cameraManagerInstance.SwitchCameraToMain(playerTransform,CameraManager.cameraManagerInstance.dialogCam);
         volume.isConversationStart = false;
 
         Debug.Log("대화 완료");
