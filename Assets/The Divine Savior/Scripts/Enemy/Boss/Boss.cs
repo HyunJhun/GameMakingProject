@@ -51,6 +51,7 @@ public class Boss : MonoBehaviour
     public BossAnimationHandler bossAnimationHandler;
     public GameObject player;
     public GameObject backPoint;
+    public GameObject bossHpBar;
     // State 확인용 텍스트 - 후에 지워야함
     public DetectBossCollision bossCollisionBox;
     public List<GameObject> flightPoint;
@@ -70,7 +71,7 @@ public class Boss : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         bossStateMachine = new BossStateMachine();
-
+        bossHpBar.SetActive(false);
         // State 생성
         idleState = new BossIdle(this, stats, bossStateMachine);
         detectState = new BossDetect(this, stats, bossStateMachine);

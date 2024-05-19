@@ -31,7 +31,7 @@ public class HUD : MonoBehaviour
         {
             bossHpBar.maxValue = boss.GetMaxHP();
             bossHpBar.minValue = 0f;
-            bossNameText.text = "Boss";
+            bossNameText.text = "The Darkness Ancient Dragon";
         }
     }
 
@@ -41,8 +41,11 @@ public class HUD : MonoBehaviour
         playerHpBar.value = player.getHp();
         playerStaminaBar.value = player.getStamina();
         playerMpBar.value = player.GetCurrentMp();
-        if(boss != null)
-            bossHpBar.value = boss.getHp();
+        if (boss != null)
+        {
+            if(bossHpBar.isActiveAndEnabled)
+                bossHpBar.value = boss.getHp();
+        }
 
     }
 }

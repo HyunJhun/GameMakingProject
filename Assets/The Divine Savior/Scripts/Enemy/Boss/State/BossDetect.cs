@@ -12,6 +12,7 @@ public class BossDetect : BossState
     public override void Enter()
     {
         timer = 0f;
+        boss.bossHpBar.SetActive(true);
     }
     public override void Exit()
     {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -7,7 +5,7 @@ public class Player : MonoBehaviour
     // State
     public PlayerStateMachine playerStateMachine { get; set; }
     public PlayerIdle idleState { get; set; }
-    public PlayerMoving movingState { get;set; }
+    public PlayerMoving movingState { get; set; }
     public PlayerSprnt sprintState { get; set; }
     public PlayerDodge dodgeState { get; set; }
     public PlayerOffense offenseState { get; set; }
@@ -18,7 +16,7 @@ public class Player : MonoBehaviour
     public PlayerDie dieState { get; set; }
 
     // Reference Of Player
-    [Header("Player Reference")]   
+    [Header("Player Reference")]
     [SerializeField] private GameObject attackCollisionBox;
     private CharacterController playerControllerBody;
     private PlayerAnimationManager playerAnimationManager;
@@ -83,10 +81,11 @@ public class Player : MonoBehaviour
                 if (playerStateMachine.currentState == defenseState)
                 {
                     GetPlayerAnimationManager().GetPlayerAnimator().SetTrigger("BlockHit");
-                    SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Defense,false);
+                    SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Defense, false);
                     b_IsHit = false;
                     return;
                 }
+                
                 playerStateMachine.ChangeState(getHitState);
                 return;
             }
@@ -96,14 +95,14 @@ public class Player : MonoBehaviour
                 return;
             }
         }
-        if(!CameraManager.cameraManagerInstance.isDialogRunning)
+        if (!CameraManager.cameraManagerInstance.isDialogRunning)
             playerStateMachine.currentState.StateActionUpdate();
+
     }
     private void FixedUpdate()
     {
         if (!CameraManager.cameraManagerInstance.isDialogRunning)
             playerStateMachine.currentState.StateActionFixedUpdate();
-        
     }
     // Function of Environment
 
@@ -149,7 +148,7 @@ public class Player : MonoBehaviour
         getHitState = new PlayerGetHIt(this, stats, playerStateMachine);
         floatingState = new PlayerFloating(this, stats, playerStateMachine);
         dieState = new PlayerDie(this, stats, playerStateMachine);
-        
+
         // About Player
         f_PlayerWalkSpeed = 5.0f;
         f_PlayerSprintSpeed = 8.0f;
@@ -199,7 +198,7 @@ public class Player : MonoBehaviour
         stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
         if (attackRangeBox.GetTriggeredEnemyList().Count > 0)
         {
-            if(attackRangeBox.GetTriggeredEnemyList().Count > 3)
+            if (attackRangeBox.GetTriggeredEnemyList().Count > 3)
             {
                 attackRangeBox.selectEnemyByMaxAttackCount();
             }
@@ -225,14 +224,14 @@ public class Player : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
         Debug.Log("¸Â´Â´Ù");
-        if(other.CompareTag("Breath"))
+        if (other.CompareTag("Breath"))
         {
             if (b_IsDodege) return;
             if (b_isParticleCollision) return;
             b_isParticleCollision = true;
             stats.hpDown(bossComponent.GetStatus().GetAttackDamage(0) - stats.GetArmor());
             b_IsHit = true;
-            
+
         }
     }
     //public void OnKnockBackDuringBlocking()
@@ -249,7 +248,7 @@ public class Player : MonoBehaviour
 
     // Get Functions
     public CharacterController GetPlayerController() { return playerControllerBody; }
-    public Status GetPlayerStatus() { return stats;}
+    public Status GetPlayerStatus() { return stats; }
     public Transform GetPlayerCamera() { return cam; }
     public GameObject GetPlayerAttackCollisionBox() { return attackCollisionBox; }
     public Boss GetBossComponent() { return bossComponent; }
