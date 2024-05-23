@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using TMPro;
 public class ButtonManager : MonoBehaviour
 {
     public static ButtonManager buttonManagerInstance;
 
     [Header("UI")]
-    [SerializeField] private GameObject settingUI;
+    [SerializeField] private GameObject settingUIPrefab;
 
+    [SerializeField] private GameObject settingUIInstance;
     private void Awake()
     {
         if (buttonManagerInstance == null)
@@ -34,10 +37,20 @@ public class ButtonManager : MonoBehaviour
 
     public void SettingEvent()
     {
-        settingUI.SetActive(true);
+        var obj = FindObjectsOfType<SettingUI>();
+
+        if (obj.Length == 1)
+        {
+            Destroy(obj[0].gameObject);
+            Instantiate(settingUIPrefab, GameObject.Find("Canvas_UI").transform);
+        }
+        else
+        {
+            Instantiate(settingUIPrefab, GameObject.Find("Canvas_UI").transform);
+        }
     }
-    public void CloseSetting()
+    public void ExitEvent()
     {
-        settingUI.SetActive(false);
+        Application.Quit();
     }
 }

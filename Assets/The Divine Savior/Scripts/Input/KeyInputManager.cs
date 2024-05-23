@@ -7,9 +7,6 @@ public class KeyInputManager : MonoBehaviour
     private List<KeyCode> keys = new List<KeyCode>();
     private KeyCode currentInputKey;
 
-    [Header("UI")]
-    [SerializeField] private GameObject settingUI;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -19,10 +16,12 @@ public class KeyInputManager : MonoBehaviour
     }
     private void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    settingUI.SetActive(settingUI.activeSelf ? false : true);
-        //}
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            ButtonManager.buttonManagerInstance.SettingEvent();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
     public KeyCode GetCurrentInputKey()
     {

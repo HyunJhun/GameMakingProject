@@ -154,6 +154,12 @@ public class Status : MonoBehaviour
     {
         this.armor = armor;
     }
+    public void SetHudStatus(float lastHp,float lastMp,float lastStamina)
+    {
+        hp = lastHp;
+        mp = lastMp;
+        stamina = lastStamina;
+    }
     public void StaminaIncrease()
     {
         InvokeRepeating("staminaUp", 1f, 0.1f);

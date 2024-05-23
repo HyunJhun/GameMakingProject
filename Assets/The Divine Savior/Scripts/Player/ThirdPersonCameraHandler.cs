@@ -45,7 +45,7 @@ public class ThirdPersonCameraHandler : MonoBehaviour
                 basicCam.SetActive(false);
             }
         }
-        }
+    }
 
     public void CurrentStyleChanger()
     {

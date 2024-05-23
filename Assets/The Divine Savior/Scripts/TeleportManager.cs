@@ -21,6 +21,10 @@ public class TeleportManager : MonoBehaviour
     {
         if(other.CompareTag("Player") && this.name == MainToDungeonPortal.name)
         {
+            Status playerStatus = GameObject.Find("Player").GetComponent<Status>();
+
+            DataManager.dataManagerInstance.SetHudValues(playerStatus.getHp(), playerStatus.GetCurrentMp(), playerStatus.getStamina());
+
             SoundManager.soundManagerInstacne.initializeSFX();
             SceneManager.LoadScene("Boss Scene");
         }

@@ -14,6 +14,12 @@ public class SoundMixer : MonoBehaviour
     public Slider sfxSlider;
     // Start is called before the first frame update
 
+    public void SetSliderValue(float bgmVar,float sfxVar)
+    {
+        bgmSlider.value = bgmVar;
+        sfxSlider.value = sfxVar;
+    }
+
     public void setBgmVolume()
     {
         audioMixer.SetFloat("BGM", Mathf.Log10(bgmSlider.value) * 20);

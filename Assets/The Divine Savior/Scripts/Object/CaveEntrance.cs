@@ -34,7 +34,6 @@ public class CaveEntrance : MonoBehaviour
 
     private void breakEntrance()
     {
-        Debug.Log("인보크 몇번?");
         foreach (Destructible rock in destructibleRocks)
         {
             rock.BreakFracturedObject();
