@@ -17,6 +17,7 @@ public class BossFlight : BossState
     {
         phaseTwoInitialize();
         SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp, false, boss);
+        boss.cam.SetCameraOrbitToBossFlightPattern();
     }
     public override void Exit()
     {
@@ -44,7 +45,7 @@ public class BossFlight : BossState
         boss.agent.SetDestination(boss.transform.position); // boss.agent.isStopped 를 통해 움직임을 멈춰버리는 것은 단순히 정지시키는 것이라서 별로임.
         boss.agent.enabled = false; // 잠시 공중에서는 길을 찾을 필요도 없고 또한 navmeshagent가 활성화 되어있다면 항상 땅에 붙어있어 공중이동이 불가하므로 false로 변경
         // 레퍼런스
-        bossRd = boss.GetComponent<Rigidbody>();      
+        bossRd = boss.GetComponent<Rigidbody>();
     }  
     IEnumerator FlyToTheSkyFromGround()
     {

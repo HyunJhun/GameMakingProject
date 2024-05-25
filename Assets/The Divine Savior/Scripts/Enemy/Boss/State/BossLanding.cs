@@ -12,14 +12,17 @@ public class BossLanding : BossState
     private bool isLand;
     private Rigidbody bossRd;
     private float minHeightToLand = 0.2f;
-    
+
     public override void Enter()
     {
         isLand = false;
         bossRd = boss.GetComponent<Rigidbody>();
 
         if (!isLand)
+        {
             boss.StartCoroutine(LandToGroundFromSky());
+            boss.cam.SetCameraOrbitToBossGroundPattern();
+        }
     }
 
     public override void Exit()
@@ -43,7 +46,7 @@ public class BossLanding : BossState
         float timer = 0f;
         isLand = true;
 
-        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp,boss);
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp,true,boss);
         while (boss.transform.position.y > minHeightToLand)
         {
             timer += Time.deltaTime;
@@ -53,6 +56,7 @@ public class BossLanding : BossState
             yield return null;
         }
         Debug.Log("공중 종료");
+        SoundManager.soundManagerInstacne.StopSfx(boss);
         bossRd.useGravity = true; // 하늘을 날기 위해 중력은 적용하지 않음.
         boss.agent.enabled = true;
 

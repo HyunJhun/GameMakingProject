@@ -8,6 +8,7 @@ public class PlayerDie : PlayerState
     { }
     public override void Enter()
     {
+        MonoBehaviour.Instantiate(player.deadUiPrefab, GameObject.Find("Canvas_UI").transform);
         player.b_IsDie = true;
         stats.CancelInvoke("staminaUp");
         player.GetPlayerAnimationManager().PlayerDieAnimation();
@@ -23,4 +24,5 @@ public class PlayerDie : PlayerState
     {
 
     }
+
 }

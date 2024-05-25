@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-
+using Cinemachine;
 public class Boss : MonoBehaviour
 {
 
@@ -44,6 +44,7 @@ public class Boss : MonoBehaviour
                                                        // true 가 되면 페이즈가 한 번 바뀌었던 적이 있다는 소리.
 
     public Vector3 triggeredPoint { get; set; }
+    public ThirdPersonCameraHandler cam;
     [Header("References")]
     [SerializeField] private Status stats;
     public DetectPlayer detectPlayer;
@@ -65,11 +66,12 @@ public class Boss : MonoBehaviour
 
     public ParticleManager bossParticleManager;
 
+
     private void Start()
     {
         // GetComp
         agent = GetComponent<NavMeshAgent>();
-
+        cam = GameObject.Find("Player Camera").GetComponent<ThirdPersonCameraHandler>();
         bossStateMachine = new BossStateMachine();
         bossHpBar.SetActive(false);
         // State 생성

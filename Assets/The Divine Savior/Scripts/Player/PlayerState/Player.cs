@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
     public Transform cam;
     [SerializeField] private Boss bossComponent;
     private KeyInputManager keyInputManager;
+    [Header("UI")]
+    public GameObject deadUiPrefab;
     // Status
     [Header("Status")]
     private Status stats;
@@ -177,6 +179,7 @@ public class Player : MonoBehaviour
 
         playerStateMachine.Initialize(idleState);
         stats.SetArmor(f_PlayerGeneralArmor);
+        stats.SetHudStatus(DataManager.dataManagerInstance.hpData, DataManager.dataManagerInstance.mpData, DataManager.dataManagerInstance.staminaData);
         attackRangeBox.SetType(0);
     }
 

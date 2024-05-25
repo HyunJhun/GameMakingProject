@@ -754,7 +754,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingUIPrefab: {fileID: 3407091062785438301, guid: aa30b4c43b985974d9a818f06bce6a2b, type: 3}
-  settingUIInstance: {fileID: 0}
 --- !u!1 &551378347
 GameObject:
   m_ObjectHideFlags: 0

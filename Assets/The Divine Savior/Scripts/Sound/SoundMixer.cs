@@ -14,6 +14,12 @@ public class SoundMixer : MonoBehaviour
     public Slider sfxSlider;
     // Start is called before the first frame update
 
+    private void Start()
+    {
+        sfxSlider.value = sfxSlider.maxValue;
+        bgmSlider.value = bgmSlider.maxValue;
+    }
+
     public void SetSliderValue(float bgmVar,float sfxVar)
     {
         bgmSlider.value = bgmVar;

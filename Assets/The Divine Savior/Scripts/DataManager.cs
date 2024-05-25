@@ -12,9 +12,9 @@ public class DataManager : MonoBehaviour
 
     private float bgmVolumeValue;
     private float sfxVolumeValue;
-    public float hpData { get; set; }
-    public float mpData { get; set; }
-    public float staminaData { get; set; }
+    public float hpData { get; set; } = 100f;
+    public float mpData { get; set; } = 50f;
+    public float staminaData { get; set; } = 150f;
     void Start()
     {
         if (dataManagerInstance == null)
@@ -30,18 +30,18 @@ public class DataManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(SceneManager.GetActiveScene().name == "Boss Scene")
-        {
-            if(!isBossScene)
-            {
-                isBossScene = true;
-                GameObject.Find("Player").GetComponent<Status>().SetHudStatus(hpData, mpData, staminaData);
-                return;             
-            }
-        }
-    }
+    //void Update()
+    //{
+    //    if(SceneManager.GetActiveScene().name == "Boss Scene")
+    //    {
+    //        if(!isBossScene)
+    //        {
+    //            isBossScene = true;
+    //            GameObject.Find("Player").GetComponent<Status>().SetHudStatus(hpData, mpData, staminaData);
+    //            return;             
+    //        }
+    //    }
+    //}
 
     public void SetVolumeValues(float bgmValue,float sfxValue)
     {
@@ -53,6 +53,12 @@ public class DataManager : MonoBehaviour
         hpData = hp;
         mpData = mp;
         staminaData = stamina;
+    }
+    public void InitializeStatusValues()
+    {
+        hpData = 100f;
+        mpData = 50f;
+        staminaData = 150f;
     }
 
     public float GetBgmValue() { return bgmVolumeValue; }

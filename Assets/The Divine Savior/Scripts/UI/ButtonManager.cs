@@ -11,8 +11,6 @@ public class ButtonManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private GameObject settingUIPrefab;
-
-    [SerializeField] private GameObject settingUIInstance;
     private void Awake()
     {
         if (buttonManagerInstance == null)
@@ -25,10 +23,6 @@ public class ButtonManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         else
             Destroy(gameObject);
-    }
-
-    private void Start()
-    {
     }
     public void StartEvent()
     {

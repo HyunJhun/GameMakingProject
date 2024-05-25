@@ -307,7 +307,7 @@ MonoBehaviour:
   attackRangeBox: {fileID: 682496949}
   cam: {fileID: 0}
   bossComponent: {fileID: 0}
-  f_attackMoveSpeed: 0.05
+  deadUiPrefab: {fileID: 858109097335251955, guid: 96d31f7b3e155ad4f8a477f6a5438e66, type: 3}
 --- !u!114 &3244217364423093255
 MonoBehaviour:
   m_ObjectHideFlags: 0
