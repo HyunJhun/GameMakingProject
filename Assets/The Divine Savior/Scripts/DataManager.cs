@@ -8,8 +8,6 @@ public class DataManager : MonoBehaviour
     
     public static DataManager dataManagerInstance;
 
-    private bool isBossScene = false;
-
     private float bgmVolumeValue;
     private float sfxVolumeValue;
     public float hpData { get; set; } = 100f;

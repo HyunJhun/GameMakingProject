@@ -17,7 +17,7 @@ public class BossFlight : BossState
     {
         phaseTwoInitialize();
         SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.FlyUp, false, boss);
-        boss.cam.SetCameraOrbitToBossFlightPattern();
+        boss.cam.InvokeCameraToFlight();
     }
     public override void Exit()
     {

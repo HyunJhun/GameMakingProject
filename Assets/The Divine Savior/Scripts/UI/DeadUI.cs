@@ -52,6 +52,6 @@ public class DeadUI : MonoBehaviour
     private void OnDestroy()
     {
         DataManager.dataManagerInstance.InitializeStatusValues();
-        SceneManager.LoadScene("EnterScene");
+        SceneManager.LoadScene("MainScene");
     }
 }

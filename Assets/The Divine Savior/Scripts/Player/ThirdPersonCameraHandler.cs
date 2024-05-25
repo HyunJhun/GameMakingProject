@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Cinemachine;
+using System.Collections;
+using UnityEngine;
 public class ThirdPersonCameraHandler : MonoBehaviour
 {
     [Header("References")]
@@ -16,9 +15,9 @@ public class ThirdPersonCameraHandler : MonoBehaviour
     public GameObject combatCam;
 
     [Header("Boss Cam")]
-    [SerializeField]private CinemachineFreeLook thirdPersonCamera;
+    [SerializeField] private CinemachineFreeLook thirdPersonCamera;
 
-    private float timeToLerp = 3f;
+    private float timeToLerp = 2f;
 
     public enum CameraStyle
     {
@@ -36,7 +35,7 @@ public class ThirdPersonCameraHandler : MonoBehaviour
     }
 
     private void Update()
-    {     
+    {
         if (currentCam == CameraStyle.Basic)
         {
             if (basicCam.activeSelf == false && combatCam.activeSelf == true)
@@ -69,33 +68,50 @@ public class ThirdPersonCameraHandler : MonoBehaviour
 
     public IEnumerator SetCameraOrbitToBossFlightPattern()
     {
-        
-        thirdPersonCamera.m_Orbits[0].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Height, 7f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[0].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Radius, 5f, Time.deltaTime / timeToLerp);
+        while (thirdPersonCamera.m_Lens.FieldOfView < 59.5f)
+        {
+            thirdPersonCamera.m_Orbits[0].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Height, 7f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[0].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Radius, 5f, Time.deltaTime / timeToLerp);
 
-        thirdPersonCamera.m_Orbits[1].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Height, 3f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[1].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Radius, 10f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[1].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Height, 3f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[1].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Radius, 10f, Time.deltaTime / timeToLerp);
 
-        thirdPersonCamera.m_Orbits[2].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Height, 1.5f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[2].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Radius, 6f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[2].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Height, 1.5f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[2].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Radius, 6f, Time.deltaTime / timeToLerp);
 
-        yield return null;
+            thirdPersonCamera.m_Lens.FieldOfView = Mathf.Lerp(thirdPersonCamera.m_Lens.FieldOfView, 60f, Time.deltaTime / timeToLerp);
+
+            yield return null;
+        }
     }
     public IEnumerator SetCameraOrbitToBossGroundPattern()
     {
-        thirdPersonCamera.m_Orbits[0].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Height, 6f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[0].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Radius, 3f, Time.deltaTime / timeToLerp);
+        float timer = 0f;
 
-        thirdPersonCamera.m_Orbits[1].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Height, 2f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[1].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Radius, 7f, Time.deltaTime / timeToLerp);
+        while (thirdPersonCamera.m_Lens.FieldOfView > 50.5f)
+        {
+            thirdPersonCamera.m_Orbits[0].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Height, 6f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[0].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[0].m_Radius, 3f, Time.deltaTime / timeToLerp);
 
-        thirdPersonCamera.m_Orbits[2].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Height, 1f, Time.deltaTime / timeToLerp);
-        thirdPersonCamera.m_Orbits[2].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Radius, 5f, Time.deltaTime / timeToLerp);
-        yield return null;
+            thirdPersonCamera.m_Orbits[1].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Height, 2f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[1].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[1].m_Radius, 7f, Time.deltaTime / timeToLerp);
+
+            thirdPersonCamera.m_Orbits[2].m_Height = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Height, 1f, Time.deltaTime / timeToLerp);
+            thirdPersonCamera.m_Orbits[2].m_Radius = Mathf.Lerp(thirdPersonCamera.m_Orbits[2].m_Radius, 5f, Time.deltaTime / timeToLerp);
+
+            thirdPersonCamera.m_Lens.FieldOfView = Mathf.Lerp(thirdPersonCamera.m_Lens.FieldOfView, 50f, Time.deltaTime / timeToLerp);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public void InvokeCameraToFlight()
     {
-        
+        StartCoroutine(SetCameraOrbitToBossFlightPattern());
+    }
+    public void InvokeCameraToGround()
+    {
+        StartCoroutine(SetCameraOrbitToBossGroundPattern());
     }
 }

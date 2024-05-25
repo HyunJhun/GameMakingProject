@@ -21,7 +21,7 @@ public class BossLanding : BossState
         if (!isLand)
         {
             boss.StartCoroutine(LandToGroundFromSky());
-            boss.cam.SetCameraOrbitToBossGroundPattern();
+            boss.cam.InvokeCameraToGround();
         }
     }
 
