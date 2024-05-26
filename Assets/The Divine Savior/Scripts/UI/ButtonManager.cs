@@ -47,4 +47,9 @@ public class ButtonManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void EndingEvent()
+    {
+        SceneManager.LoadScene("EndingScene");
+    }
 }

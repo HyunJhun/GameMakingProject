@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class BossDead : BossState
 {
     // Start is called before the first frame update
@@ -11,6 +10,8 @@ public class BossDead : BossState
     {
         boss.isDie = true;
         boss.bossAnimationHandler.GetBossAnimator().SetBool("isDie", boss.isDie);
+
+        boss.Invoke("endingEvent",3f);
     }
     public override void Exit()
     {

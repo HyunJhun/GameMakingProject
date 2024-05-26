@@ -251,7 +251,10 @@ public class Boss : MonoBehaviour
     {
         return player.GetComponent<Player>().b_IsDodege ? true : false;
     }
-
+    public void endingEvent()
+    {
+        ButtonManager.buttonManagerInstance.EndingEvent();
+    }
     public Status GetStatus()
     {
         return stats;
