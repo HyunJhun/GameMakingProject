@@ -33,7 +33,7 @@ public class BossLanding : BossState
     {
         if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).IsName("Land")) // 하늘로 날아 오르는 애니메이션이 끝나고 난 후 상태 변경
         {
-            if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).normalizedTime > 0.9f)
+            if (boss.bossAnimationHandler.GetBossAnimator().GetCurrentAnimatorStateInfo(1).normalizedTime > 0.99f)
             {
                 boss.bossAnimationHandler.OnBossAnimationLayerChanger(false);
                 bossStateMachine.ChangeState(boss.stiffnessState); // 공중에서 내려온 후 잠시 경직

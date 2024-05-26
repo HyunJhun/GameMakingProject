@@ -814,8 +814,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: The Divine Savior
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6cba0e5dec617dc4cb4d5b32d612865f, type: 2}
-  m_sharedMaterial: {fileID: -196120840142415773, guid: 6cba0e5dec617dc4cb4d5b32d612865f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0fb1c246ee4b4c54191bfc9a3c2dddc5, type: 2}
+  m_sharedMaterial: {fileID: 4833880292475098628, guid: 0fb1c246ee4b4c54191bfc9a3c2dddc5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

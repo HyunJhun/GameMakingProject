@@ -22,6 +22,7 @@ public class CaveEntrance : MonoBehaviour
             if (aliveEnemies.Length == 0)
             {
                 isAllEnemiesDead = true;
+                SoundManager.soundManagerInstacne.initializeSFX();
                 CameraManager.cameraManagerInstance.SwitchCameraToTarget(transform,CameraManager.cameraManagerInstance.caveCam);
                 Invoke("breakEntrance", 4f);         
             }
