@@ -41,7 +41,7 @@ public class Status : MonoBehaviour
     private void staminaDown_Sprint()
     {
         if (this.stamina > 0)
-            this.stamina -= 1f;
+            this.stamina -= 3f;
         if (this.stamina <= 0)
         {
             this.stamina = 0;
@@ -69,7 +69,7 @@ public class Status : MonoBehaviour
     {
         if (this.stamina >= maxStamina)
             this.stamina = maxStamina;
-        this.stamina += 0.5f;
+        this.stamina += 0.25f;
     }
     public void InvokeCancel(string name)
     {

@@ -156,8 +156,8 @@ public class Player : MonoBehaviour
         f_PlayerSprintSpeed = 8.0f;
         f_PlayerRotationSpeed = 360f;
         f_PlayerDodgeSpeed = 0.8f;
-        f_PlayerDodgeDistance = 7f;
-        f_StaminaUsageForDodge = 10f;
+        f_PlayerDodgeDistance = 12f;
+        f_StaminaUsageForDodge = 20f;
         f_PlayerKnockbackPower = 10f;
         f_PlayerMaxHeight = 4f;
         f_PlayerDefenseArmor = 5f;

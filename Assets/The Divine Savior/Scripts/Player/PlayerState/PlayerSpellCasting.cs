@@ -35,7 +35,7 @@ public class PlayerSpellCasting : PlayerState
         if (player.GetPlayerAnimationManager().CheckCurrentAnimationName("S_SwordJudgment") ||
             player.GetPlayerAnimationManager().CheckCurrentAnimationName("S_Heal"))
         {
-            if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.9f)
+            if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime > 0.99f)
             {
                 playerStateMachine.ChangeState(player.idleState);
                 return;
