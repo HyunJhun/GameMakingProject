@@ -8,8 +8,8 @@ public class DataManager : MonoBehaviour
     
     public static DataManager dataManagerInstance;
 
-    private float bgmVolumeValue;
-    private float sfxVolumeValue;
+    private float bgmVolumeValue = 1f;
+    private float sfxVolumeValue = 1f;
     public float hpData { get; set; } = 100f;
     public float mpData { get; set; } = 50f;
     public float staminaData { get; set; } = 150f;

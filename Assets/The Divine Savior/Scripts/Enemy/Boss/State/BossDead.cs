@@ -10,7 +10,7 @@ public class BossDead : BossState
     {
         boss.isDie = true;
         boss.bossAnimationHandler.GetBossAnimator().SetBool("isDie", boss.isDie);
-
+ 
         boss.Invoke("endingEvent",3f);
     }
     public override void Exit()

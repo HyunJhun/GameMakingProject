@@ -88,7 +88,6 @@ public class PlayerOffense : PlayerState
         if (player.f_PlayerLastAttackTime > 1.0f) currentAttack = 1;
 
         // Call Triger;
-        //그러니까 지금 애니메이션 상태가 attack1이 아니고 attac2와 attack3 둘다 실행이 안되고있을떄.
 
         if (!player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack1") &&
             !player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack2") &&

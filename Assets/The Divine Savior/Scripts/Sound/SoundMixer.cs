@@ -18,10 +18,12 @@ public class SoundMixer : MonoBehaviour
     {
         sfxSlider.value = sfxSlider.maxValue;
         bgmSlider.value = bgmSlider.maxValue;
+        Debug.Log($"초기값 : {sfxSlider.value} , 최대값 : {sfxSlider.maxValue}");
     }
 
     public void SetSliderValue(float bgmVar,float sfxVar)
     {
+        Debug.Log($"수치 : {bgmVar}");
         bgmSlider.value = bgmVar;
         sfxSlider.value = sfxVar;
     }

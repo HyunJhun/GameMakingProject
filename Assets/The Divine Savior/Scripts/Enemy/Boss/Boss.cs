@@ -253,6 +253,7 @@ public class Boss : MonoBehaviour
     }
     public void endingEvent()
     {
+        SoundManager.soundManagerInstacne.initializeSFX();
         ButtonManager.buttonManagerInstance.EndingEvent();
     }
     public Status GetStatus()
