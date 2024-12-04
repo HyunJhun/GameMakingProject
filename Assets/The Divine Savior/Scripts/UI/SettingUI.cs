@@ -30,7 +30,6 @@ public class SettingUI : MonoBehaviour
 
         Destroy(gameObject); 
     }
-     
     public void Exit()
     {
         Application.Quit();

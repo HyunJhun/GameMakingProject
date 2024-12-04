@@ -13,6 +13,7 @@ public class ChangeGroundLayer : MonoBehaviour
         Terrain[] terrains = FindObjectsOfType<Terrain>();
         foreach (Terrain terrain in terrains)
         {
+            Debug.Log(terrain.gameObject.name);
             PaintTexture(terrain, position, size, textureIndex);
         }
     }

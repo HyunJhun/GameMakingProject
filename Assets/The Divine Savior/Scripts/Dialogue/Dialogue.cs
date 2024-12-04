@@ -46,11 +46,16 @@ public class Dialogue : MonoBehaviour
 
         while(m_countOfDialog < dialogs.Length)
         {
-            if(dialogText.text.Length != dialogs[m_countOfDialog].text.Length)
+            if(dialogText.text.Length != dialogs[m_countOfDialog].text.Length) // 텍스트가 다 출력되지 않았을 때
             {
                 objName.text = dialogs[m_countOfDialog].name;
-                for (int count = 0; count < dialogs[m_countOfDialog].text.Length; count++)
+                for (int count = 0; count < dialogs[m_countOfDialog].text.Length; count++) // 각 텍스트가 출력되는 반복문
                 {
+                    Debug.Log("입력받는중");
+                    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)) // 만약 대화가 출력되는 동안에 F 나 Space 누를시
+                    {
+                        Debug.Log("으아악");
+                    }
                     dialogText.text += dialogs[m_countOfDialog].text[count];
                     if (Input.GetKeyDown(KeyCode.E))
                     {
