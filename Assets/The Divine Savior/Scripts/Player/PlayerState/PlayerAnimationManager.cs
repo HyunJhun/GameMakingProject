@@ -19,12 +19,12 @@ public class PlayerAnimationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMoveAnimation(player.movingState.GetLastPlayerMoveDirection());
-        PlayerDodgeAnimation();
-        PlayerAttackAnimation();
+        PlayerMoveAnimationUpdate(player.movingState.GetLastPlayerMoveDirection());
+        PlayerDodgeAnimationUpdate();
+        PlayerAttackAnimationUpdate();
     }
 
-    public void PlayerMoveAnimation(Vector3 directionOfPlayerMove)
+    public void PlayerMoveAnimationUpdate(Vector3 directionOfPlayerMove)
     {
         if (player.playerStateMachine.currentState == player.idleState)
         {
@@ -39,16 +39,16 @@ public class PlayerAnimationManager : MonoBehaviour
             animator.SetFloat("Speed", 1f);
         }
     }
-    public void PlayerDodgeAnimation()
+    public void PlayerDodgeAnimationUpdate()
     {
-        animator.SetBool("isDodge", player.b_IsDodege);
+        animator.SetBool("isDodge", player.b_IsDodge);
 
         if (AnimationPlayingCheck(0, 0.95f, "Dodge"))
         {
-            animator.SetBool("isDodge", player.b_IsDodege);
+            animator.SetBool("isDodge", player.b_IsDodge);
         }
     }
-    public void PlayerAttackAnimation()
+    public void PlayerAttackAnimationUpdate()
     {
         animator.SetBool("isAttack", player.b_IsAttack);
         if (player.b_IsAttack)

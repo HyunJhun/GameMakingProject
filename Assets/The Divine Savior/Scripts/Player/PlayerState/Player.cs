@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     private PlayerAnimationManager playerAnimationManager;
     private GroundChecker playerGroundChecker;
     [SerializeField] private AttackRangeCheck attackRangeBox;
-    private SkillAttackManager skillManger;
+    private SkillManager skillManger;
     private ParticleManager particleManager;
     // Reference of Others
     [Header("Other References")]
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float f_Graivty { get; set; }
 
     // Boolean For Animation
-    public bool b_IsDodege { get; set; }
+    public bool b_IsDodge { get; set; }
     public bool b_IsAttack { get; set; }
     public bool b_IsBlock { get; set; }
     public bool b_IsSprint { get; set; }
@@ -101,11 +101,6 @@ public class Player : MonoBehaviour
             playerStateMachine.currentState.StateActionUpdate();
 
     }
-    private void FixedUpdate()
-    {
-        if (!CameraManager.cameraManagerInstance.isDialogRunning)
-            playerStateMachine.currentState.StateActionFixedUpdate();
-    }
     // Function of Environment
 
     private void Environment()
@@ -136,7 +131,7 @@ public class Player : MonoBehaviour
         playerAnimationManager = GetComponent<PlayerAnimationManager>();
         playerGroundChecker = GetComponent<GroundChecker>();
         keyInputManager = GetComponent<KeyInputManager>();
-        skillManger = GetComponent<SkillAttackManager>();
+        skillManger = GetComponent<SkillManager>();
         particleManager = GetComponent<ParticleManager>();
 
         // Init state
@@ -167,7 +162,7 @@ public class Player : MonoBehaviour
         f_Graivty = -5f;
 
         // About Check State
-        b_IsDodege = false;
+        b_IsDodge = false;
         b_IsAttack = false;
         b_IsBlock = false;
         b_IsFloating = false;
@@ -229,7 +224,7 @@ public class Player : MonoBehaviour
         Debug.Log("¸Â´Â´Ù");
         if (other.CompareTag("Breath"))
         {
-            if (b_IsDodege) return;
+            if (b_IsDodge) return;
             if (b_isParticleCollision) return;
             b_isParticleCollision = true;
             stats.hpDown(bossComponent.GetStatus().GetAttackDamage(0) - stats.GetArmor());
@@ -258,6 +253,6 @@ public class Player : MonoBehaviour
     public PlayerAnimationManager GetPlayerAnimationManager() { return playerAnimationManager; }
     public GroundChecker GetPlayerGroundChecker() { return playerGroundChecker; }
     public KeyInputManager GetKeyInputManager() { return keyInputManager; }
-    public SkillAttackManager GetSkillManger() { return skillManger; }
+    public SkillManager GetSkillManger() { return skillManger; }
     public ParticleManager GetParticleManager() { return particleManager; }
 }

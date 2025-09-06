@@ -24,6 +24,10 @@ public class PlayerSprnt : PlayerState
     }
     public override void StateActionUpdate()
     {
+        if (Input.GetButton("Sprint"))
+        {
+            playerMovingState.OnMove(player.f_PlayerSprintSpeed);
+        }
         if (Input.GetButtonDown("Attack"))
         {
             playerStateMachine.ChangeState(player.offenseState);
@@ -50,13 +54,13 @@ public class PlayerSprnt : PlayerState
             return;
         }
     }
-    public override void StateActionFixedUpdate()
-    {
-        if (Input.GetButton("Sprint"))
-        {
-            playerMovingState.OnMove(player.f_PlayerSprintSpeed);
-        }
-    }
+    //public override void StateActionFixedUpdate()
+    //{
+    //    if (Input.GetButton("Sprint"))
+    //    {
+    //        playerMovingState.OnMove(player.f_PlayerSprintSpeed);
+    //    }
+    //}
 
     public override void Exit()
     {

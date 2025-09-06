@@ -11,7 +11,6 @@ public class PlayerSpellCasting : PlayerState
     // 1. z,x,c 중 어떤 키가 입력되었는지 체크
     // 2. 각 키를 기반으로 어떤 스킬이 재생될 것인지 체크
     // 3. 스킬
-    private List<string> skillNameList = new List<string>();
     public override void Enter()
     {
         SelectSkillByKeyInput();
@@ -23,11 +22,6 @@ public class PlayerSpellCasting : PlayerState
     }
     public override void Exit()
     {
-    }
-    private void onInitialize()
-    {
-        skillNameList.Add("S_SwordJudgment");
-        skillNameList.Add("S_Heal");
     }
 
     private void checkSKillExecute()
@@ -65,9 +59,6 @@ public class PlayerSpellCasting : PlayerState
                 }
                 player.GetSkillManger().Heal();
                 break;
-            case "C":
-                break;
-
         }
     }
 

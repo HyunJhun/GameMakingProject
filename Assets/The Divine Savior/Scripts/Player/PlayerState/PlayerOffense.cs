@@ -56,13 +56,7 @@ public class PlayerOffense : PlayerState
         }
 
     }
-    public override void StateActionFixedUpdate()
-    {
-        //if (player.GetPlayerAnimationManager().GetPlayerAnimator().GetCurrentAnimatorStateInfo(0).normalizedTime < 1)
-        //{
-        //    player.GetPlayerController().Move(player.movingState.GetLastPlayerMoveDirection() * 0.1f * Time.fixedDeltaTime);
-        //}
-    }
+
 
     public override void Exit()
     {

@@ -249,7 +249,7 @@ public class Boss : MonoBehaviour
 
     public bool CheckPlayerDodge()
     {
-        return player.GetComponent<Player>().b_IsDodege ? true : false;
+        return player.GetComponent<Player>().b_IsDodge ? true : false;
     }
     public void endingEvent()
     {

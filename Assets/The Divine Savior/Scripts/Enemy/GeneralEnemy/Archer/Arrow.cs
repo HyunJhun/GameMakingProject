@@ -25,7 +25,7 @@ public class Arrow : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if (!other.GetComponent<Player>().b_IsDodege)
+            if (!other.GetComponent<Player>().b_IsDodge)
             {
                 other.GetComponent<Player>().b_IsHit = true;
                 attackRangeCheck.GetComponent<AttackRangeCheck>().getStats().hpDown(arrowAttackDamage - other.GetComponent<Status>().GetArmor());

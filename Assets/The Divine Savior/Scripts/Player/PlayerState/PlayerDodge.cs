@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDodge : PlayerState
@@ -14,7 +13,7 @@ public class PlayerDodge : PlayerState
 
         if (player.GetPlayerStatus().getStamina() >= 10)
         {
-            player.b_IsDodege = true;
+            player.b_IsDodge = true;
             SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Dodge, false);
             player.StartCoroutine(Dodge());
         }
@@ -27,44 +26,35 @@ public class PlayerDodge : PlayerState
     {
 
     }
-    public override void StateActionFixedUpdate()
-    {
-    }
+
 
     public override void Exit()
     {
-        player.b_IsDodege = false;
+        player.b_IsDodge = false;
     }
 
     IEnumerator Dodge()
     {
         // Lccal Var
         float timer;
+        float duration = 0.5f;
         Vector3 moveDir;
         // Init
         timer = 0f;
-        moveDir = player.movingState.GetLastPlayerMoveDirection();
+        moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f ?
+            player.movingState.GetLastPlayerMoveDirection() : player.transform.forward;
+
+
         // Content
         player.GetPlayerStatus().staminaDown_Dodge(player.f_StaminaUsageForDodge);
 
-        if(playerStateMachine.previousState == player.idleState)
+
+        player.transform.LookAt(player.transform.position + moveDir);
+        while (timer < duration)
         {
-            while (timer < 0.5f)
-            {
-                player.GetPlayerController().Move(player.transform.forward * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
-                timer += Time.deltaTime;
-                yield return null;
-            }
-        }
-        else
-        {
-            player.transform.LookAt(player.transform.position + moveDir);
-            while (timer < 0.5f)
-            {
-                player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
-                timer += Time.deltaTime;
-                yield return null;
-            }
+            player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
+            timer += Time.deltaTime;
+            yield return null;
         }
         playerStateMachine.ChangeState(player.idleState);
     }

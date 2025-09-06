@@ -44,7 +44,7 @@ public class EnemyPatrol : EnemyState
     public override void StateActionUpdate()
     {
         currentPosition = enemy.transform.position;
-        //ShotRayEightDirection();
+        ShotRayEightDirection();
         if (Vector3.Distance(currentPosition,enemy.GetInitPosition()) > 20) // 초기 스폰 위치에서 너무 벗어나게 되면 다시 돌아오도록 설정. 이렇게 안하면 특정 영역에 머물지 못함
         {
             enemyStateMachine.ChangeState(enemy.returnState);

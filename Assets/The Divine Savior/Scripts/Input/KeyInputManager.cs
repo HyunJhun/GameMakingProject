@@ -18,11 +18,19 @@ public class KeyInputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ButtonManager.buttonManagerInstance.SettingEvent();
+            if (ButtonManager.buttonManagerInstance != null)
+            {
+                ButtonManager.buttonManagerInstance.SettingEvent();
+            }
+            else
+            {
+                Debug.LogWarning("[KeyInputManager] ButtonManager instance is null.");
+            }
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
     }
+
     public KeyCode GetCurrentInputKey()
     {
         return currentInputKey;

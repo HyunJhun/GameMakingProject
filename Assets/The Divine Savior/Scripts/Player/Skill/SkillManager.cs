@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillAttackManager : MonoBehaviour
+public class SkillManager : MonoBehaviour
 {
     [Header("Reference")]
     private Player player;

@@ -18,6 +18,7 @@ public class EnemyReadyForAttack : EnemyState
 
     public override void StateActionUpdate()
     {
+        base.StateActionUpdate();
     }
     public override void Exit()
     {

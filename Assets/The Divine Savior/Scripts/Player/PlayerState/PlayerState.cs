@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerState 
+public abstract class PlayerState 
 {
     protected Player player;
     protected Status stats;
@@ -16,8 +16,6 @@ public class PlayerState
     }
 
     public virtual void StateActionUpdate() { }
-
-    public virtual void StateActionFixedUpdate() { }
-    public virtual void Enter() { Debug.Log("State Enter"); }
+    public virtual void Enter() { }
     public virtual void Exit() { }
 }

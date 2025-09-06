@@ -44,11 +44,10 @@ public class PlayerMoving : PlayerState
             playerStateMachine.ChangeState(player.spellCastingState);
             return;
         }
-    }
-    public override void StateActionFixedUpdate()
-    {
+
         OnMove(playerWalkSpeed);
     }
+
     public override void Exit()
     {
         SoundManager.soundManagerInstacne.StopSfx(SoundManager.SFX_Player.Walk);
