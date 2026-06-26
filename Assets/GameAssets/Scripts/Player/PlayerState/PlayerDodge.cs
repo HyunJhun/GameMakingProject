@@ -1,5 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class PlayerDodge : PlayerState
 {
@@ -14,8 +17,8 @@ public class PlayerDodge : PlayerState
         if (player.GetPlayerStatus().getStamina() >= 10)
         {
             player.b_IsDodge = true;
-            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Dodge, false);
-            player.StartCoroutine(Dodge());
+            Dodge(player.GetCancellationTokenOnDestroy()).Forget();
+            // cancelllationToken 은 MonoBehavior에 들어있음. 그래서 지금 상황이면 player가 파괴디면 token이 넘어가서 취소되는 거
         }
         else
         {
@@ -33,29 +36,54 @@ public class PlayerDodge : PlayerState
         player.b_IsDodge = false;
     }
 
-    IEnumerator Dodge()
+    private async UniTask Dodge(CancellationToken ct = default)
     {
-        // Lccal Var
-        float timer;
-        float duration = 0.5f;
-        Vector3 moveDir;
         // Init
-        timer = 0f;
-        moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f ?
-            player.movingState.GetLastPlayerMoveDirection() : player.transform.forward;
-
+        float duration = 0.5f;
+        Vector3 moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f
+            ? player.movingState.GetLastPlayerMoveDirection()
+            : player.transform.forward;
 
         // Content
         player.GetPlayerStatus().staminaDown_Dodge(player.f_StaminaUsageForDodge);
-
-
         player.transform.LookAt(player.transform.position + moveDir);
+        // Sound
+        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Dodge, false);
+
+        float timer = 0f;
         while (timer < duration)
         {
             player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
             timer += Time.deltaTime;
-            yield return null;
+            await UniTask.Yield(PlayerLoopTiming.Update, ct);
         }
+
         playerStateMachine.ChangeState(player.idleState);
     }
+
+    //IEnumerator Dodge()
+    //{
+    //    // Lccal Var
+    //    float timer;
+    //    float duration = 0.5f;
+    //    Vector3 moveDir;
+    //    // Init
+    //    timer = 0f;
+    //    moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f ?
+    //        player.movingState.GetLastPlayerMoveDirection() : player.transform.forward;
+
+
+    //    // Content
+    //    player.GetPlayerStatus().staminaDown_Dodge(player.f_StaminaUsageForDodge);
+
+
+    //    player.transform.LookAt(player.transform.position + moveDir);
+    //    while (timer < duration)
+    //    {
+    //        player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    playerStateMachine.ChangeState(player.idleState);
+    //}
 }
