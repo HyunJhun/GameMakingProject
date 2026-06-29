@@ -19,7 +19,7 @@ public class PlayerAnimationManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerMoveAnimationUpdate(player.movingState.GetLastPlayerMoveDirection());
+        PlayerMoveAnimationUpdate(player.currentMoveDirection);
         PlayerDodgeAnimationUpdate();
         PlayerAttackAnimationUpdate();
     }

@@ -17,22 +17,22 @@ public class PlayerIdle : PlayerState
             playerStateMachine.ChangeState(player.movingState);
             return;
         }
-        if (Input.GetButtonDown("Attack"))
+        else if (Input.GetButtonDown("Attack"))
         {
             playerStateMachine.ChangeState(player.offenseState);
             return;
         }
-        if(Input.GetButtonDown("Block"))
+        else if (Input.GetButtonDown("Block"))
         {
             playerStateMachine.ChangeState(player.defenseState);
             return; 
         }
-        if (Input.GetButtonDown("Dodge"))
+        else if (Input.GetButtonDown("Dodge"))
         {
             playerStateMachine.ChangeState(player.dodgeState);
             return;
         }
-        if (player.GetKeyInputManager().CheckSkillKeyInput())
+        else if (player.GetKeyInputManager().CheckSkillKeyInput())
         {
             playerStateMachine.ChangeState(player.spellCastingState);
             return;

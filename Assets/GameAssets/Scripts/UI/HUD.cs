@@ -10,17 +10,21 @@ public class HUD : MonoBehaviour
     [SerializeField]private List<Status> obj_StatusList;
     [SerializeField] private Status player;
     [SerializeField] private Status boss;
+    [SerializeField] private TMP_Text moveSpeed;
     [Header("SliderUI")]
     [SerializeField] private Slider playerHpBar;
     [SerializeField] private Slider playerStaminaBar;
     [SerializeField] private Slider playerMpBar;
     [SerializeField] private Slider bossHpBar;
     [SerializeField] private TMP_Text bossNameText;
+
+
+    private Player playerComp;
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Status>();
         if (GameObject.Find("Boss") != null) boss = GameObject.Find("Boss").GetComponent<Status>();
-
+        playerComp = player.GetComponent<Player>();
         playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
         playerStaminaBar.maxValue = player.getMaxStamina();
@@ -41,6 +45,7 @@ public class HUD : MonoBehaviour
         playerHpBar.value = player.getHp();
         playerStaminaBar.value = player.getStamina();
         playerMpBar.value = player.GetCurrentMp();
+        moveSpeed.text = playerComp.tempMoveSpeed.ToString();
         if (boss != null)
         {
             if(bossHpBar.isActiveAndEnabled)

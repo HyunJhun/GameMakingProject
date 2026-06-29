@@ -1,3 +1,4 @@
+//using System.Numerics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     // Status
     [Header("Status")]
     private Status stats;
+
     public float f_StaminaUsageForDodge { get; set; }
     public float f_PlayerWalkSpeed { get; set; }
     public float f_PlayerSprintSpeed { get; set; }
@@ -60,6 +62,11 @@ public class Player : MonoBehaviour
     public bool b_IsKnockback { get; set; }
     public bool b_IsDie { get; set; }
     public bool b_isParticleCollision { get; set; }
+
+    // 
+    public Vector3 currentMoveDirection { get; set; }
+    public float tempMoveSpeed;
+    
     void Start()
     {
         // Init Player Var
@@ -158,6 +165,8 @@ public class Player : MonoBehaviour
         f_PlayerDefenseArmor = 5f;
         f_PlayerGeneralArmor = 1f;
         i_PlayerMaxAttackEnemyCount = 3;
+
+        currentMoveDirection = transform.forward;
         // About Environment
         f_Graivty = -5f;
 
@@ -174,7 +183,8 @@ public class Player : MonoBehaviour
 
         playerStateMachine.Initialize(idleState);
         stats.SetArmor(f_PlayerGeneralArmor);
-        stats.SetHudStatus(DataManager.dataManagerInstance.hpData, DataManager.dataManagerInstance.mpData, DataManager.dataManagerInstance.staminaData);
+        if(DataManager.dataManagerInstance != null)
+            stats.SetHudStatus(DataManager.dataManagerInstance.hpData, DataManager.dataManagerInstance.mpData, DataManager.dataManagerInstance.staminaData);
         attackRangeBox.SetType(0);
     }
 
@@ -255,4 +265,17 @@ public class Player : MonoBehaviour
     public KeyInputManager GetKeyInputManager() { return keyInputManager; }
     public SkillManager GetSkillManger() { return skillManger; }
     public ParticleManager GetParticleManager() { return particleManager; }
+    public Vector3 GetMoveToDirection()
+    {
+        Vector3 camForward = cam.forward;
+        Vector3 camRight = cam.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight;
+        Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward;
+
+        Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized; // normalized을 통해 대각선으로 움직여도 값을 1로 맞추어 이동속도가 달라지는 일이 없게 함
+        currentMoveDirection = moveDir;
+        return currentMoveDirection;
+    }
 }

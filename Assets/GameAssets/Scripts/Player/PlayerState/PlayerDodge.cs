@@ -40,8 +40,9 @@ public class PlayerDodge : PlayerState
     {
         // Init
         float duration = 0.5f;
-        Vector3 moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f
-            ? player.movingState.GetLastPlayerMoveDirection()
+
+        Vector3 moveDir = player.currentMoveDirection.magnitude > 0.001f
+            ? player.currentMoveDirection
             : player.transform.forward;
 
         // Content
@@ -60,30 +61,4 @@ public class PlayerDodge : PlayerState
 
         playerStateMachine.ChangeState(player.idleState);
     }
-
-    //IEnumerator Dodge()
-    //{
-    //    // Lccal Var
-    //    float timer;
-    //    float duration = 0.5f;
-    //    Vector3 moveDir;
-    //    // Init
-    //    timer = 0f;
-    //    moveDir = player.movingState.GetLastPlayerMoveDirection().magnitude > 0.001f ?
-    //        player.movingState.GetLastPlayerMoveDirection() : player.transform.forward;
-
-
-    //    // Content
-    //    player.GetPlayerStatus().staminaDown_Dodge(player.f_StaminaUsageForDodge);
-
-
-    //    player.transform.LookAt(player.transform.position + moveDir);
-    //    while (timer < duration)
-    //    {
-    //        player.GetPlayerController().Move(moveDir * player.f_PlayerDodgeSpeed * Time.deltaTime * player.f_PlayerDodgeDistance);
-    //        timer += Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    playerStateMachine.ChangeState(player.idleState);
-    //}
 }
