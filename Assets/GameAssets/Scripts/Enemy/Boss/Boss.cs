@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 public class Boss : MonoBehaviour
 {
 
@@ -171,8 +172,8 @@ public class Boss : MonoBehaviour
     }
     public GameObject InstanceFireBraath()
     {
-        GameObject fireBreathClone = GameObject.Instantiate(fireBreathParticle, fireBreathPoint.transform.position, 
-            Quaternion.Euler(fireBreathParticle.transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,
+        GameObject fireBreathClone = GameObject.Instantiate(fireBreathParticle, fireBreathPoint.transform.position,
+            Quaternion.Euler(fireBreathParticle.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y,
             fireBreathParticle.transform.rotation.eulerAngles.z));
         fireBreathClone.transform.SetParent(bossHeadObj.transform);
         fireBreathClone.transform.localScale = fireBreathParticle.transform.localScale;
@@ -201,7 +202,7 @@ public class Boss : MonoBehaviour
         {
             isBack = true;
         }
-        if(other.CompareTag("Weapon"))
+        if (other.CompareTag("Weapon"))
         {
             triggeredPoint = other.ClosestPoint(transform.position);
         }
@@ -227,11 +228,12 @@ public class Boss : MonoBehaviour
     {
         bossCollisionBox.gameObject.SetActive(active);
     }
-    public void DamagingToPlayer(Transform attackerTransform,float valueOfPlayerHpDown)
+    public void DamagingToPlayer(Transform attackerTransform, float valueOfPlayerHpDown)
     {
         if (!player.GetComponent<Player>().b_IsHit)
         {
-            StartCoroutine(player.GetComponent<Player>().floatingState.KnockBack(attackerTransform));
+            player.GetComponent<Player>().floatingState.OnKnockBack(attackerTransform, player.GetCancellationTokenOnDestroy()).Forget();
+            //StartCoroutine(player.GetComponent<Player>().floatingState.KnockBack(attackerTransform));
             player.GetComponent<Player>().b_IsHit = true;
             player.GetComponent<Player>().GetPlayerStatus().hpDown(valueOfPlayerHpDown - player.GetComponent<Player>().GetPlayerStatus().GetArmor());
         }

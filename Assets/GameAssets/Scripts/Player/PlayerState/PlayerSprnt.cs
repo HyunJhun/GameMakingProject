@@ -70,7 +70,7 @@ public class PlayerSprnt : PlayerState
         player.f_PlayerRotationSpeed * Time.deltaTime / Vector3.Angle(player.transform.forward, moveDir));
         player.transform.LookAt(player.transform.position + forward);
 
-        player.tempMoveSpeed = (moveDir * playerMoveSpeed * Time.deltaTime).magnitude;
+        
         player.GetPlayerController().Move(moveDir * playerMoveSpeed * Time.deltaTime);
 
     }

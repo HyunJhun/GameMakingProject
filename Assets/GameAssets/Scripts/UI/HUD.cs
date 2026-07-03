@@ -45,7 +45,7 @@ public class HUD : MonoBehaviour
         playerHpBar.value = player.getHp();
         playerStaminaBar.value = player.getStamina();
         playerMpBar.value = player.GetCurrentMp();
-        moveSpeed.text = playerComp.tempMoveSpeed.ToString();
+        
         if (boss != null)
         {
             if(bossHpBar.isActiveAndEnabled)

@@ -8,7 +8,7 @@ public class PlayerOffense : PlayerState
     { }
 
     int currentAttack = 0;
-    float attackCooltime = 0.0f;
+    float attackCooltime = 0.75f;
     public override void Enter()
     {
         player.GetPlayerAttackCollisionBox().SetActive(true);
@@ -18,13 +18,7 @@ public class PlayerOffense : PlayerState
     }
     public override void StateActionUpdate()
     {
-        //if (!isSorted)
-        //{
-        //    player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().sortDictionary();
-        //    isSorted = true;
-        //    return;
-        //}
-        if (attackCooltime <= 1) attackCooltime -= Time.deltaTime;
+        if (attackCooltime > 0) attackCooltime -= Time.deltaTime;
 
         if (Input.GetButtonDown("Dodge"))
         {
@@ -60,7 +54,6 @@ public class PlayerOffense : PlayerState
 
     public override void Exit()
     {
-        player.GetPlayerAttackCollisionBox().GetComponent<AttackRangeCheck>().GetTriggeredEnemyList().Clear();
         player.GetPlayerAttackCollisionBox().SetActive(false);
         player.b_IsAttack = false;
         for(int i = 1; i < 4; i++)
@@ -74,14 +67,15 @@ public class PlayerOffense : PlayerState
         // Content
 
         currentAttack++;
-        if (player.b_IsAttack == false) player.b_IsAttack = true;
-
         if (currentAttack > 3) currentAttack = 1;
-
         // Reset
         if (player.f_PlayerLastAttackTime > 1.0f) currentAttack = 1;
 
         // Call Triger;
+        // Player Context에 저장 (AnimManager가 읽어감)
+        //player.currentComboCount = currentAttack;
+        //player.b_IsAttack = true;
+        //player.f_PlayerLastAttackTime = 0f;
 
         if (!player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack1") &&
             !player.GetPlayerAnimationManager().CheckCurrentAnimationName("Attack2") &&

@@ -63,9 +63,9 @@ public class Player : MonoBehaviour
     public bool b_IsDie { get; set; }
     public bool b_isParticleCollision { get; set; }
 
-    // 
+    // Extra 0630
     public Vector3 currentMoveDirection { get; set; }
-    public float tempMoveSpeed;
+    public int currentComboCount = 0;
     
     void Start()
     {
@@ -203,35 +203,53 @@ public class Player : MonoBehaviour
 
     public void ToDamage(int indexOfAttackMotion)
     {
-        stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
-        if (attackRangeBox.GetTriggeredEnemyList().Count > 0)
+        
+
+        if (attackRangeBox != null)
         {
-            if (attackRangeBox.GetTriggeredEnemyList().Count > 3)
+
+            if (attackRangeBox.SelectNearEnemies().Count != 0)
             {
-                attackRangeBox.selectEnemyByMaxAttackCount();
+                foreach (var enemy in attackRangeBox.SelectNearEnemies())
+                {
+                    enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+                    particleManager.InstanceHitParticle(enemy.triggeredPoint);
+                    enemy.b_isGetHit = true;
+                }
             }
-            foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
+
+            //if (attackRangeBox.GetTriggeredEnemyList().Count > 0)
+            //{
+            //    if (attackRangeBox.GetTriggeredEnemyList().Count > 3)
+            //    {
+            //        attackRangeBox.selectEnemyByMaxAttackCount();
+            //    }
+            //    foreach (Enemy enemy in attackRangeBox.GetTriggeredEnemyList())
+            //    {
+            //        enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+            //        particleManager.InstanceHitParticle(enemy.triggeredPoint);
+            //        enemy.b_isGetHit = true;
+            //    }
+            //}
+            else if (attackRangeBox.GetBoss() != null)
             {
-                enemy.GetEnemyStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
-                particleManager.InstanceHitParticle(enemy.triggeredPoint);
-                enemy.b_isGetHit = true;
+                attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
+                SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Hit, false);
+                particleManager.InstanceHitParticle(attackRangeBox.GetBoss().triggeredPoint);
+                attackRangeBox.GetBoss().isGetHit = true;
+                //attackRangeBox.ResetBossTriggered();
             }
+
+            if(stats != null)
+                stats.staminaDown(stats.GetAttackStamina(indexOfAttackMotion));
+
+            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Attack, false);
         }
-        if (attackRangeBox.GetBoss() != null)
-        {
-            attackRangeBox.GetBoss().GetStatus().hpDown(stats.GetAttackDamage(indexOfAttackMotion));
-            SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Hit, false);
-            particleManager.InstanceHitParticle(attackRangeBox.GetBoss().triggeredPoint);
-            attackRangeBox.GetBoss().isGetHit = true;
-            //attackRangeBox.ResetBossTriggered();
-        }
-        SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Player.Attack, false);
 
     }
 
     private void OnParticleCollision(GameObject other)
     {
-        Debug.Log("¸Â´Â´Ù");
         if (other.CompareTag("Breath"))
         {
             if (b_IsDodge) return;

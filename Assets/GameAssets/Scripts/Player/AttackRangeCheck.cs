@@ -8,45 +8,24 @@ public class AttackRangeCheck : MonoBehaviour
     [SerializeField]private Status triggerObjStatus;
     [SerializeField]private Boss bossTriggered;
     private int maxAttackEnemyCount = 3;
-    [SerializeField] private List<Enemy> enemyTriggeredList = new List<Enemy>();
-
+    
+    private Transform playerTransform;
+    private HashSet<Enemy> enemies = new HashSet<Enemy>();
     private enum Type { Player,Monster}
     private Type type;
 
+
+    private void OnEnable()
+    {
+        enemies.Clear();
+    }
+    private void Start()
+    {
+        playerTransform = GameObject.FindWithTag("Player").transform;
+    }
     private void Update()
     {
-        switch (type)
-        {
-            case Type.Player:
-                if (enemyTriggeredList.Count == 0) break;
-                foreach (Enemy monster in enemyTriggeredList)
-                {
-                    if (monster == null || monster.b_isDie)
-                    {
-                        enemyTriggeredList.Remove(monster);
-                        break;
-                    }
-                }
-                break;
-            case Type.Monster:  
-                break;
 
-                //default:
-                //    triggerObjStatus = null;
-                //    bossTriggered = null;
-                //    break;
-        }
-        //// 죽은 적은 리스트에서 삭제
-        //if (enemyTriggeredList.Count == 0) return;
-        //foreach(Enemy monster in enemyTriggeredList)
-        //{
-        //    if (monster == null)
-        //    {
-        //        enemyTriggeredList.Remove(monster);
-        //        break;
-        //    }
-            
-        //}
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -57,8 +36,13 @@ public class AttackRangeCheck : MonoBehaviour
             case Type.Player:
                 if (other.CompareTag("Enemy"))
                 {
-                    if(other.GetComponent<Boss>() != null) bossTriggered = other.GetComponent<Boss>();
-                    if(other.GetComponent<Enemy>() != null) preventDuplicateAdd(other.GetComponent<Enemy>());
+                    if(other.GetComponent<Boss>() != null) 
+                        bossTriggered = other.GetComponent<Boss>();
+                    if (other.GetComponent<Enemy>() != null)
+                    {
+                        enemies.Add(other.GetComponent<Enemy>());
+                        //preventDuplicateAdd(other.GetComponent<Enemy>());
+                    }
                 }
                 break;
             case Type.Monster:
@@ -67,11 +51,6 @@ public class AttackRangeCheck : MonoBehaviour
                     triggerObjStatus = other.GetComponent<Status>();
                 }
                 break;
-
-            //default:
-            //    triggerObjStatus = null;
-            //    bossTriggered = null;
-            //    break;
         }
 
 
@@ -82,52 +61,21 @@ public class AttackRangeCheck : MonoBehaviour
 
         bossTriggered = null;
     }
+
     // 몬스터 리스트를 Trigger를 통해 추가할 때, 동일한 몬스터가 추가되는 것을 방지.
-    private void preventDuplicateAdd(Enemy inRangeEnemy) 
+   
+    public List<Enemy> SelectNearEnemies()
     {
-        bool isDuplicated = false;
-        if (enemyTriggeredList.Count == 0)
-        {
-            enemyTriggeredList.Add(inRangeEnemy);
-            return;
-        }
-        for (int i = 0; i < enemyTriggeredList.Count; i++)
-        {
-            if (enemyTriggeredList[i].name == inRangeEnemy.name)
-            {
-                isDuplicated = true;
-                break;
-            }
-        }
-        if (!isDuplicated)
-        {
-            enemyTriggeredList.Add(inRangeEnemy);
-        }
-    }
-    public void selectEnemyByMaxAttackCount()
-    {
-        List<float> distanceList = new List<float>();
-        Dictionary<float, Enemy> enemyDictionary = new Dictionary<float, Enemy>();
-        Transform playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        List<Enemy> sorted = new List<Enemy>();
 
-        foreach(Enemy enemy in enemyTriggeredList)
-        {
-            float distance = Vector3.Distance(playerTransform.position, enemy.transform.position);
-            distanceList.Add(distance);
-            enemyDictionary.Add(distance, enemy);
-        }
+        sorted = enemies.Where(e => e != null && !e.b_isDie)
+            .OrderBy(e => Vector3.Distance(playerTransform.position, e.transform.position))
+            .Take(maxAttackEnemyCount)
+            .ToList();
 
-        distanceList.Sort();
-        enemyTriggeredList.Clear();
-        for (int i = 0; i < enemyDictionary.Count; i++)
-        {
-            if (!enemyDictionary[distanceList[i]].b_isDie && enemyTriggeredList.Count < maxAttackEnemyCount)
-            {
-                enemyTriggeredList.Add(enemyDictionary[distanceList[i]]);
-            }
-        }
+        return sorted;
 
-    }
+    }  
 
     public void ResetBossTriggered()
     {
@@ -148,12 +96,6 @@ public class AttackRangeCheck : MonoBehaviour
             return null;
     }
 
-    public List<Enemy> GetTriggeredEnemyList()
-    {
-        if (enemyTriggeredList == null) return null;
-
-        return enemyTriggeredList;
-    }
 
     public Boss GetBoss()
     {
