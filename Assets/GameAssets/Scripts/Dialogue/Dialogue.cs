@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 
 [System.Serializable] // 직접 만든 클래스에 접근할 수 있도록 해줌
@@ -30,6 +31,17 @@ public class Dialogue : MonoBehaviour
     public void OnOffDialogUI(bool state)
     {
         dialogueUI.SetActive(state);
+    }
+
+    public async UniTask OnShowTextInOrder()
+    {
+        m_countOfDialog = 0;
+        OnOffDialogUI(true);
+
+        Transform npcTransform = GameObject.FindGameObjectWithTag("NPC").transform;
+        Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+        CameraManager.cameraManagerInstance.SwitchCameraToTarget(npcTransform, CameraManager.cameraManagerInstance.dialogCam);
     }
 
     public IEnumerator ShowTextInOrder()

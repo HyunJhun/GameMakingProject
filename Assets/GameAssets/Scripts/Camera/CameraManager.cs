@@ -58,15 +58,16 @@ public class CameraManager : MonoBehaviour
         isDialogRunning = true;
 
         targetCam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
+        mainCam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
 
-        mainCamObj.transform.SetParent(this.transform);
-        targetCam.transform.SetParent(this.transform);
+        //mainCamObj.transform.SetParent(this.transform);
+        //targetCam.transform.SetParent(this.transform);
 
         blendList.m_Instructions[0].m_VirtualCamera = mainCam;
         blendList.m_Instructions[1].m_VirtualCamera = targetCam;
 
-        blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.Cut;
-        blendList.m_Instructions[1].m_Blend.m_Time = 1.0f;
+        blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
+        blendList.m_Instructions[1].m_Blend.m_Time = 0.5f;
 
         mainCam.LookAt = lookAtTransform.transform;
         targetCam.LookAt = lookAtTransform.transform;
@@ -81,8 +82,8 @@ public class CameraManager : MonoBehaviour
         blendList.m_Instructions[0].m_VirtualCamera = fromCam;
         blendList.m_Instructions[1].m_VirtualCamera = mainCam;
 
-        blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.HardOut;
-        blendList.m_Instructions[1].m_Blend.m_Time = 2.0f;
+        blendList.m_Instructions[1].m_Blend.m_Style = CinemachineBlendDefinition.Style.EaseInOut;
+        blendList.m_Instructions[1].m_Blend.m_Time = 1f;
 
         isDialogRunning = false;
 
