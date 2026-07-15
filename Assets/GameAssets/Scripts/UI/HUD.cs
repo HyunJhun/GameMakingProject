@@ -18,8 +18,22 @@ public class HUD : MonoBehaviour
     [SerializeField] private Slider bossHpBar;
     [SerializeField] private TMP_Text bossNameText;
 
+    [Header("Debug")]
+    [SerializeField] private Button btn_x1;
+    [SerializeField] private Button btn_x0;
+    [SerializeField] private Button btn_x05;
+    [SerializeField] private Button btn_x025;
 
     private Player playerComp;
+
+
+    private void Awake()
+    {
+        btn_x1.onClick.AddListener(() => SetTimeScale(1f));
+        btn_x0.onClick.AddListener(() => SetTimeScale(0f));
+        btn_x05.onClick.AddListener(() => SetTimeScale(0.5f));
+        btn_x025.onClick.AddListener(() => SetTimeScale(0.25f));
+    }
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<Status>();
@@ -52,5 +66,11 @@ public class HUD : MonoBehaviour
                 bossHpBar.value = boss.getHp();
         }
 
+    }
+
+    private void SetTimeScale(float scale)
+    {
+        Time.timeScale = scale;
+        Debug.Log($"TimeScale º¯°æ: {scale}");
     }
 }
