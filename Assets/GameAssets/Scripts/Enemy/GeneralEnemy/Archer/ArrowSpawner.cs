@@ -9,7 +9,7 @@ public class ArrowSpawner : MonoBehaviour
     private ObjectPoolComponent<Arrow> _pool;
     private void Start()
     {
-        _pool = new ObjectPoolComponent<Arrow>(arrowPrefab, transform);
+        _pool = new ObjectPoolComponent<Arrow>(arrowPrefab, null);
         PoolManager.instanmce.Register(_pool);
     }
 

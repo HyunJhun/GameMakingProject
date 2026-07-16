@@ -11,7 +11,6 @@ public class ObjectPoolComponent<T> where T : Component
     private readonly IObjectPool<T> _pool;
     private readonly T _prefab;
     private readonly Transform _parent;
-
     // 풀에 있는 활성화된 오브젝트 수
     public int CountInactive => _pool.CountInactive;
 
