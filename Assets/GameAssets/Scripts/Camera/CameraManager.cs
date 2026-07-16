@@ -57,11 +57,11 @@ public class CameraManager : MonoBehaviour
     {
         isDialogRunning = true;
 
-        targetCam.GetComponent<CinemachineVirtualCamera>().Priority = 1;
-        mainCam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
+        targetCam.Priority = 1;  
+        mainCam.Priority = 0;   
 
-        //mainCamObj.transform.SetParent(this.transform);
-        //targetCam.transform.SetParent(this.transform);
+        mainCamObj.transform.SetParent(this.transform);
+        targetCam.transform.SetParent(this.transform);
 
         blendList.m_Instructions[0].m_VirtualCamera = mainCam;
         blendList.m_Instructions[1].m_VirtualCamera = targetCam;
@@ -74,7 +74,7 @@ public class CameraManager : MonoBehaviour
     }
     public void SwitchCameraToMain(Transform lookAtTransform, CinemachineVirtualCameraBase fromCam)
     {
-        
+        fromCam.Priority = 0;
 
         fromCam.transform.SetParent(this.transform);
         mainCamObj.transform.SetParent(this.transform);

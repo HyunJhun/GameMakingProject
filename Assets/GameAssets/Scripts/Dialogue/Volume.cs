@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,7 +39,8 @@ public class Volume : MonoBehaviour
                 {
                     Debug.Log("대화시작");
                     isConversationStart = true;
-                    StartCoroutine(dialogue.ShowTextInOrder());
+                    dialogue.ShowTextInOrder().Forget();
+                    //StartCoroutine(dialogue.ShowTextInOrder());
                 }
 
             }

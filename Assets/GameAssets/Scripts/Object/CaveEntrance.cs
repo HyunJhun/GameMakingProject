@@ -23,7 +23,9 @@ public class CaveEntrance : MonoBehaviour
             {
                 isAllEnemiesDead = true;
                 SoundManager.soundManagerInstacne.initializeSFX();
-                CameraManager.cameraManagerInstance.SwitchCameraToTarget(transform,CameraManager.cameraManagerInstance.caveCam);
+                CameraManager.cameraManagerInstance.SwitchCameraToTarget(
+                    transform,CameraManager.cameraManagerInstance.caveCam
+                    );
                 Invoke("breakEntrance", 4f);         
             }
             else
@@ -44,6 +46,9 @@ public class CaveEntrance : MonoBehaviour
 
     private void cameBackToMain()
     {
-        CameraManager.cameraManagerInstance.SwitchCameraToMain(GameObject.FindGameObjectWithTag("Player").transform, CameraManager.cameraManagerInstance.caveCam);
+        CameraManager.cameraManagerInstance.SwitchCameraToMain
+            (GameObject.FindGameObjectWithTag("Player").transform, 
+            CameraManager.cameraManagerInstance.caveCam
+            );
     }
 }

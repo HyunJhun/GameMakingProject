@@ -29,6 +29,11 @@ public class HUD : MonoBehaviour
 
     private void Awake()
     {
+        if(btn_x0 == null || btn_x1 == null || btn_x05 == null || btn_x025 == null)
+        {
+            Debug.LogError("버튼이 할당되지 않았습니다.");
+            return;
+        }
         btn_x1.onClick.AddListener(() => SetTimeScale(1f));
         btn_x0.onClick.AddListener(() => SetTimeScale(0f));
         btn_x05.onClick.AddListener(() => SetTimeScale(0.5f));

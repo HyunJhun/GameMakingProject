@@ -6,7 +6,7 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 public class Boss : MonoBehaviour
 {
-
+    #region Variables
     // State
     public BossStateMachine bossStateMachine { get; set; }
     public BossIdle idleState { get; set; }
@@ -66,7 +66,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private GameObject fireBreathParticle;
 
     public ParticleManager bossParticleManager;
-
+    #endregion
 
     private void Start()
     {

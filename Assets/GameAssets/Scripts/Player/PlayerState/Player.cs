@@ -104,8 +104,13 @@ public class Player : MonoBehaviour
                 return;
             }
         }
-        if (!CameraManager.cameraManagerInstance.isDialogRunning)
-            playerStateMachine.currentState.StateActionUpdate();
+        if (CameraManager.cameraManagerInstance != null)
+        {
+            if (!CameraManager.cameraManagerInstance.isDialogRunning)
+            {
+                playerStateMachine.currentState.StateActionUpdate();
+            }
+        }
 
     }
     // Function of Environment
