@@ -1,8 +1,11 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Threading;
 using TMPro;
-public class Firebomb : MonoBehaviour
+using UnityEngine;
+using UnityEngine.Pool;
+public class Firebomb : MonoBehaviour,IPoolable<Firebomb>
 {
     [SerializeField] private ParticleSystem bombParticle;
     [SerializeField] private GameObject explodeArea;
@@ -13,6 +16,18 @@ public class Firebomb : MonoBehaviour
     private bool collisionObstacle;
     private bool isBoom;
 
+
+    private IObjectPool<Firebomb> _pool;
+    public void SetPool(IObjectPool<Firebomb> pool)
+    {
+        _pool = pool;
+    }
+    public void ReturnToPool() => _pool.Release(this);
+    private async UniTaskVoid ReturnToPoolDelayed(float delayTime, CancellationToken tk = default)
+    {
+        await UniTask.Delay(System.TimeSpan.FromSeconds(delayTime));
+        ReturnToPool();
+    }
     private void Start()
     {
         timer = 7f;
@@ -45,8 +60,9 @@ public class Firebomb : MonoBehaviour
             //SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
             ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
             bombEffect.Play();
+
             Destroy(bombEffect.gameObject, 1f);
-            Destroy(gameObject, 0.1f);
+            ReturnToPoolDelayed(0.1f).Forget();
         }
         else
         {

@@ -25,7 +25,7 @@ public class BossFlightAttack : BossState
     private List<GameObject> shuffledFlightPoint;
     private List<GameObject> dropBombPoint = new List<GameObject>();
     private List<Vector3> setOfDivePosition = new List<Vector3>();
-    private Dictionary<string,List<Vector3>> setOfTravelPointWhileDropBomb = new Dictionary<string,List<Vector3>>();
+    private Dictionary<string, List<Vector3>> setOfTravelPointWhileDropBomb = new Dictionary<string, List<Vector3>>();
     private int currentIndex;
     private float timeToArrive = 500f;
     private float timeToArriveOfGlideRush = 220f;
@@ -79,16 +79,16 @@ public class BossFlightAttack : BossState
         }
 
     }
-    private async UniTask OnFlightFireBall(CancellationToken ct =default)
+    private async UniTask OnFlightFireBall(CancellationToken ct = default)
     {
         isFlightAttack = true;
-        
+
         for (int i = 0; i < 3; i++)
         {
             boss.transform.LookAt(boss.player.transform);
             boss.bossAnimationHandler.OnFireballAttack();
 
-            await UniTask.WaitUntil(() => 
+            await UniTask.WaitUntil(() =>
             boss.bossAnimationHandler.AnimationPlayingCheck(
                 1, 0.95f, "Fly Fireball Shoot"), cancellationToken: ct
                 );
@@ -180,6 +180,7 @@ public class BossFlightAttack : BossState
             await UniTask.Delay(TimeSpan.FromMilliseconds(500), cancellationToken: ct);
         }
     }
+    #region Non Use
     //IEnumerator bossFlightAttackPattern_Fireball()
     //{
     //    isFlightAttack = true;
@@ -246,7 +247,7 @@ public class BossFlightAttack : BossState
 
     //    bossStateMachine.ChangeState(boss.flyAroundState);
     //}
-
+    #endregion
     private async UniTask DropBombLoop(CancellationToken ct)
     {
         while (true)
@@ -258,7 +259,7 @@ public class BossFlightAttack : BossState
 
     private void IntializeOrderToDropBombPoint()
     {
-        for(int i = 1; i <= 8; i++)
+        for (int i = 1; i <= 8; i++)
         {
             dropBombPoint.Add(GameObject.Find($"point{i}"));
         }
@@ -267,7 +268,7 @@ public class BossFlightAttack : BossState
     private void SetDropBombPosition()
     {
         // set 1
-        setOfTravelPointWhileDropBomb.Add("point1", Action("point4", "point6", "point1",AddPointToSetList));
+        setOfTravelPointWhileDropBomb.Add("point1", Action("point4", "point6", "point1", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point4", Action("point1", "point6", "point4", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point6", Action("point4", "point1", "point6", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point2", Action("point4", "point7", "point2", AddPointToSetList));
@@ -276,7 +277,7 @@ public class BossFlightAttack : BossState
         setOfTravelPointWhileDropBomb.Add("point5", Action("point3", "point8", "point5", AddPointToSetList));
         setOfTravelPointWhileDropBomb.Add("point8", Action("point3", "point5", "point8", AddPointToSetList));
     }
-    private List<Vector3> AddPointToSetList(string first,string second,string third)
+    private List<Vector3> AddPointToSetList(string first, string second, string third)
     {
         List<Vector3> divePos = new List<Vector3>();
         // 람다식 사용, List.Find() 를 사용하려면 Find() 의 매개변수가 predicate 즉 대체자의 자료형을 가지고 있는데 이는 람다식을 통해 이용 가능
