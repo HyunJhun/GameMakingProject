@@ -1,4 +1,4 @@
-//using System.Numerics;
+ï»¿//using System.Numerics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -104,12 +104,11 @@ public class Player : MonoBehaviour
                 return;
             }
         }
-        if (CameraManager.cameraManagerInstance != null)
+        // ìˆ˜ì •ë¨: CameraManagerê°€ ì—†ëŠ” Boss Sceneì—ì„œë„ Player ìƒíƒœì™€ ì…ë ¥ì„ ê³„ì† ê°±ì‹ 
+        if (CameraManager.cameraManagerInstance == null ||
+            !CameraManager.cameraManagerInstance.isDialogRunning)
         {
-            if (!CameraManager.cameraManagerInstance.isDialogRunning)
-            {
-                playerStateMachine.currentState.StateActionUpdate();
-            }
+            playerStateMachine.currentState.StateActionUpdate();
         }
 
     }
@@ -195,7 +194,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Attackable")) // ÇÃ·¹ÀÌ¾î¿¡°Ô °ø°İÀÌ °¡´ÉÇÑ Object (ex. Fireball , Bomb)
+        if (collision.gameObject.CompareTag("Attackable")) // í”Œë ˆì´ì–´ì—ê²Œ ê³µê²©ì´ ê°€ëŠ¥í•œ Object (ex. Fireball , Bomb)
         {
             if (!b_IsHit)
             {
@@ -297,7 +296,7 @@ public class Player : MonoBehaviour
         Vector3 forwardRelatvie = Input.GetAxisRaw("Horizontal") * camRight;
         Vector3 rightRelatvie = Input.GetAxisRaw("Vertical") * camForward;
 
-        Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized; // normalizedÀ» ÅëÇØ ´ë°¢¼±À¸·Î ¿òÁ÷¿©µµ °ªÀ» 1·Î ¸ÂÃß¾î ÀÌµ¿¼Óµµ°¡ ´Ş¶óÁö´Â ÀÏÀÌ ¾ø°Ô ÇÔ
+        Vector3 moveDir = (forwardRelatvie + rightRelatvie).normalized; // normalizedì„ í†µí•´ ëŒ€ê°ì„ ìœ¼ë¡œ ì›€ì§ì—¬ë„ ê°’ì„ 1ë¡œ ë§ì¶”ì–´ ì´ë™ì†ë„ê°€ ë‹¬ë¼ì§€ëŠ” ì¼ì´ ì—†ê²Œ í•¨
         currentMoveDirection = moveDir;
         return currentMoveDirection;
     }

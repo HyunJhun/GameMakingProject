@@ -25,7 +25,8 @@ public class S_SwordJudgment : MonoBehaviour
 
         }
     }
-    private void OnDestroy()
+    // 수정됨: 풀 반환은 Destroy가 아니라 비활성화이므로 OnDisable에서 상태 정리
+    private void OnDisable()
     {
         DetectAllEnemyAndInitialize();
     }
@@ -53,9 +54,16 @@ public class S_SwordJudgment : MonoBehaviour
     {
         foreach (Enemy enemy in collisionEnemies)
         {
-            enemy.b_isCollide = false;
+            if (enemy != null)
+            {
+                enemy.b_isCollide = false;
+            }
         }
+
+        collisionEnemies.Clear();
+
         if (collisionBoss == null) return;
         collisionBoss.isParticleCollision = false;
+        collisionBoss = null;
     }
 }

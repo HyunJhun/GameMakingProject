@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,8 +45,8 @@ public class BossAttack : BossState
                 boss.StartCoroutine(BossAttackPattern_FireBreath());
             _isAttack = false;
         }
-        // attack ÀÌ ¿¬¼ÓÀûÀ¸·Î ÀÏ¾î³ª¸é ÀÏ½ÃÀûÀ¸·Î attack »óÅÂ¿¡¼­ »óÅÂº¯È¯ÀÌ ¾ÈÀÏ¾î³²
-        // ±×·¯¸é ÀÏ´Ü ¸¸¾à ¸îÃÊµ¿¾È ¿òÁ÷ÀÓÀÌ ¾ø´Ù¸é ´Ù½Ã Ãß°İ »óÅÂ·Î °­Á¦·Î µ¹·Á¾ß ÇÏ´Â ¹æ¹ıÀÌ ÀÖÀ»¼öµµ ÀÖÀ½.
+        // attack ì´ ì—°ì†ì ìœ¼ë¡œ ì¼ì–´ë‚˜ë©´ ì¼ì‹œì ìœ¼ë¡œ attack ìƒíƒœì—ì„œ ìƒíƒœë³€í™˜ì´ ì•ˆì¼ì–´ë‚¨
+        // ê·¸ëŸ¬ë©´ ì¼ë‹¨ ë§Œì•½ ëª‡ì´ˆë™ì•ˆ ì›€ì§ì„ì´ ì—†ë‹¤ë©´ ë‹¤ì‹œ ì¶”ê²© ìƒíƒœë¡œ ê°•ì œë¡œ ëŒë ¤ì•¼ í•˜ëŠ” ë°©ë²•ì´ ìˆì„ìˆ˜ë„ ìˆìŒ.
     }
     public override void StateActionFixedUpdate()
     {
@@ -57,9 +57,9 @@ public class BossAttack : BossState
         yield return boss.StartCoroutine(delayBeforeAttack());
         distanceOfDestination = boss.ShotRay(distanceOfDestination);
         boss.BossCollisionBoxActive(true);
-        // ¾îÂ÷ÇÇ isAttack ½Ã ÇÑ ¹ø¸¸ ½ÇÇàµÉ ³»¿ëÀÌ¶ó ±×³É update¹®¿¡¼­ ¹æÇâÀ» Ã³¸®;
+        // ì–´ì°¨í”¼ isAttack ì‹œ í•œ ë²ˆë§Œ ì‹¤í–‰ë  ë‚´ìš©ì´ë¼ ê·¸ëƒ¥ updateë¬¸ì—ì„œ ë°©í–¥ì„ ì²˜ë¦¬;
         Vector3 attackDirection = (boss.player.transform.position - boss.transform.position).normalized;
-        // º¸½º°¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´Â ¹æÇâÀ¸·Î ±æÀÌ¸¦ distanceOfDestination ¸¸Å­ "´ë½¬ °ø°İ" ÁøÇà. 
+        // ë³´ìŠ¤ê°€ í”Œë ˆì´ì–´ê°€ ìˆëŠ” ë°©í–¥ìœ¼ë¡œ ê¸¸ì´ë¥¼ distanceOfDestination ë§Œí¼ "ëŒ€ì‰¬ ê³µê²©" ì§„í–‰.
         Vector3 destinationOfAttack = new Vector3(attackDirection.x * distanceOfDestination, 0f, attackDirection.z * distanceOfDestination) + boss.transform.position;
         boss.transform.LookAt(destinationOfAttack);
         _isAttack = false;
@@ -70,8 +70,8 @@ public class BossAttack : BossState
         while (Vector3.Distance(boss.transform.position, destinationOfAttack) > 0.2f)
         {
             timer += Time.deltaTime;        
-            boss.transform.position = Vector3.Lerp(boss.transform.position,destinationOfAttack,timer/timeToArrive); // ÀÏÁ¾ÀÇ waypointÃ³·³ positionÀº lerp¸¦ »ç¿ëÇØ ½º¹«½ºÇÏ°Ô ¿òÁ÷ÀÎ´Ù.
-            if (boss.CheckPlayerCollisionToBoss(pattern_One_Damage)) break; // ¸¸¾à ÇÃ·¹ÀÌ¾î°¡ º¸½º¿Í Ãæµ¹ÇßÀ» °æ¿ì º¸½ºÀÇ ÀÌµ¿ÀÌ ¸ØÃß°í while¹®À» Å»ÃâÇÏ°í °ø°İÀ» ÁßÁö.
+            boss.transform.position = Vector3.Lerp(boss.transform.position,destinationOfAttack,timer/timeToArrive); // ì¼ì¢…ì˜ waypointì²˜ëŸ¼ positionì€ lerpë¥¼ ì‚¬ìš©í•´ ìŠ¤ë¬´ìŠ¤í•˜ê²Œ ì›€ì§ì¸ë‹¤.
+            if (boss.CheckPlayerCollisionToBoss(pattern_One_Damage)) break; // ë§Œì•½ í”Œë ˆì´ì–´ê°€ ë³´ìŠ¤ì™€ ì¶©ëŒí–ˆì„ ê²½ìš° ë³´ìŠ¤ì˜ ì´ë™ì´ ë©ˆì¶”ê³  whileë¬¸ì„ íƒˆì¶œí•˜ê³  ê³µê²©ì„ ì¤‘ì§€.
             yield return null;
         }
         boss.BossCollisionBoxActive(false);
@@ -79,11 +79,11 @@ public class BossAttack : BossState
     }
     IEnumerator BossAttackPattern_BasicAttack() 
     {       
-        yield return boss.StartCoroutine(delayBeforeAttack());  // °ø°İÀ» ÇÏ±â Àü ÀüÁ¶ Áõ»óÀ» ÇÃ·¹ÀÌ¾î¿¡°Ô º¸¿©ÁÖ¾î ÇÃ·¹ÀÌ¾î°¡ ´ëÃ³ÇÒ ¼ö ÀÖµµ·Ï ÇÔ
+        yield return boss.StartCoroutine(delayBeforeAttack());  // ê³µê²©ì„ í•˜ê¸° ì „ ì „ì¡° ì¦ìƒì„ í”Œë ˆì´ì–´ì—ê²Œ ë³´ì—¬ì£¼ì–´ í”Œë ˆì´ì–´ê°€ ëŒ€ì²˜í•  ìˆ˜ ìˆë„ë¡ í•¨
         boss.bossAnimationHandler.OnBasicAttack();
-        yield return new WaitForSeconds(0.7f); // ¸ğ¼Ç°ú Å¸ÀÌ¹ÖÀ» ¸ÂÃß±â À§ÇØ Àá½Ã ½Ã°£À» Áö¿¬
+        yield return new WaitForSeconds(0.7f); // ëª¨ì…˜ê³¼ íƒ€ì´ë°ì„ ë§ì¶”ê¸° ìœ„í•´ ì ì‹œ ì‹œê°„ì„ ì§€ì—°
         SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.BasicAttack, false, boss);
-        CheckIsPlayerInRangeOfAttackRangeForBasicAttackPattern(); // °ø°İ¹üÀ§ ¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ Á¸ÀçÇÏ´ÂÁö Ã¼Å©.
+        CheckIsPlayerInRangeOfAttackRangeForBasicAttackPattern(); // ê³µê²©ë²”ìœ„ ì•ˆì— í”Œë ˆì´ì–´ê°€ ì¡´ì¬í•˜ëŠ”ì§€ ì²´í¬.
         bossStateMachine.ChangeState(boss.stiffnessState);
     }
     IEnumerator BossAttackPattern_FireBreath()
@@ -116,7 +116,9 @@ public class BossAttack : BossState
         if (patternSelectNumber == 0)
         {
             float timer = 0f;
-            GameObject enterParticle = boss.bossParticleManager.BossAttackEnterParticleInstance(0);
+            // ìˆ˜ì •ë¨: ìƒì„±ëœ GameObject ëŒ€ì‹  í’€ì—ì„œ ê°€ì ¸ì˜¨ íŒŒí‹°í´ì„ ì‚¬ìš©
+            PooledParticle enterParticle =
+                boss.bossParticleManager.BossAttackEnterParticleInstance(0);
             SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.MagicCircle,false, boss);
             while (enterParticle.transform.localScale.x < 6 && enterParticle.transform.localScale.z < 6)
             {
@@ -124,7 +126,8 @@ public class BossAttack : BossState
                 timer += Time.deltaTime;
                 yield return null;
             }
-            GameObject.Destroy(enterParticle, 1f);
+            // ìˆ˜ì •ë¨: Destroy ëŒ€ì‹  ì—°ì¶œ ì¢…ë£Œ í›„ í’€ë¡œ ì§€ì—° ë°˜í™˜
+            enterParticle.ReturnToPoolAfter(1f);
         }
         yield return new WaitForSeconds(delayTime);
     }
@@ -139,7 +142,7 @@ public class BossAttack : BossState
 
     private void CheckIsPlayerInRangeOfAttackRangeForBasicAttackPattern()
     {
-        if (boss.detectPlayer_AttackRange.getPlayerStatusForDamaged() != null) // °ø°İ ¹üÀ§ ¾È¿¡ ÇÃ·¹ÀÌ¾î°¡ Á¸ÀçÇÒ ¶§
+        if (boss.detectPlayer_AttackRange.getPlayerStatusForDamaged() != null) // ê³µê²© ë²”ìœ„ ì•ˆì— í”Œë ˆì´ì–´ê°€ ì¡´ì¬í•  ë•Œ
         {
             if (!boss.CheckPlayerDodge())
             {

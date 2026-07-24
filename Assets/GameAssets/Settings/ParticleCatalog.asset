@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc62e126fc24b429c9dcf7d9171269b, type: 3}
+  m_Name: ParticleCatalog
+  m_EditorClassIdentifier:
+  entries:
+  - type: 0
+    prefab: {fileID: 6838234871597298030, guid: 590b917b819b6fd40b847425f77f2750, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 1
+    prefab: {fileID: 358536259608400843, guid: 38ebe2fa1895bcf4496f14934d62e1be, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 2
+    prefab: {fileID: 7195573021755067417, guid: 8c92f3c27aac6da4b8cdce035bcb49bf, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 3
+    prefab: {fileID: 3619238923182872696, guid: 97326e3a3fdc35345a0e1d6a178154c6, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 4
+    prefab: {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 5
+    prefab: {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 6
+    prefab: {fileID: 1166320503606963493, guid: a008d93515e8caf418d48b48f635d20d, type: 3}
+    defaultSize: 2
+    maxSize: 8
+    returnMode: 1
+    returnDelay: 1.5
+  - type: 7
+    prefab: {fileID: 9017484664307500583, guid: 714dd26d636f14e4fabb3f21716b9c97, type: 3}
+    defaultSize: 2
+    maxSize: 8
+    returnMode: 1
+    returnDelay: 1
+  - type: 8
+    prefab: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
+    defaultSize: 10
+    maxSize: 30
+    returnMode: 1
+    returnDelay: 0.75
+  - type: 9
+    prefab: {fileID: 6810844234100877735, guid: 88dd9c4a8854b804186fda4318305ba0, type: 3}
+    defaultSize: 2
+    maxSize: 8
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 10
+    prefab: {fileID: 3906019235209132316, guid: 931f2665f37a93c4189ed68fa03df2cb, type: 3}
+    defaultSize: 2
+    maxSize: 8
+    returnMode: 1
+    returnDelay: 0.3
+  - type: 11
+    prefab: {fileID: 3377181292992421420, guid: 48c5715f9603c3842a353516a8baefbb, type: 3}
+    defaultSize: 2
+    maxSize: 8
+    returnMode: 2
+    returnDelay: 0
+  - type: 12
+    prefab: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 1
+  - type: 13
+    prefab: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
+    defaultSize: 5
+    maxSize: 20
+    returnMode: 1
+    returnDelay: 1

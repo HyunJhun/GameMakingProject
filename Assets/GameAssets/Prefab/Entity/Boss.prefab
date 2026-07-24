@@ -1040,20 +1040,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackParticles: []
-  bossAttackParticles:
-  - {fileID: 6810844234100877735, guid: 88dd9c4a8854b804186fda4318305ba0, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  bossAttackEnterParticles: []
-  skillParticles: []
-  hitParticle: {fileID: 0}
+  catalog: {fileID: 11400000, guid: 56acc738524d4cddb502761e61367f98, type: 2}
   swordHolder: {fileID: 0}
   player: {fileID: 0}
   boss: {fileID: 1186464330249201201}
-  PlayerObj: {fileID: 0}
-  xVal: 0
-  yVal: 0
 --- !u!82 &6837138561309055114
 AudioSource:
   m_ObjectHideFlags: 0

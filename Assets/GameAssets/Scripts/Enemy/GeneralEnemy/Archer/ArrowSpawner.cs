@@ -1,29 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
-public class ArrowSpawner : MonoBehaviour
+
+public class ArrowSpawner : PoolSpawner<Arrow>
 {
     [Header("Prefab")]
     [SerializeField] private Arrow arrowPrefab;
-    private ObjectPoolComponent<Arrow> _pool;
-    private void Start()
-    {
-        _pool = new ObjectPoolComponent<Arrow>(arrowPrefab, null);
-        PoolManager.instanmce.Register(_pool);
-    }
+
+    protected override Arrow Prefab => arrowPrefab;
 
     public void OnShoot(Vector3 pos, Quaternion rot, Vector3 direction)
     {
-        Arrow arrow = PoolManager.instanmce.Get<Arrow>().Get();
-        arrow.transform.SetPositionAndRotation(pos, rot);
+        Arrow arrow = Spawn(pos, rot);
         arrow.OnSpawned(direction);
-    }
-    // Start is called before the first frame update
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

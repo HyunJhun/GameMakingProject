@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Pool;
 public class Firebomb : MonoBehaviour,IPoolable<Firebomb>
 {
-    [SerializeField] private ParticleSystem bombParticle;
     [SerializeField] private GameObject explodeArea;
     [SerializeField] private TMP_Text timerText;
 
@@ -46,22 +45,25 @@ public class Firebomb : MonoBehaviour,IPoolable<Firebomb>
             if (timer <= 0f&& !isBoom)
             {
                 isBoom = true;
-                ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
-                bombEffect.Play();
-                Destroy(bombEffect.gameObject, 1f);
+                // 수정됨: 중앙 ParticleManager의 Firebomb 전용 풀을 사용
+                ParticleManager.Instance.Play(
+                    ParticleType.FirebombExplosion,
+                    transform.position,
+                    Quaternion.identity);
                 fractured.BreakFracturedObject();
             }
         }
     }
     private void OnCollisionEnter(Collision collision)
     {     
-        if (collision.gameObject.CompareTag("Player")) // �÷��̾�� �浹���� ���
+        if (collision.gameObject.CompareTag("Player")) // 플레이어와 충돌했을 경우
         {
             //SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
-            ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
-            bombEffect.Play();
-
-            Destroy(bombEffect.gameObject, 1f);
+            // 수정됨: 중앙 ParticleManager의 Firebomb 전용 풀을 사용
+            ParticleManager.Instance.Play(
+                ParticleType.FirebombExplosion,
+                transform.position,
+                Quaternion.identity);
             ReturnToPoolDelayed(0.1f).Forget();
         }
         else

@@ -1,8 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem bombParticle;
     [SerializeField] private GameObject explodeArea;
 
     private Destructible fractured;
@@ -15,13 +14,15 @@ public class Fireball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ground")) // ¸¸¾à ÁöÇüÁö¹° Ãæµ¹ÇßÀ» °æ¿ì
+        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ground")) // ë§Œì•½ ì§€í˜•ì§€ë¬¼ ì¶©ëŒí–ˆì„ ê²½ìš°
         {
             explodeArea.SetActive(true);
             SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Boss.Bomb, false);
-            ParticleSystem bombEffect = Instantiate(bombParticle, transform.position, Quaternion.identity);
-            bombEffect.Play();
-            Destroy(bombEffect.gameObject, 1f);
+            // ìˆ˜ì •ë¨: ê°œë³„ Spawner ëŒ€ì‹  ì¤‘ì•™ ParticleManagerì˜ íƒ€ì…ë³„ í’€ì„ ì‚¬ìš©
+            ParticleManager.Instance.Play(
+                ParticleType.FireballExplosion,
+                transform.position,
+                Quaternion.identity);
             fractured.BreakFracturedObject();
         }
 

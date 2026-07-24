@@ -606,25 +606,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fa09ba334e43f488b5eb8f5ef561de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  basicAttackParticles:
-  - {fileID: 6838234871597298030, guid: 590b917b819b6fd40b847425f77f2750, type: 3}
-  - {fileID: 358536259608400843, guid: 38ebe2fa1895bcf4496f14934d62e1be, type: 3}
-  - {fileID: 7195573021755067417, guid: 8c92f3c27aac6da4b8cdce035bcb49bf, type: 3}
-  - {fileID: 3619238923182872696, guid: 97326e3a3fdc35345a0e1d6a178154c6, type: 3}
-  - {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
-  - {fileID: 8429249911141346124, guid: 8092b366d5ded4947a5b41c3eb40aff7, type: 3}
-  bossAttackParticles: []
-  bossAttackEnterParticles: []
-  skillParticles:
-  - {fileID: 1166320503606963493, guid: a008d93515e8caf418d48b48f635d20d, type: 3}
-  - {fileID: 9017484664307500583, guid: 714dd26d636f14e4fabb3f21716b9c97, type: 3}
-  hitParticle: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0, type: 3}
+  catalog: {fileID: 11400000, guid: 56acc738524d4cddb502761e61367f98, type: 2}
   swordHolder: {fileID: 1927012186298363401}
   player: {fileID: 1927012187501173109}
   boss: {fileID: 0}
-  PlayerObj: {fileID: 1927012187245026561}
-  xVal: 6.5
-  yVal: 1
 --- !u!114 &1927012187501173116
 MonoBehaviour:
   m_ObjectHideFlags: 0
