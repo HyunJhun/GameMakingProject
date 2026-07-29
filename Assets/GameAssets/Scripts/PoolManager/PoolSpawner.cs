@@ -14,7 +14,7 @@ public abstract class PoolSpawner<T> : MonoBehaviour where T : Component
     protected virtual void Start()
     {
         Pool = new ObjectPoolComponent<T>(Prefab, PoolParent);
-        PoolManager.instanmce.Register(Pool);
+        PoolManager.instance.Register(Pool);
     }
 
     protected T Spawn(Vector3 position, Quaternion rotation)

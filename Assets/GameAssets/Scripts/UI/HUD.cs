@@ -41,9 +41,8 @@ public class HUD : MonoBehaviour
     }
     void Start()
     {
-        player = GameObject.Find("Player").GetComponent<Status>();
-        if (GameObject.Find("Boss") != null) boss = GameObject.Find("Boss").GetComponent<Status>();
-        playerComp = player.GetComponent<Player>();
+        GameObject.FindWithTag("Player").TryGetComponent<Status>(out player);
+        GameObject.FindWithTag("Boss").TryGetComponent<Status>(out boss);
         playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
         playerStaminaBar.maxValue = player.getMaxStamina();

@@ -5,7 +5,7 @@ using UnityEngine;
 // Pooling 시스템에 등록하기 위한 큰 틀
 public class PoolManager : MonoBehaviour
 {
-    public static PoolManager instanmce { get;private set; }
+    public static PoolManager instance { get;private set; }
 
     // System.Type으로 파싱한 이유는 string으로 파싱 시 오타등의 단순한 실수로 인해
     // 자료를 못찾거나 런타임 에러가 발생할 수도 있기 때문이다.
@@ -17,9 +17,9 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instanmce == null)
+        if (instance == null)
         {
-            instanmce = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else

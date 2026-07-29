@@ -37,14 +37,8 @@ public class SoundManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
-
-        var obj = FindObjectsOfType<SoundManager>();
-        if (obj.Length == 1)
-            DontDestroyOnLoad(gameObject);
-        else
-            Destroy(gameObject);
-
         initialize();
     }
 
