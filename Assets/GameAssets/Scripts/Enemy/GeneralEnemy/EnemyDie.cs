@@ -10,6 +10,9 @@ public class EnemyDie : EnemyState
     {
         enemy.GetEnemyNavMeshAgent().enabled = false;
         enemy.b_isDie = true;
+
+        enemy.NotifyDeath();
+
         enemy.enabled = false;
         enemy.GetAnimator().SetTrigger("Die");
         GameObject.Destroy(enemy.gameObject,5f);

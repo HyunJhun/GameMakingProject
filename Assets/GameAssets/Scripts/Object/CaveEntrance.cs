@@ -5,36 +5,48 @@ using UnityEngine;
 public class CaveEntrance : MonoBehaviour
 {
     private bool isAllEnemiesDead = false;
-    private Enemy[] aliveEnemies;
+    [SerializeField] private EnemyGroup enemyGroup;
     private Destructible[] destructibleRocks;
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        aliveEnemies = GameObject.FindObjectsOfType<Enemy>();
-        destructibleRocks = this.GetComponentsInChildren<Destructible>();
+        if (enemyGroup == null)
+            enemyGroup = GetComponent<EnemyGroup>();
+
+        if (enemyGroup == null)
+            enemyGroup = gameObject.AddComponent<EnemyGroup>();
+
+        destructibleRocks = GetComponentsInChildren<Destructible>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        if (!isAllEnemiesDead)
-        {
-            if (aliveEnemies.Length == 0)
-            {
-                isAllEnemiesDead = true;
-                SoundManager.soundManagerInstacne.initializeSFX();
-                CameraManager.cameraManagerInstance.SwitchCameraToTarget(
-                    transform,CameraManager.cameraManagerInstance.caveCam
-                    );
-                Invoke("breakEntrance", 4f);         
-            }
-            else
-            {
-                aliveEnemies = GameObject.FindObjectsOfType<Enemy>();
-            }
-        }
+        if (enemyGroup != null)
+            enemyGroup.OnAllEnemiesDied += HandleAllEnemiesDead;
     }
 
+    private void OnDisable()
+    {
+        if (enemyGroup != null)
+            enemyGroup.OnAllEnemiesDied -= HandleAllEnemiesDead;
+    }
+
+    private void HandleAllEnemiesDead()
+    {
+        if (isAllEnemiesDead)
+            return;
+
+        isAllEnemiesDead = true;
+
+        SoundManager.soundManagerInstacne.initializeSFX();
+
+        CameraManager.cameraManagerInstance.SwitchCameraToTarget(
+            transform,
+            CameraManager.cameraManagerInstance.caveCam
+        );
+
+        Invoke(nameof(breakEntrance), 4f);
+    }
     private void breakEntrance()
     {
         foreach (Destructible rock in destructibleRocks)

@@ -21,7 +21,7 @@ public class TeleportManager : MonoBehaviour
     {
         if(other.CompareTag("Player") && this.name == MainToDungeonPortal.name)
         {
-            Status playerStatus = GameObject.Find("Player").GetComponent<Status>();
+            Status playerStatus = GameObject.FindGameObjectWithTag("Player").GetComponent<Status>();
 
             DataManager.dataManagerInstance.SetHudValues(playerStatus.getHp(), playerStatus.GetCurrentMp(), playerStatus.getStamina());
 

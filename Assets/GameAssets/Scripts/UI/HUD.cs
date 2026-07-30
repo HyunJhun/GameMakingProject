@@ -41,20 +41,7 @@ public class HUD : MonoBehaviour
     }
     void Start()
     {
-        GameObject.FindWithTag("Player").TryGetComponent<Status>(out player);
-        GameObject.FindWithTag("Boss").TryGetComponent<Status>(out boss);
-        playerHpBar.maxValue = player.GetMaxHP();
-        playerHpBar.minValue = 0f;
-        playerStaminaBar.maxValue = player.getMaxStamina();
-        playerStaminaBar.minValue = 0f;
-        playerMpBar.maxValue = player.GetMaxMp();
-        playerMpBar.minValue = 0f;
-        if (boss != null)
-        {
-            bossHpBar.maxValue = boss.GetMaxHP();
-            bossHpBar.minValue = 0f;
-            bossNameText.text = "The Darkness Ancient Dragon";
-        }
+        onInit();
     }
 
     // Update is called once per frame
@@ -76,5 +63,23 @@ public class HUD : MonoBehaviour
     {
         Time.timeScale = scale;
         Debug.Log($"TimeScale º¯°æ: {scale}");
+    }
+
+    private void onInit()
+    {
+        GameObject.FindWithTag("Player").TryGetComponent<Status>(out player);
+        GameObject.FindWithTag("Boss").TryGetComponent<Status>(out boss);
+        playerHpBar.maxValue = player.GetMaxHP();
+        playerHpBar.minValue = 0f;
+        playerStaminaBar.maxValue = player.getMaxStamina();
+        playerStaminaBar.minValue = 0f;
+        playerMpBar.maxValue = player.GetMaxMp();
+        playerMpBar.minValue = 0f;
+        if (boss != null)
+        {
+            bossHpBar.maxValue = boss.GetMaxHP();
+            bossHpBar.minValue = 0f;
+            bossNameText.text = "The Darkness Ancient Dragon";
+        }
     }
 }

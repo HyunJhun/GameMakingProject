@@ -19,12 +19,6 @@ public class DataManager : MonoBehaviour
             dataManagerInstance = this;
         else
             Destroy(gameObject);
-
-        var obj = FindObjectsOfType<DataManager>();
-        if (obj.Length == 1)
-            DontDestroyOnLoad(gameObject);
-        else
-            Destroy(gameObject);
     }
 
     // Update is called once per frame

@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
+    #region State
     public EnemyIdle idleState { get; set; }
     public EnemyPatrol patrolState { get; set; }
     public EnemyChase chaseState { get; set; }
@@ -12,6 +14,7 @@ public class Enemy : MonoBehaviour
     public EnemyAttack attackState { get; set; }
     public EnemyGetHit getHitState { get; set; }
     public EnemyDie dieState { get; set; }
+    #endregion
 
     [Header("Enemy Information")]
     public float f_enemyPatrolSpeed;
@@ -30,10 +33,13 @@ public class Enemy : MonoBehaviour
     [Header("LayerMask")]
     [SerializeField] private LayerMask WallLayerMask;
     public Vector3 triggeredPoint { get; set; }
+    #region flags
     public bool b_isAttack { get; set; }
     public bool b_isGetHit { get; set; }
     public bool b_isCollide { get; set; }
     public bool b_isDie { get; set; }
+    #endregion
+    #region variables
     public float f_patrolLength { get; set; }
     public float f_patrolStopingDistance { get; set; }
     public float f_chaseStopingDistacne { get; set; }
@@ -43,7 +49,11 @@ public class Enemy : MonoBehaviour
     public float f_attackMoveSpeed { get; set; }
     public float f_patrolMaxTimeForCantMove { get; set; }
     public float f_timerForPatrol { get; set; }
+    #endregion
     public List<float> AttackDamageList { get; set; } = new List<float>();
+
+    public event Action<Enemy> OnDied;
+    private bool hasNotifiedDeath;
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +92,7 @@ public class Enemy : MonoBehaviour
         f_timerForPatrol = 0f;
         f_patrolStopingDistance = 1f;
         b_isDie = false;
+        hasNotifiedDeath = false;
     }
 
 
@@ -90,9 +101,9 @@ public class Enemy : MonoBehaviour
         SoundManager.soundManagerInstacne.PlaySfx(SoundManager.SFX_Enemy.SkeletonAttack,this);
         if (attackRangeBox.GetComponent<AttackRangeCheck>().getStats() == null) return;
 
-        // 1. º¸½º´Â ¾Ö´Ï¸ŞÀÌ¼Ç¸¸ ÃëÇÏ°í Ã¼·Â¸¸ ±ğÀÌ¸é µÊ
-        // 2. ÀÏ¹İ¸÷Àº ÇÃ·¹ÀÌ¾î°¡ °ø°İ½Ã GetHit »óÅÂ·Î ÁøÀÔÇØ¾ß ÇÏ¸ç ÀÌ ¶§, °ø°İÀ» ÇÏ´ø µµÁßÀÌ¿©µµ ÁøÀÔÀ» ÇÏ°Ô µÇ¹Ç·Î °­Á¦·Î ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ¸ØÃçÁÖ¾î¾ß ÇÑ´Ù.
-        // 3. ÇÃ·¹ÀÌ¾î´Â °ø°İ½Ã ½ºÅÂ¹Ì³Ê°¡ ¼Ò¸ğµÇ¾ßÇÏ´Â Ãß°¡ÀûÀÎ ÀÛ¾÷ÀÌ ÇÊ¿äÇÏ´Ù. ¶ÇÇÑ ÇÃ·¹ÀÌ¾î´Â ÇÇ°İ½Ã °ø°İÀ» ÇÒ ¼ö ¾ø°Ô µÈ´Ù.
+        // 1. ë³´ìŠ¤ëŠ” ì• ë‹ˆë©”ì´ì…˜ë§Œ ì·¨í•˜ê³  ì²´ë ¥ë§Œ ê¹ì´ë©´ ë¨
+        // 2. ì¼ë°˜ëª¹ì€ í”Œë ˆì´ì–´ê°€ ê³µê²© ì‹œ GetHit ìƒíƒœë¡œ ì§„ì…í•˜ë©°, ê³µê²© ë„ì¤‘ì´ì–´ë„ í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ì „í™˜í•œë‹¤.
+        // 3. í”Œë ˆì´ì–´ëŠ” ê³µê²© ì‹œ ìŠ¤íƒœë¯¸ë„ˆê°€ ì†Œëª¨ë˜ê³ , í”¼ê²© ì‹œì—ëŠ” ê³µê²©í•  ìˆ˜ ì—†ê²Œ ëœë‹¤.
         player.b_IsHit = true;
         attackRangeBox.GetComponent<AttackRangeCheck>().getStats().hpDown(status.GetAttackDamage(indexOfAttackMotion) - player.GetPlayerStatus().GetArmor());
         attackRangeBox.GetComponent<AttackRangeCheck>().ResetTriggerObj();
@@ -102,17 +113,17 @@ public class Enemy : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Enemy")
-            && !collision.gameObject.CompareTag("Ground")) // ¸¸¾à ÇÃ·¹ÀÌ¾î³ª ¸ó½ºÅÍ°¡ ¾Æ´Ñ ´ë»ó, Áï °¢Á¾ ¸Ê ¿ÀºêÁ§Æ®µé°ú ºÎµúÈú ½Ã
+            && !collision.gameObject.CompareTag("Ground")) // í”Œë ˆì´ì–´ë‚˜ ëª¬ìŠ¤í„°ê°€ ì•„ë‹Œ ë§µ ì˜¤ë¸Œì íŠ¸ì™€ ì¶©ëŒí–ˆì„ ë•Œ
         {
             f_timerForPatrol = 0f;     
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Weapon")) // ¸¸¾à ÇÃ·¹ÀÌ¾îÀÇ ¹«±â¿¡ ºÎµúÇûÀ» ½Ã
-        {
+        if(other.gameObject.CompareTag("Weapon")) // ï§ëš¯ë¹Ÿ ?ëš®ì …?ëŒë¼±??è‡¾ë‹¿ë¦°??éºÂ€?ã‚ì‚????
+        if(other.gameObject.CompareTag("Weapon")) // í”Œë ˆì´ì–´ì˜ ë¬´ê¸°ì™€ ì¶©ëŒí–ˆì„ ë•Œ
             triggeredPoint = other.ClosestPoint(transform.position);
-        }
+
     }
     private void OnParticleCollision(GameObject other)
     {
@@ -125,7 +136,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        NotifyDeath();
+    }
+    public void NotifyDeath()
+    {
+        if (hasNotifiedDeath)
+            return;
 
+        hasNotifiedDeath = true;
+        Debug.Log("[Event] Enemy Died");
+        OnDied?.Invoke(this);
+    }
 
     // Get Function
     public Player GetPlayer() { return player; }

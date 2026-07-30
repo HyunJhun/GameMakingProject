@@ -17,12 +17,6 @@ public class ButtonManager : MonoBehaviour
             buttonManagerInstance = this;
         else
             Destroy(gameObject);
-
-        var obj = FindObjectsOfType<ButtonManager>();
-        if (obj.Length == 1)
-            DontDestroyOnLoad(gameObject);
-        else
-            Destroy(gameObject);
     }
     public void StartEvent()
     {
