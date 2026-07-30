@@ -1,21 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Cysharp.Threading.Tasks;
 using System.Threading;
+using Cysharp.Threading.Tasks;
+using TMPro;
+using UnityEngine;
 
-
-[System.Serializable] // Á÷Á¢ ¸¸µç Å¬·¡½º¿¡ Á¢±ÙÇÒ ¼ö ÀÖµµ·Ï ÇØÁÜ
+[System.Serializable]
 public class Dialog
 {
-    [TextArea] // ÇÑ ÁÙ ¸»°í ¿©·¯ ÁÙ »ç¿ë°¡´ÉÇÏ°Ô ÇØÁÖ´Â °Å·¡
+    [TextArea]
     public string text;
     public string name;
-
-
 }
+
 public class Dialogue : MonoBehaviour
 {
     [Header("UI")]
@@ -24,131 +19,157 @@ public class Dialogue : MonoBehaviour
     [SerializeField] private TMP_Text dialogText;
     [SerializeField] private Dialog[] dialogs;
 
+    [Header("Text Settings")]
+    [SerializeField, Min(0.01f)] private float characterInterval = 0.1f;
+
     [Header("Volume")]
     [SerializeField] private Volume volume;
-    int m_countOfDialog = 0;
-    bool isTextPrintComplete = false;
+
+    private int currentDialogIndex;
+    private bool isTextPrintComplete;
 
     public void OnOffDialogUI(bool state)
     {
-        dialogueUI.SetActive(state);
+        if (dialogueUI != null)
+        {
+            dialogueUI.SetActive(state);
+        }
     }
 
     public async UniTask ShowTextInOrder(CancellationToken ct = default)
     {
-        if (objName == null || dialogText == null)
+        if (objName == null ||
+            dialogText == null ||
+            dialogs == null ||
+            dialogs.Length == 0)
+        {
             return;
+        }
 
-        m_countOfDialog = 0;
+        currentDialogIndex = 0;
+        isTextPrintComplete = false;
+        objName.text = string.Empty;
+        dialogText.text = string.Empty;
+
         OnOffDialogUI(true);
 
-        Transform npcTransform = GameObject.FindGameObjectWithTag("NPC").transform;
-        Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-   
+        GameObject npcObject = GameObject.FindGameObjectWithTag("NPC");
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
-        CameraManager.cameraManagerInstance.SwitchCameraToTarget(
-            npcTransform, CameraManager.cameraManagerInstance.dialogCam
-            );
-        Debug.Log("‰Ñ³ª?");
+        Transform npcTransform = npcObject != null ? npcObject.transform : null;
+        Transform playerTransform = playerObject != null ? playerObject.transform : null;
 
-        while (m_countOfDialog < dialogs.Length)
+        try
         {
-            if (dialogText.text.Length != dialogs[m_countOfDialog].text.Length) // ÅØ½ºÆ®°¡ ´Ù Ãâ·ÂµÇÁö ¾Ê¾ÒÀ» ¶§
+            if (CameraManager.cameraManagerInstance != null && npcTransform != null)
             {
-                objName.text = dialogs[m_countOfDialog].name;
-                for (int count = 0; count < dialogs[m_countOfDialog].text.Length; count++) // °¢ ÅØ½ºÆ®°¡ Ãâ·ÂµÇ´Â ¹İº¹¹®
+                CameraManager.cameraManagerInstance.SwitchCameraToTarget(
+                    npcTransform,
+                    CameraManager.cameraManagerInstance.dialogCam
+                );
+            }
+
+            while (currentDialogIndex < dialogs.Length)
+            {
+                ct.ThrowIfCancellationRequested();
+
+                Dialog currentDialog = dialogs[currentDialogIndex];
+
+                if (currentDialog == null)
                 {
-                    Debug.Log("ÀÔ·Â¹Ş´ÂÁß");
-                    if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)) // ¸¸¾à ´ëÈ­°¡ Ãâ·ÂµÇ´Â µ¿¾È¿¡ F ³ª Space ´©¸¦½Ã
+                    currentDialogIndex++;
+                    continue;
+                }
+
+                string currentText = currentDialog.text ?? string.Empty;
+
+                objName.text = currentDialog.name ?? string.Empty;
+                dialogText.text = string.Empty;
+                isTextPrintComplete = false;
+
+                int characterIndex = 0;
+                float elapsedTime = characterInterval;
+
+                // í˜„ì¬ ëŒ€ì‚¬ë¥¼ í•œ ê¸€ìì”© ì¶œë ¥í•œë‹¤.
+                while (!isTextPrintComplete)
+                {
+                    ct.ThrowIfCancellationRequested();
+
+                    // ì¶œë ¥ ì¤‘ E ë˜ëŠ” Spaceë¥¼ ëˆ„ë¥´ë©´ í˜„ì¬ ëŒ€ì‚¬ë¥¼ ì¦‰ì‹œ ì „ë¶€ í‘œì‹œí•œë‹¤.
+                    if (IsNextKeyPressed())
                     {
-                        Debug.Log("À¸¾Æ¾Ç");
+                        dialogText.text = currentText;
+                        isTextPrintComplete = true;
+
+                        // ê°™ì€ í‚¤ ì…ë ¥ì´ ë°”ë¡œ ë‹¤ìŒ ëŒ€ì‚¬ë¡œ ë„˜ê¸°ëŠ” ë° ì‚¬ìš©ë˜ì§€ ì•Šë„ë¡ í•œë‹¤.
+                        await UniTask.Yield(PlayerLoopTiming.Update, ct);
+                        break;
                     }
-                    dialogText.text += dialogs[m_countOfDialog].text[count];
-                    if (Input.GetKeyDown(KeyCode.E))
+
+                    elapsedTime += Time.unscaledDeltaTime;
+
+                    if (elapsedTime >= characterInterval)
                     {
-                        if (!isTextPrintComplete)
+                        elapsedTime = 0f;
+
+                        if (characterIndex < currentText.Length)
                         {
-                            dialogText.text = dialogs[m_countOfDialog].text;
+                            dialogText.text += currentText[characterIndex];
+                            characterIndex++;
+                        }
+
+                        if (characterIndex >= currentText.Length)
+                        {
                             isTextPrintComplete = true;
                         }
-                        else
-                        {
-                            dialogText.text = "";
-                            m_countOfDialog++;
-                            isTextPrintComplete = false;
-                        }
                     }
-                    await UniTask.Delay(100, cancellationToken: ct);
+
+                    await UniTask.Yield(PlayerLoopTiming.Update, ct);
+                }
+
+                // í˜„ì¬ ëŒ€ì‚¬ê°€ ëª¨ë‘ ì¶œë ¥ë˜ë©´, ë‹¤ìŒ ì…ë ¥ì´ ë“¤ì–´ì˜¬ ë•Œê¹Œì§€ ê¸°ë‹¤ë¦°ë‹¤.
+                while (!IsNextKeyPressed())
+                {
+                    ct.ThrowIfCancellationRequested();
+                    await UniTask.Yield(PlayerLoopTiming.Update, ct);
+                }
+
+                currentDialogIndex++;
+
+                // ë‹¤ìŒ ëŒ€ì‚¬ë¡œ ë„˜ê¸´ í‚¤ ì…ë ¥ì´ ê°™ì€ í”„ë ˆì„ì— ë‹¤ì‹œ ê°ì§€ë˜ì–´
+                // ìƒˆ ëŒ€ì‚¬ë¥¼ ì¦‰ì‹œ ì™„ì„±í•˜ì§€ ì•Šë„ë¡ ì…ë ¥ í”„ë ˆì„ì„ ë¶„ë¦¬í•œë‹¤.
+                if (currentDialogIndex < dialogs.Length)
+                {
+                    await UniTask.Yield(PlayerLoopTiming.Update, ct);
                 }
             }
-            else if (dialogText.text.Length == dialogs[m_countOfDialog].text.Length)
-            {
-                dialogText.text = "";
-                isTextPrintComplete = false;
-                m_countOfDialog++;
-            }
         }
-        OnOffDialogUI(false);
+        finally
+        {
+            dialogText.text = string.Empty;
+            objName.text = string.Empty;
+            OnOffDialogUI(false);
 
-        CameraManager.cameraManagerInstance.SwitchCameraToMain(playerTransform, CameraManager.cameraManagerInstance.dialogCam);
-        volume.isConversationStart = false;
+            if (CameraManager.cameraManagerInstance != null && playerTransform != null)
+            {
+                CameraManager.cameraManagerInstance.SwitchCameraToMain(
+                    playerTransform,
+                    CameraManager.cameraManagerInstance.dialogCam
+                );
+            }
 
-        Debug.Log("´ëÈ­ ¿Ï·á");
+            if (volume != null)
+            {
+                volume.isConversationStart = false;
+            }
+
+            Debug.Log("ëŒ€í™” ì™„ë£Œ");
+        }
     }
-    //public IEnumerator ShowTextInOrder()
-    //{
-    //    //if (objName == null || dialogText == null) yield break;
-    //    m_countOfDialog = 0;
-    //    OnOffDialogUI(true);
 
-    //    Transform npcTransform = GameObject.FindGameObjectWithTag("NPC").transform;
-    //    Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-    //    CameraManager.cameraManagerInstance.SwitchCameraToTarget(npcTransform,CameraManager.cameraManagerInstance.dialogCam);
-    //    Debug.Log("‰Ñ³ª?");
-
-    //    while(m_countOfDialog < dialogs.Length)
-    //    {
-    //        if(dialogText.text.Length != dialogs[m_countOfDialog].text.Length) // ÅØ½ºÆ®°¡ ´Ù Ãâ·ÂµÇÁö ¾Ê¾ÒÀ» ¶§
-    //        {
-    //            objName.text = dialogs[m_countOfDialog].name;
-    //            for (int count = 0; count < dialogs[m_countOfDialog].text.Length; count++) // °¢ ÅØ½ºÆ®°¡ Ãâ·ÂµÇ´Â ¹İº¹¹®
-    //            {
-    //                Debug.Log("ÀÔ·Â¹Ş´ÂÁß");
-    //                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)) // ¸¸¾à ´ëÈ­°¡ Ãâ·ÂµÇ´Â µ¿¾È¿¡ F ³ª Space ´©¸¦½Ã
-    //                {
-    //                    Debug.Log("À¸¾Æ¾Ç");
-    //                }
-    //                dialogText.text += dialogs[m_countOfDialog].text[count];
-    //                if (Input.GetKeyDown(KeyCode.E))
-    //                {
-    //                    if (!isTextPrintComplete)
-    //                    {
-    //                        dialogText.text = dialogs[m_countOfDialog].text;
-    //                        isTextPrintComplete = true;
-    //                    }
-    //                    else
-    //                    {
-    //                        dialogText.text = "";
-    //                        m_countOfDialog++;
-    //                        isTextPrintComplete = false;
-    //                    }
-    //                }
-    //                yield return new WaitForSeconds(0.1f);
-    //            }
-    //        }      
-    //        else if(dialogText.text.Length == dialogs[m_countOfDialog].text.Length)
-    //        {
-    //            dialogText.text = "";
-    //            isTextPrintComplete = false;
-    //            m_countOfDialog++;
-    //        }
-    //    }
-    //    OnOffDialogUI(false);
-
-    //    CameraManager.cameraManagerInstance.SwitchCameraToMain(playerTransform,CameraManager.cameraManagerInstance.dialogCam);
-    //    volume.isConversationStart = false;
-
-    //    Debug.Log("´ëÈ­ ¿Ï·á");
-    //}
+    private bool IsNextKeyPressed()
+    {
+        return Input.GetKeyDown(KeyCode.E) ||
+               Input.GetKeyDown(KeyCode.Space);
+    }
 }
