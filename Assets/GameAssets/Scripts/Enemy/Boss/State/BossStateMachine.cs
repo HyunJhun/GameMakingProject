@@ -16,6 +16,7 @@ public class BossStateMachine
 
     public void ChangeState(BossState nextState)
     {
+        if (currentState == nextState) return;
         currentState.Exit();
 
         previousState = currentState;

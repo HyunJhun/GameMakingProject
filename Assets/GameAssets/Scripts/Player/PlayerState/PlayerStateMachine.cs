@@ -16,6 +16,9 @@ public class PlayerStateMachine
 
     public void ChangeState(PlayerState nextState)
     {
+        // 같은 상태 재진입 방지
+        if (currentState == nextState) return;
+
         currentState.Exit();
 
         previousState = currentState;
