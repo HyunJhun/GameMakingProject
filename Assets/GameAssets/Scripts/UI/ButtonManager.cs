@@ -17,6 +17,9 @@ public class ButtonManager : MonoBehaviour
             buttonManagerInstance = this;
         else
             Destroy(gameObject);
+
+
+        DontDestroyOnLoad(gameObject);
     }
     public void StartEvent()
     {
@@ -26,16 +29,11 @@ public class ButtonManager : MonoBehaviour
     public void SettingEvent()
     {
         var obj = FindObjectsOfType<SettingUI>();
+        if (obj == null) return;
 
-        if (obj.Length == 1)
-        {
-            Destroy(obj[0].gameObject);
-            Instantiate(settingUIPrefab, GameObject.Find("Canvas_UI").transform);
-        }
-        else
-        {
-            Instantiate(settingUIPrefab, GameObject.Find("Canvas_UI").transform);
-        }
+        if(obj.Length == 1) Destroy(obj[0].gameObject);
+
+        Instantiate(settingUIPrefab, GameObject.Find("Canvas_UI").transform);
     }
     public void ExitEvent()
     {

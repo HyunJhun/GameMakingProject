@@ -19,6 +19,8 @@ public class DataManager : MonoBehaviour
             dataManagerInstance = this;
         else
             Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

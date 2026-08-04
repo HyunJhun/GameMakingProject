@@ -120,8 +120,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Weapon")) // 留뚯빟 ?뚮젅?댁뼱??臾닿린??遺?ろ삍????
-        if(other.gameObject.CompareTag("Weapon")) // 플레이어의 무기와 충돌했을 때
+        if(other.gameObject.CompareTag("Weapon")) //  플레이어의 무기와 충돌했을 때
             triggeredPoint = other.ClosestPoint(transform.position);
 
     }
@@ -138,7 +137,7 @@ public class Enemy : MonoBehaviour
 
     private void OnDisable()
     {
-        NotifyDeath();
+        //NotifyDeath();
     }
     public void NotifyDeath()
     {

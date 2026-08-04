@@ -40,6 +40,8 @@ public class SoundManager : MonoBehaviour
             return;
         }
         initialize();
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void initialize()

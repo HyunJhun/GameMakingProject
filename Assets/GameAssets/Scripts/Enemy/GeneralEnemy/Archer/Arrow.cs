@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour, IPoolable<Arrow>
 {
     [Header("Arrow")]
     [SerializeField] private float arrowAttackDamage = 10f;
+    [SerializeField] private float arrowSpeed = 5f;
     [SerializeField] private AttackRangeCheck attackRangeCheck;
     [SerializeField] Vector3 _direction;
 
@@ -49,7 +50,7 @@ public class Arrow : MonoBehaviour, IPoolable<Arrow>
     // Update is called once per frame
     void Update()
     {
-        transform.position += _direction * 1f * Time.deltaTime;
+        transform.position += _direction * arrowSpeed * Time.deltaTime;
     }
 
     private async UniTaskVoid ReturnToPoolDelayed(float delayTime,CancellationToken tk = default)

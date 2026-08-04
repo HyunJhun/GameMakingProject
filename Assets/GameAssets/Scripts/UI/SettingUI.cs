@@ -11,7 +11,10 @@ public class SettingUI : MonoBehaviour
         soundMixer = GetComponent<SoundMixer>();
         soundMixer.SetSliderValue(DataManager.dataManagerInstance.GetBgmValue(), DataManager.dataManagerInstance.GetSfxValue());
     }
-
+    private void OnEnable()
+    {
+        Time.timeScale = 0f;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -29,6 +32,11 @@ public class SettingUI : MonoBehaviour
         }
 
         Destroy(gameObject); 
+    }
+
+    private void OnDisable()
+    {
+        Time.timeScale = 1f;
     }
     public void Exit()
     {
