@@ -40,6 +40,11 @@ public class AttackRangeCheck : MonoBehaviour
                         bossTriggered = other.GetComponent<Boss>();
                     if (other.GetComponent<Enemy>() != null)
                     {
+                        // enemy 삭제는 OnEnable에서 clear되어 처리됨.
+                        // 매 공격마다 enable과 disable이 무조건 호출되게 설계되어
+                        // 매 공격마다 enemies는 최신화됨
+                        if (other.GetComponent<Enemy>().b_isDie) return;
+
                         enemies.Add(other.GetComponent<Enemy>());
                         //preventDuplicateAdd(other.GetComponent<Enemy>());
                     }
