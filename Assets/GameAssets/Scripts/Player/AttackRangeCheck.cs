@@ -29,25 +29,28 @@ public class AttackRangeCheck : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other == null) { return; }// ÄÃ¸®Á¯ µÇ´Â°Ô ¾ø´Ù¸é
+        if (other == null) { return; }// ì»¬ë¦¬ì ¼ ë˜ëŠ”ê²Œ ì—†ë‹¤ë©´
         
         switch(type)
         {
             case Type.Player:
+                // ë³´ìŠ¤íƒœê·¸ë³€ê²½ë¶€ë¶„
                 if (other.CompareTag("Enemy"))
                 {
-                    if(other.GetComponent<Boss>() != null) 
-                        bossTriggered = other.GetComponent<Boss>();
-                    if (other.GetComponent<Enemy>() != null)
+                    if (other.TryGetComponent<Enemy>(out Enemy enemy))
                     {
-                        // enemy »èÁ¦´Â OnEnable¿¡¼­ clearµÇ¾î Ã³¸®µÊ.
-                        // ¸Å °ø°İ¸¶´Ù enable°ú disableÀÌ ¹«Á¶°Ç È£ÃâµÇ°Ô ¼³°èµÇ¾î
-                        // ¸Å °ø°İ¸¶´Ù enemies´Â ÃÖ½ÅÈ­µÊ
-                        if (other.GetComponent<Enemy>().b_isDie) return;
+                        // enemy ì‚­ì œëŠ” OnEnableì—ì„œ clearë˜ì–´ ì²˜ë¦¬ë¨.
+                        // ë§¤ ê³µê²©ë§ˆë‹¤ enableê³¼ disableì´ ë¬´ì¡°ê±´ í˜¸ì¶œë˜ê²Œ ì„¤ê³„ë˜ì–´
+                        // ë§¤ ê³µê²©ë§ˆë‹¤ enemiesëŠ” ìµœì‹ í™”ë¨
+                        if (enemy.b_isDie) return;
 
-                        enemies.Add(other.GetComponent<Enemy>());
+                        enemies.Add(enemy);
                         //preventDuplicateAdd(other.GetComponent<Enemy>());
                     }
+                }
+                else if (other.CompareTag("Boss"))
+                {
+                    other.TryGetComponent<Boss>(out bossTriggered);
                 }
                 break;
             case Type.Monster:
@@ -67,7 +70,7 @@ public class AttackRangeCheck : MonoBehaviour
         bossTriggered = null;
     }
 
-    // ¸ó½ºÅÍ ¸®½ºÆ®¸¦ Trigger¸¦ ÅëÇØ Ãß°¡ÇÒ ¶§, µ¿ÀÏÇÑ ¸ó½ºÅÍ°¡ Ãß°¡µÇ´Â °ÍÀ» ¹æÁö.
+    // ëª¬ìŠ¤í„° ë¦¬ìŠ¤íŠ¸ë¥¼ Triggerë¥¼ í†µí•´ ì¶”ê°€í•  ë•Œ, ë™ì¼í•œ ëª¬ìŠ¤í„°ê°€ ì¶”ê°€ë˜ëŠ” ê²ƒì„ ë°©ì§€.
    
     public List<Enemy> SelectNearEnemies()
     {

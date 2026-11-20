@@ -8,7 +8,8 @@ public class Explode : MonoBehaviour
 
     private void Awake()
     {
-        boss = GameObject.FindWithTag("Enemy").GetComponent<Boss>();
+        // ë³´ìŠ¤íƒœê·¸ë³€ê²½ë¶€ë¶„
+        boss = GameObject.FindWithTag("Boss").GetComponent<Boss>();
     }
     private void Start()
     {
@@ -22,7 +23,7 @@ public class Explode : MonoBehaviour
             {
                 if (!boss.CheckPlayerDodge())
                 {
-                    Debug.Log($"Æø¹ß µ¥¹ÌÁö : {explodeDamage}");
+                    Debug.Log($"í­ë°œ ë°ë¯¸ì§€ : {explodeDamage}");
                     boss.DamagingToPlayer(boss.transform, explodeDamage);
                 }
             }

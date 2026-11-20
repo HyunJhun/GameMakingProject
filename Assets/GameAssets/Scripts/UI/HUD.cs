@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class HUD : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -23,7 +24,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Button btn_x0;
     [SerializeField] private Button btn_x05;
     [SerializeField] private Button btn_x025;
-
+    [SerializeField] private Button btn_TP;
     private Player playerComp;
 
 
@@ -31,13 +32,14 @@ public class HUD : MonoBehaviour
     {
         if(btn_x0 == null || btn_x1 == null || btn_x05 == null || btn_x025 == null)
         {
-            Debug.LogError("¹öÆ°ÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ë²„íŠ¼ì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
             return;
         }
         btn_x1.onClick.AddListener(() => SetTimeScale(1f));
         btn_x0.onClick.AddListener(() => SetTimeScale(0f));
         btn_x05.onClick.AddListener(() => SetTimeScale(0.5f));
         btn_x025.onClick.AddListener(() => SetTimeScale(0.25f));
+        btn_TP.onClick.AddListener(() => teleportToBoss());
     }
     void Start()
     {
@@ -62,13 +64,19 @@ public class HUD : MonoBehaviour
     private void SetTimeScale(float scale)
     {
         Time.timeScale = scale;
-        Debug.Log($"TimeScale º¯°æ: {scale}");
+        Debug.Log($"TimeScale ë³€ê²½: {scale}");
     }
-
+    private void teleportToBoss()
+    {
+        SceneManager.LoadScene("Boss Scene");
+    }
     private void onInit()
     {
         GameObject.FindWithTag("Player").TryGetComponent<Status>(out player);
-        GameObject.FindWithTag("Boss").TryGetComponent<Status>(out boss);
+        // ë³´ìŠ¤íƒœê·¸ë³€ê²½ë¶€ë¶„
+        GameObject bossObject = GameObject.FindWithTag("Boss");
+        if (bossObject != null)
+            bossObject.TryGetComponent<Status>(out boss);
         playerHpBar.maxValue = player.GetMaxHP();
         playerHpBar.minValue = 0f;
         playerStaminaBar.maxValue = player.getMaxStamina();

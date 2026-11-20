@@ -26,11 +26,10 @@ public class ObjectPoolComponent<T> where T : Component
     {
         T item = Object.Instantiate(_prefab, _parent);
 
-        // 이 부분이 빠져있으면 Arrow._pool은 영원히 null!
         if (item is IPoolable<T> poolable)
             poolable.SetPool(_pool);
 
-        Debug.Log("[Pool] 새 오브젝트 Instantiate 발생!");
+        Debug.Log("[Pool] 새 오브젝트 Instantiate 발생");
         return item;
     }
 

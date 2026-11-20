@@ -11,18 +11,21 @@ public class S_SwordJudgment : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
+        // 보스태그변경부분
         if (other.CompareTag("Enemy"))
         {
-            if (other.GetComponent<Enemy>() != null)
+            if (other.TryGetComponent<Enemy>(out Enemy enemy))
             {
-                preventDuplicateAdd(other.GetComponent<Enemy>());
+                preventDuplicateAdd(enemy);
             }
-            if (other.GetComponent<Boss>() != null)
+        }
+        else if (other.CompareTag("Boss"))
+        {
+            if (other.TryGetComponent<Boss>(out Boss boss))
             {
-                collisionBoss = other.GetComponent<Boss>();
+                collisionBoss = boss;
                 collisionBoss.isGetHit = true;
             }
-
         }
     }
     // 수정됨: 풀 반환은 Destroy가 아니라 비활성화이므로 OnDisable에서 상태 정리

@@ -26,8 +26,16 @@ public class KeyInputManager : MonoBehaviour
             {
                 Debug.LogWarning("[KeyInputManager] ButtonManager instance is null.");
             }
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            if(Cursor.visible == false)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
 
